@@ -244,7 +244,7 @@ class Animal
             $stmt->bindParam(':pays_origine', $pays_origine);
             $stmt->bindParam(':description_animal', $description_animal);
             $stmt->bindParam(':image_url', $image_url);
-            $stmt->bindParam(':id_habitat', $id_habitat,PDO::PARAM_INT);
+            $stmt->bindParam(':id_habitat', $id_habitat, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 return "animal ajoute avec succes";
             } else {
@@ -254,6 +254,52 @@ class Animal
             return "error les champs vide";
         }
     }
+
+    public function supprimer_animal(int $id_animal)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "DELETE FROM animaux WHERE id_animal = :id_animal";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return "erreur sur sql";
+        }
+        $stmt->bindParam(':id_animal', $id_animal);
+        if ($stmt->execute()) {
+            return "animal supprime avec succes";
+        } else {
+            return "erreur lors de la suppression de l'animal";
+        }
+    }
+    public function modifier_animal(int $id_animal, string $nom_animal, string $espece_animal, string $type_alimentation, string $pays_origine, string $description_animal, string $image_url, int $id_habitat)
+    {
+        if (!empty($nom_animal) && !empty($espece_animal) && !empty($type_alimentation) && !empty($pays_origine) && !empty($description_animal) && !empty($image_url) && !empty($id_habitat)) {
+            $conn = (new Connexion())->connect();
+            $sql = "UPDATE animaux SET nom_animal = :nom_animal, espece = :espece_animal, alimentation_animal = :type_alimentation, pays_origine = :pays_origine, description_animal = :description_animal, image_url = :image_url, id_habitat = :id_habitat WHERE id_animal = :id_animal";
+            try {
+                $stmt = $conn->prepare($sql);
+            } catch (Exception $e) {
+                return "erreur sur sql";
+            }
+            $stmt->bindParam(':id_animal', $id_animal);
+            $stmt->bindParam(':nom_animal', $nom_animal);
+            $stmt->bindParam(":espece_animal",$espece_animal);
+            $stmt->bindParam(":type_alimentation",$type_alimentation);
+            $stmt->bindParam(":pays_origine",$pays_origine);
+            $stmt->bindParam(":description_animal",$description_animal);
+            $stmt->bindParam(":image_url",$image_url);
+            $stmt->bindParam(":id_habitat",$id_habitat);
+
+            if ($stmt->execute()) {
+                return "animal modifie avec succes";
+            } else {
+                return "erreur lors de la modification de l'animal";
+            }
+        } else {
+            return "error les champs vide";
+        }
+    }
 }
-// $chat = new Animal();
-// echo $chat->ajouter_animal("Lion2", "Panthera leo", "Carnivore", "Afrique", "Le lion est un grand félin carnivore.", "lion.jpg", 3);
+$chat = new Animal();
+echo $chat->modifier_animal(10,"Lion2", "Panthera leo", "Carnivore", "Afrique", "Le lion est un grand félin carnivore.", "lion.jpg", 3);
+// echo $chat->supprimer_animal(11);
