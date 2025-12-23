@@ -242,7 +242,7 @@ class Visite
                     $visite->setDescriptionVisite($row["description_visite"]) &&
                     $visite->setDateheureVisite($row["dateheure_viste"]) &&
                     $visite->setLangueVisite($row["langue__visite"]) &&
-                    $visite->setDureeVisite($row["duree__visite"]) &&
+                    $visite->setDureeVisite($row["duree__visite"]??"00:00:00") &&
                     $visite->setCapaciteMaxVisite($row["capacite_max__visite"]) &&
                     $visite->setPrixVisite((float)$row["prix__visite"]) &&
                     $visite->setStatutVisite($row["statut__visite"]) &&
@@ -275,7 +275,7 @@ class Visite
                     $this->setDescriptionVisite($row["description_visite"]) &&
                     $this->setDateheureVisite($row["dateheure_viste"]) &&
                     $this->setLangueVisite($row["langue__visite"]) &&
-                    $this->setDureeVisite($row["duree__visite"]) &&
+                    $this->setDureeVisite($row["duree__visite"]??"00:00:00") &&
                     $this->setCapaciteMaxVisite($row["capacite_max__visite"]) &&
                     $this->setPrixVisite((float)$row["prix__visite"]) &&
                     $this->setStatutVisite($row["statut__visite"]) &&
@@ -336,18 +336,18 @@ class Visite
                     $visite->setDescriptionVisite($row["description_visite"]) &&
                     $visite->setDateheureVisite($row["dateheure_viste"]) &&
                     $visite->setLangueVisite($row["langue__visite"]) &&
-                    $visite->setDureeVisite($row["duree__visite"]) &&
+                    $visite->setDureeVisite($row["duree__visite"]   ??"00:00:00") &&
                     $visite->setCapaciteMaxVisite($row["capacite_max__visite"]) &&
                     $visite->setPrixVisite((float)$row["prix__visite"]) &&
                     $visite->setStatutVisite($row["statut__visite"]) &&
                     $visite->setIdGuide($row["id_guide"])
                 ) {
-                    return $visite;
+                    return [];
                 }
             }
-            return false;
+            return [];
         } catch (Exception $e) {
-            return false;
+            return [];
         }
     }
     public function getVisitesByGuide(int $id_guide): bool|array

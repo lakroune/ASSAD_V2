@@ -7,7 +7,7 @@ require_once '../../Class/Animal.php';
 require_once '../../Class/Habitat.php';
 
 
-if (!Admin::isConnected("admin")) {
+if (! Admin::isConnected("admin")) {
     header("location: ../../connexion.php?message=access_denied");
     exit();
 }

@@ -162,7 +162,6 @@ class Guide extends Utilisateur
     }
     public function getNbParticipants(): int
     {
-        $conn = (new Connexion())->connect();
         $visites = Visite::getProchaineVisiteByGuide($this->getIdUtilisateur());
         $nbParticipants = 0;
         foreach ($visites as $visite) {

@@ -19,60 +19,20 @@ if (
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['alimentation_animal']) && !empty($_POST['alimentation_animal'])) {
         $array_animaux = array_filter($array_animaux, function ($animal) {
-            return $animal->gettypeAlimentation() == $_POST['alimentation_animal'];
+            return strtolower($animal->gettypeAlimentation()) == strtolower($_POST['alimentation_animal']);
         });
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_habitat']) &&  !empty($_POST['id_habitat'])) {
         $array_animaux = array_filter($array_animaux, function ($animal) {
-            return $animal->getIdHabitat() == $_POST['id_habitat'];
+            return strtolower($animal->getIdHabitat()) == strtolower($_POST['id_habitat']);
         });
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) && !empty($_POST['search'])) {
         $array_animaux = array_filter($array_animaux, function ($animal) {
-            return $animal->getNomAnimal() == $_POST['search'];
+            return str_contains(strtolower($animal->getNomAnimal()), strtolower($_POST['search']));
         });
     }
-
-
-
-
-    // $sql = "SELECT a.*, h.nom_habitat 
-    //     FROM animaux a 
-    //     JOIN habitats h ON a.id_habitat = h.id_habitat 
-    //     WHERE 1=1 ";
-
-
-    // $numAnimaux = 5;
-    // if ($_SERVER['REQUEST_METHOD'] === 'POST' and isset($_POST["chargerplus"])) {
-    //     if (!empty($_POST["chargerplus"])) {
-    //         $numAnimaux += $_POST["chargerplus"];
-    //         $sql .= " limit 5 OFFSET  $numAnimaux";
-    //     }
-    // }
-    // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    //     if (!empty($_POST['search'])) {
-    //         $sql .= " AND a.nom_animal LIKE '" . $_POST['search'] . "%'";
-    //     }
-
-    //     if (!empty($_POST['id_habitat'])) {
-    //         $sql .= " AND a.id_habitat = " . $_POST['id_habitat'];
-    //     }
-
-    //     if (!empty($_POST['alimentation_animal'])) {
-    //         $sql .= " AND a.alimentation_animal = '" . $_POST['alimentation_animal'] . "'";
-    //     }
-    // } else  $sql .= " limit 5 ";
-
-
-    // try {
-    //     $resultat = $conn->query($sql);
-    //     while ($ligne =  $resultat->fetch_assoc())
-    //         array_push($array_animaux, $ligne);
-    // } catch (Exception $e) {
-    //     error_log(date('Y-m-d H:i:s') . " - Erreur Recherche Animaux -: " . $e->getMessage() . PHP_EOL, 3, "../error.log");
-    // }
 } else {
     header("Location: ../connexion.php?error=access_denied");
     exit();
@@ -196,19 +156,7 @@ if (
     </header>
 
     <main class="flex-grow flex flex-col items-center">
-        <!-- <div class="w-full max-w-[1200px] px-4 md:px-10 py-6">
-             <div
-                 class="rounded-xl overflow-hidden relative min-h-[250px] flex flex-col justify-center items-center text-center p-8 bg-cover bg-center shadow-xl shadow-primary/10"
-                 style='background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuB7tV0MbXCZTrttbfuFt8CqKgYEiMryvuxkVWJ6WjvseE_KC2bRS8wOCXpRA4lgDfHgikgjgeCdHsMWdoTr4UFYTYVRoaXexOq-BoOXf5Yo4UcENg5bt1enOCEyrAifv40q_DFANZ1CKEoehRrYDWpLP4S40C7IO1NzrxJat8xe6LbEld6MWZxqsFZoxikvEa865GjFKpz8yY8X5kFjlAlJsm2eNUry4Us0zUZHNEz_wQNZStdhBmsEhv7mpEWzSrjunYXj4bxh4v0h");'>
-                 <h1
-                     class="text-white text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 max-w-3xl drop-shadow-lg">
-                     Découvrez tous nos Résidents Étoiles
-                 </h1>
-                 <p class="text-white/90 text-base md:text-lg font-medium max-w-2xl drop-shadow-md mb-8">
-                     Explorez notre collection complète d'animaux, classés par habitat et statut de conservation.
-                 </p>
-             </div>
-         </div> -->
+
 
         <form action="" method="POST" class="w-full max-w-[1200px] px-4 md:px-10 sticky top-[65px] z-40">
             <div class="bg-white/80 backdrop-blur-xl shadow-sm border border-[#f3ede7] rounded-xl p-4 mb-8">
@@ -243,12 +191,7 @@ if (
             </div>
         </form>
 
-        <!-- <div class="w-full max-w-[1200px] px-4 md:px-10 mb-6 flex justify-between items-end">
-             <div>
-                 <h2 class="text-[#1b140d] text-2xl font-bold leading-tight">Liste des Animaux</h2>
-                 <p class="text-gray-500 text-sm mt-1">Total: <?php count($array_animaux) ?> animaux répertoriés</p>
-             </div>
-         </div> -->
+
 
         <div class="w-full max-w-[1200px] px-4 md:px-10 pb-20">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">

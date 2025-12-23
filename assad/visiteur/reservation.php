@@ -154,7 +154,7 @@
                  <div class="space-y-6">
                      <?php
 
-                        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guide_filter']) && $_POST['guide_filter']) {
+                        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guide_filter']) && $_POST['guide_filter'] != "") {
                             $array_visites = array_filter($array_visites, function ($visite) {
                                 return $visite->getIdGuide() == $_POST['guide_filter'];
                             });
@@ -178,11 +178,11 @@
                                  <div class="h-48 sm:h-auto sm:w-48 rounded-xl bg-cover bg-center shrink-0 relative bg-gray-200"
                                      style="background-image: url('<?= $image ?>');">
 
-                                     <?php if (strtotime($maintenant) > strtotime($date_visite)) : ?>
+                                     <?php if (strtotime($maintenant) - strtotime($date_visite) > 0) : ?>
                                          <div class="m-2 absolute top-0 left-0 inline-flex px-2 py-1 bg-gray-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-lg items-center gap-1">
                                              Terminé
                                          </div>
-                                     <?php elseif (strtotime($date_visite) > strtotime($maintenant)) : ?>
+                                     <?php elseif ((strtotime($date_visite) - strtotime($maintenant)   )> 0) : ?>
                                          <div class="m-2 absolute top-0 left-0 inline-flex px-2 py-1 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-bold rounded-lg items-center gap-1">
                                              <span class="material-symbols-outlined text-[14px] leading-none">schedule</span>
                                              Programmé

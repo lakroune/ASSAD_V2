@@ -156,7 +156,7 @@
                      <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-md p-5 flex flex-col gap-2">
                         <span class="material-symbols-outlined text-blue-600 text-3xl">groups</span>
                         <p class="text-sm text-text-sec-light dark:text-text-sec-dark font-medium">Réservations à Venir</p>
-                        <p class="text-xl font-extrabold tracking-tight"><?= $guide->getNbParticipants()?? 0 ?></p>
+                        <p class="text-xl font-extrabold tracking-tight"><?= $guide->getNbParticipants( )?? 0 ?></p>
                         <p class="text-sm font-semibold">participants confirmés</p>
                     </div>
 

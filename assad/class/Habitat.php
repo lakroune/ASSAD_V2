@@ -31,8 +31,9 @@ class Habitat
     }
     public function setNomHabitat(string $nom_habitat)
     {
-        $regix = "/^[A-Za-z\s'0-9_-]{2,50}$/";
-        if (preg_match($regix, $nom_habitat)) {
+        // $regix = "/^[A-Za-z\s'0-9_-]{2,50}$/";
+        // if (preg_match($regix, $nom_habitat)) {
+        if (strlen($nom_habitat) > 0) {
             $this->nom_habitat = $nom_habitat;
             return true;
         }
@@ -48,8 +49,9 @@ class Habitat
     }
     public function setZoneZoo(string $zone_zoo)
     {
-        $regix = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
-        if (preg_match($regix, $zone_zoo)) {
+        // $regix = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
+        // if (preg_match($regix, $zone_zoo)) {
+        if (strlen($zone_zoo) > 0) {
             $this->zone_zoo = $zone_zoo;
             return true;
         }
@@ -57,8 +59,9 @@ class Habitat
     }
     public function setTypeClimat(string $type_climat)
     {
-        $regix = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
-        if (preg_match($regix, $type_climat)) {
+        // $regix = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
+        // if (preg_match($regix, $type_climat)) {
+        if (strlen($type_climat) > 0) {
             $this->type_climat = $type_climat;
             return true;
         }

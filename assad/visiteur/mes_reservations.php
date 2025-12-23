@@ -13,6 +13,11 @@
         $visiteur = new Visiteur();
         $visiteur->getVisiteur($_SESSION["id_utilisateur"]);
         $array_reservations = Reservation::getAllResrvation();
+
+
+        $array_reservations = array_filter($array_reservations, function ($reservation) {
+            return $reservation->getIdVisiteur() === $_SESSION["id_utilisateur"];
+        });
     } else {
         header("Location: ../connexion.php?error=access_denied");
         exit();

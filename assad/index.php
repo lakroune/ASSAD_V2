@@ -311,7 +311,7 @@
                     <div class="rounded-2xl overflow-hidden group relative">
                         <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             data-alt="Asaad playing with a large enrichment ball in his enclosure"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhOo2vgmSKCtghxbM1wkQ836nE_VEodYny-oa3mt9ZCr-0eM6M4sq0FRahDpRHnj-663RckkSIEWmDrLBVhgTT-38j9Dl-pndbzUKChybETsjfYriuOLvudOlLNhMpWZyW1fXrvEJYGGuQgYMfU6k14CK40NjAIgHtvKc91yE9QaONWfrWMuD1tWn_tRl9k5eUsOGCkzggGNY--rMGijQLb0Hh6uH7IUKmHLdv8l6Rww0dG6FM3yduMA77Kdcemn28laAts06ZMO3w" />
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiiLFHZcRYW82exMIplRXp8WnDyZmsbUi8Bxa8O3wK2gDTeW3D0Hyy84PP69LtP2yOsfJc_dW3w3f9i4oBNvyPHWdKOvgwJgGmMmUKScMQth5FmWfoi3LPeih03KyM1VfBUTNwFUNJJtizs1DvilVQqE2aSI6QlFrMBJxeUBONRvcUPVJvKwBBhyHZ9Q-d1Lto4pUi8_HnF8XvJTS6m6ies7AM1IibENrRnmwXSf5aRADamUuEz1KXV6lkeoWzcLYNpi1iI5lw591P" />
                     </div>
                 </div>
             </div>
