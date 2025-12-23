@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Réservation Visites - Zoo Virtuel ASSAD</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec7f13",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221910",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-[#1b140d] font-display min-h-screen flex flex-col">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#f3ede7]">
+        <div class="max-w-[1200px] mx-auto px-4 md:px-10 py-3">
+            <div class="flex items-center justify-between whitespace-nowrap">
+                <div class="flex items-center gap-4">
+                    <div class="text-primary">
+                        <span class="material-symbols-outlined text-4xl">pets</span>
+                    </div>
+                    <h2 class="text-[#1b140d] text-lg font-bold leading-tight tracking-[-0.015em]">Zoo Virtuel ASSAD
+                    </h2>
+                </div>
+                <div class="hidden lg:flex flex-1 justify-end gap-8">
+                    <div class="flex items-center gap-9">
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
+                            href="index.html">Accueil</a>
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
+                            href="animaux.html">Animaux</a>
+                        <a class="text-primary text-sm font-bold hover:text-primary transition-colors"
+                            href="reservation.html">Réservation</a>
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
+                            href="#">CAN 2025</a>
+                    </div>
+                    <a href="connexion.html" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary hover:bg-orange-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">Connexion</span>
+                    </a>
+                </div>
+                <button class="lg:hidden text-[#1b140d]">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center py-10">
+        <div class="w-full max-w-[1200px] mx-auto px-4 md:px-10">
+
+            <div class="w-full mb-10">
+                <div
+                    class="rounded-xl overflow-hidden relative min-h-[250px] flex flex-col justify-center items-center text-center p-8 bg-cover bg-center shadow-xl shadow-primary/10 bg-green-900/90">
+                    <span
+                        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white text-sm font-bold uppercase tracking-wider mb-4">
+                        <span class="material-symbols-outlined text-base">live_tv</span>
+                        Immersion garantie
+                    </span>
+                    <h1
+                        class="text-white text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 max-w-3xl drop-shadow-lg">
+                        Réservez Votre Visite Guidée Virtuelle
+                    </h1>
+                    <p class="text-white/90 text-base md:text-lg font-medium max-w-2xl drop-shadow-md">
+                        Rencontrez nos guides experts et explorez la faune comme jamais auparavant, en temps réel.
+                    </p>
+                </div>
+            </div>
+
+            <section id="reservations" class="mb-16">
+                <h2 class="text-3xl font-extrabold text-[#1b140d] mb-8 text-center border-b border-primary/20 pb-4">Sessions Disponibles</h2>
+
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-white rounded-xl shadow-lg border border-[#f3ede7] mb-8">
+                    <h3 class="text-lg font-bold text-[#1b140d] shrink-0">Filtrer les Visites :</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+                        <input type="date" value="2025-01-01" class="px-4 py-2 border border-gray-200 rounded-lg bg-white text-sm focus:ring-primary focus:border-primary w-full"/>
+                        <select class="px-4 py-2 border border-gray-200 rounded-lg bg-white text-sm focus:ring-primary focus:border-primary w-full">
+                            <option value="">Par Catégorie Thématique</option>
+                            <option value="Faune Africaine">Faune Africaine</option>
+                            <option value="Écosystèmes">Écosystèmes</option>
+                            <option value="Rencontre avec un Guide">Rencontre avec un Guide</option>
+                            <option value="Visite Spéciale">Visite Spéciale</option>
+                        </select>
+                        <select class="px-4 py-2 border border-gray-200 rounded-lg bg-white text-sm focus:ring-primary focus:border-primary w-full">
+                            <option value="">Par Guide</option>
+                            <option value="amine">Amine El Fassi</option>
+                            <option value="yasmine">Yasmine Belkadi</option>
+                            <option value="jean">Jean L.</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="p-5 bg-white rounded-xl shadow-lg border border-[#f3ede7] flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-[#1b140d]">Le Grand Safari de la Savane</h4>
+                            <div class="flex flex-wrap items-center gap-3 mt-2 text-gray-600 text-sm">
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">schedule</span> Le 20/12/2025 à 10:00</span>
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">landscape</span> Habitat: Savane Centrale</span>
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">person</span> Guide: Amine El Fassi</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 flex flex-col items-end gap-2">
+                            <span class="font-bold text-lg text-green-600">15 places restantes</span>
+                            <button class="h-10 px-5 text-white font-bold rounded-lg transition-colors text-sm shadow-md bg-green-600 hover:bg-green-700 shadow-green-600/30">
+                                Réserver (5€)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-5 bg-white rounded-xl shadow-lg border border-[#f3ede7] flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-[#1b140d]">Exploration de la Canopée</h4>
+                            <div class="flex flex-wrap items-center gap-3 mt-2 text-gray-600 text-sm">
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">schedule</span> Le 21/12/2025 à 14:30</span>
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">landscape</span> Habitat: Canopée Mystérieuse</span>
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">person</span> Guide: Yasmine Belkadi</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 flex flex-col items-end gap-2">
+                            <span class="font-bold text-lg text-red-600">5 places restantes</span>
+                            <button class="h-10 px-5 text-white font-bold rounded-lg transition-colors text-sm shadow-md bg-green-600 hover:bg-green-700 shadow-green-600/30">
+                                Réserver (7€)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-5 bg-white rounded-xl shadow-lg border border-[#f3ede7] flex flex-col md:flex-row justify-between items-center gap-4 opacity-60 grayscale">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-[#1b140d]">Conservation des Rhinocéros</h4>
+                            <div class="flex flex-wrap items-center gap-3 mt-2 text-gray-600 text-sm">
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">schedule</span> Le 25/12/2025 à 11:00</span>
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">landscape</span> Habitat: Broussailles</span>
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg text-primary">person</span> Guide: Yasmine Belkadi</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 flex flex-col items-end gap-2">
+                            <span class="font-bold text-lg text-gray-400">Complet</span>
+                            <button disabled class="h-10 px-5 text-white font-bold rounded-lg transition-colors text-sm shadow-md bg-gray-400 cursor-not-allowed">
+                                Complet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-[#1b140d] text-white pt-16 pb-8 mt-auto">
+        <div class="max-w-[1200px] mx-auto px-4 md:px-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="text-primary">
+                            <span class="material-symbols-outlined text-4xl">pets</span>
+                        </div>
+                        <span class="font-bold text-xl">ASSAD Zoo</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Le premier zoo virtuel dédié à la faune africaine. Soutenez la conservation et célébrez la CAN 2025 avec nous.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Explorer</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a class="hover:text-primary transition-colors" href="animaux.html">Nos Animaux</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="reservation.html">Réservation Visites</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Programme Éducatif</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">CAN 2025</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a class="hover:text-primary transition-colors" href="#">Billetterie</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Fan Zone Virtuelle</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Partenaires</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-4">Restez informé des naissances et des matchs.</p>
+                    <div class="flex gap-2">
+                        <input
+                            class="bg-white/10 border-none rounded-lg text-sm text-white px-3 py-2 w-full focus:ring-1 focus:ring-primary"
+                            placeholder="Votre email" type="email" />
+                        <button class="bg-primary hover:bg-orange-600 text-white rounded-lg px-3 py-2 transition-colors">
+                            <span class="material-symbols-outlined text-sm">send</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-xs">© 2025 Zoo Virtuel ASSAD. Tous droits réservés.</p>
+                <div class="flex gap-6 text-gray-500 text-xs">
+                    <a class="hover:text-white transition-colors" href="#">Confidentialité</a>
+                    <a class="hover:text-white transition-colors" href="#">Conditions</a>
+                    <a class="hover:text-white transition-colors" href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

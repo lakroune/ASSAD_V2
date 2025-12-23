@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Éditer : L'Heure du Repas - Lions de l'Atlas - ASSAD</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec7f13",
+                        "background-light": "#fcfaf8",
+                        "background-dark": "#221910",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d241b",
+                        "text-main-light": "#1b140d",
+                        "text-main-dark": "#fcfaf8",
+                        "text-sec-light": "#9a734c",
+                        "text-sec-dark": "#d0bba6",
+                        "border-light": "#e7dbcf",
+                        "border-dark": "#4a3b2f",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+        body { font-family: "Plus Jakarta Sans", sans-serif; }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-text-main-light dark:text-text-main-dark transition-colors duration-200">
+    <div class="flex h-screen w-full overflow-hidden">
+        <aside class="hidden lg:flex flex-col w-72 border-r border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark p-6 h-full justify-between">
+            <div class="flex flex-col gap-8">
+                <div class="flex items-center gap-3 px-2">
+                    <div class="bg-primary/20 p-2 rounded-lg">
+                        <span class="material-symbols-outlined text-primary text-3xl">pets</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight">ASSAD</h1>
+                        <p class="text-text-sec-light dark:text-text-sec-dark text-xs uppercase tracking-wider font-semibold">Guide Space</p>
+                    </div>
+                </div>
+                <nav class="flex flex-col gap-2">
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="tableau_de_bord.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">dashboard</span>
+                        <span>Tableau de bord</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary dark:text-primary font-bold" href="mes_visites.html">
+                        <span class="material-symbols-outlined">map</span>
+                        <span>Mes Visites</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="reservations.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">groups</span>
+                        <span>Réservations</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="parametres.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">settings</span>
+                        <span>Paramètres</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+                <div class="bg-center bg-cover rounded-full h-10 w-10 border-2 border-primary" style='background-image: url("https://via.placeholder.com/150");'></div>
+                <div class="flex flex-col overflow-hidden">
+                    <p class="text-sm font-bold truncate">Jean Guide</p>
+                    <p class="text-text-sec-light dark:text-text-sec-dark text-xs truncate">Guide Expert</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
+            <div class="lg:hidden flex items-center justify-between p-4 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark sticky top-0 z-20">
+                <span class="material-symbols-outlined text-primary">pets</span>
+                <span class="material-symbols-outlined text-text-main-light dark:text-text-main-dark">menu</span>
+            </div>
+            
+            <div class="p-6 md:p-10 max-w-5xl mx-auto w-full flex flex-col gap-8">
+                
+                <a href="visite_details.html" class="text-sm text-text-sec-light dark:text-text-sec-dark hover:text-primary transition-colors flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    Retour aux détails de la Visite
+                </a>
+
+                <div class="flex flex-col gap-1 pb-4 border-b border-border-light dark:border-border-dark">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Éditer la Visite</h2>
+                    <p class="text-text-sec-light dark:text-text-sec-dark text-lg">Modifiez les informations pour : **L'Heure du Repas - Lions de l'Atlas**</p>
+                </div>
+
+                <form class="flex flex-col gap-8 bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-xl p-6 md:p-8">
+                    
+                    <div class="flex flex-col gap-5">
+                        <h3 class="text-2xl font-bold text-primary border-b border-border-light dark:border-border-dark pb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined">description</span>
+                            Détails de la Visite
+                        </h3>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Titre de la Visite <span class="text-red-500">*</span></label>
+                            <input type="text" value="L'Heure du Repas - Lions de l'Atlas" required
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark text-lg font-semibold" />
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Description Détaillée</label>
+                            <textarea rows="5"
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark resize-none">Session exclusive et passionnante pour observer le repas des lions de l'Atlas en direct. Nous discuterons de leurs habitudes alimentaires, de leur conservation et de la hiérarchie sociale au sein de la troupe.</textarea>
+                            <p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-1">Cette description apparaîtra sur la page publique de la réservation.</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Catégorie</label>
+                            <select class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark">
+                                <option selected>Faune Africaine</option>
+                                <option>Vie Nocturne</option>
+                                <option>Plantes et Flore</option>
+                                <option>Oiseaux et Migration</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-5">
+                        <h3 class="text-2xl font-bold text-primary border-b border-border-light dark:border-border-dark pb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined">schedule</span>
+                            Planning et Logistique
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Date <span class="text-red-500">*</span></label>
+                                <input type="date" value="2025-01-20" required
+                                    class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Heure <span class="text-red-500">*</span></label>
+                                <input type="time" value="14:00" required
+                                    class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Durée (en minutes)</label>
+                                <input type="number" value="45" min="15" max="180"
+                                    class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Lien de la salle de Visite (Zoom, Teams, etc.)</label>
+                            <input type="url" value="https://zoom.us/j/1234567890" required
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" placeholder="https://..." />
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-5">
+                        <h3 class="text-2xl font-bold text-primary border-b border-border-light dark:border-border-dark pb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined">settings_input_svideo</span>
+                            Limites et Média
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div>
+                                <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Nombre maximum de participants</label>
+                                <input type="number" value="50" min="1" required
+                                    class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                                <p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-1">Laissez vide ou mettez un grand nombre pour illimité.</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Statut</label>
+                                <select disabled
+                                    class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-gray-50 dark:bg-gray-800/50 text-text-sec-light dark:text-text-sec-dark cursor-not-allowed">
+                                    <option selected>Programmé</option>
+                                    <option>Brouillon</option>
+                                    <option>En direct</option>
+                                </select>
+                                <p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-1">Le statut se met à jour automatiquement.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Image de Couverture</label>
+                            <div class="flex items-center gap-4 p-4 border border-dashed border-border-light dark:border-border-dark rounded-lg">
+                                <div class="h-20 w-32 rounded-lg bg-cover bg-center shrink-0 border border-border-light dark:border-border-dark" style='background-image: url("https://via.placeholder.com/320x180");'></div>
+                                <input type="file" accept="image/*"
+                                    class="block w-full text-sm text-text-sec-light dark:text-text-sec-dark
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-primary/10 file:text-primary
+                                    hover:file:bg-primary/20" />
+                            </div>
+                            <p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-1">Format recommandé : 16:9. L'image actuelle sera remplacée.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end gap-4 pt-6 border-t border-border-light dark:border-border-dark">
+                         <a href="#" class="flex items-center gap-2 px-6 py-2.5 rounded-lg border border-border-light dark:border-border-dark text-text-main-light dark:text-text-main-dark font-bold hover:bg-border-light dark:hover:bg-surface-dark transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">cancel</span>
+                            <span>Annuler</span>
+                        </a>
+                        <button type="button" class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-bold shadow-lg shadow-primary/30 transition-all transform hover:scale-[1.02]">
+                            <span class="material-symbols-outlined text-[20px]">save</span>
+                            <span>Sauvegarder les modifications</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

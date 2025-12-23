@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Liste des Animaux - Zoo Virtuel ASSAD</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec7f13",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221910",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .status-badge-critical { background-color: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+        .status-badge-danger { background-color: #fefce8; color: #eab308; border: 1px solid #fde047; }
+        .status-badge-vulnerable { background-color: #fffbeb; color: #f59e0b; border: 1px solid #fcd34d; }
+        .status-badge-minor { background-color: #f0fdf4; color: #10b981; border: 1px solid #a7f3d0; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-[#1b140d] font-display min-h-screen flex flex-col">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#f3ede7]">
+        <div class="max-w-[1200px] mx-auto px-4 md:px-10 py-3">
+            <div class="flex items-center justify-between whitespace-nowrap">
+                <div class="flex items-center gap-4">
+                    <div class="text-primary">
+                        <span class="material-symbols-outlined text-4xl">pets</span>
+                    </div>
+                    <h2 class="text-[#1b140d] text-lg font-bold leading-tight tracking-[-0.015em]">Zoo Virtuel ASSAD</h2>
+                </div>
+                <div class="hidden lg:flex flex-1 justify-end gap-8">
+                    <div class="flex items-center gap-9">
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors" href="index.html">Accueil</a>
+                        <a class="text-primary text-sm font-bold hover:text-primary transition-colors" href="animaux.html">Animaux</a>
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors" href="reservation.html">Réservation</a>
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors" href="#">CAN 2025</a>
+                    </div>
+                    <a href="connexion.html" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary hover:bg-orange-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">Connexion</span>
+                    </a>
+                </div>
+                <button class="lg:hidden text-[#1b140d]">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center">
+        <div class="w-full max-w-[1200px] px-4 md:px-10 py-6">
+            <div class="rounded-xl overflow-hidden relative min-h-[250px] flex flex-col justify-center items-center text-center p-8 bg-cover bg-center shadow-xl shadow-primary/10"
+                 style='background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%), url("https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&q=80&w=1200");'>
+                <h1 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 max-w-3xl drop-shadow-lg">
+                    Découvrez tous nos Résidents Étoiles
+                </h1>
+                <p class="text-white/90 text-base md:text-lg font-medium max-w-2xl drop-shadow-md mb-8">
+                    Explorez notre collection complète d'animaux, classés par habitat et statut de conservation.
+                </p>
+            </div>
+        </div>
+
+        <form class="w-full max-w-[1200px] px-4 md:px-10 sticky top-[65px] z-40">
+            <div class="bg-white/80 backdrop-blur-xl shadow-sm border border-[#f3ede7] rounded-xl p-4 mb-8">
+                <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+                    <div class="w-full md:w-1/3 relative group">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-gray-400 group-focus-within:text-primary transition-colors">search</span>
+                        </span>
+                        <input name="search" class="w-full pl-10 pr-4 py-2.5 bg-[#f8f7f6] border-none rounded-lg text-sm text-[#1b140d] placeholder-gray-500 focus:ring-2 focus:ring-primary focus:bg-white transition-all"
+                               placeholder="Rechercher (ex: Lion, Éléphant...)" type="text" />
+                    </div>
+                    <div class="flex gap-4 overflow-x-auto pb-2 md:pb-0 w-full md:w-2/3 scrollbar-hide">
+                        <select name="id_habitat" class="px-4 py-2 bg-white border border-[#e5e5e5] hover:border-primary/50 hover:bg-primary/5 text-[#1b140d] rounded-lg text-sm font-medium whitespace-nowrap transition-all focus:ring-primary focus:border-primary w-full sm:w-1/2">
+                            <option value="">Tous les Habitats</option>
+                            <option value="1">Savane Africaine</option>
+                            <option value="2">Forêt Tropicale</option>
+                            <option value="3">Désert du Sahara</option>
+                        </select>
+                        <select name="alimentation_animal" class="px-4 py-2 bg-white border border-[#e5e5e5] hover:border-primary/50 hover:bg-primary/5 text-[#1b140d] rounded-lg text-sm font-medium whitespace-nowrap transition-all focus:ring-primary focus:border-primary w-full sm:w-1/2">
+                            <option value="">Statut IUCN</option>
+                            <option value="Critique">Critique (CR)</option>
+                            <option value="En danger">En danger (EN)</option>
+                            <option value="Vulnérable">Vulnérable (VU)</option>
+                            <option value="mineure">Préoccupation mineure (LC)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="w-full max-w-[1200px] px-4 md:px-10 mb-6 flex justify-between items-end">
+            <div>
+                <h2 class="text-[#1b140d] text-2xl font-bold leading-tight">Liste des Animaux</h2>
+                <p class="text-gray-500 text-sm mt-1">Total: 4 animaux répertoriés (Exemple)</p>
+            </div>
+        </div>
+
+        <div class="w-full max-w-[1200px] px-4 md:px-10 pb-20">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+                <div class="group relative flex flex-col bg-white rounded-2xl border-2 border-primary overflow-hidden hover:shadow-xl transition-all duration-300 col-span-1 sm:col-span-2 lg:col-span-2">
+                    <div class="absolute top-4 left-4 z-10">
+                        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-bold shadow-lg">
+                            <span class="material-symbols-outlined text-[16px]">stars</span>
+                            EN DANGER CRITIQUE
+                        </span>
+                    </div>
+                    <a href="animal_detail.html" class="h-64 md:h-full w-full overflow-hidden relative">
+                        <img alt="Lion Atlas" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=1200" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Atlas</h3>
+                            <p class="text-white/80 text-sm">Lion de l'Atlas (Panthera leo leo)</p>
+                        </div>
+                    </a>
+                    <div class="p-4 flex justify-between items-center bg-primary/5 border-t border-primary/10">
+                        <div class="flex items-center gap-2 text-sm font-medium text-[#1b140d]">
+                            <span class="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center bg-gray-200 text-xs">🇲🇦</span>
+                            Maroc
+                        </div>
+                        <a href="animal_detail.html" class="text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
+                            En savoir plus
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group flex flex-col bg-white rounded-2xl border border-[#f3ede7] overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <a href="#" class="h-48 overflow-hidden relative">
+                        <img alt="Zara" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1547721064-3625203528f5?auto=format&fit=crop&q=80&w=600" />
+                        <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-sm text-gray-500">
+                            <span class="material-symbols-outlined text-[18px]">favorite</span>
+                        </div>
+                    </a>
+                    <div class="p-4 flex flex-grow flex-col">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="text-lg font-bold text-[#1b140d]">Zara</h3>
+                                <p class="text-xs text-gray-500 italic">Girafe de Rothschild</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded bg-[#f8f7f6] text-xs font-medium text-gray-600">Savane Centrale</span>
+                            <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium status-badge-vulnerable">VULNÉRABLE</span>
+                        </div>
+                        <div class="mt-auto pt-4 flex items-center justify-between border-t border-gray-100">
+                            <div class="flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                                <span class="material-symbols-outlined text-[16px] text-gray-400">location_on</span> Kenya
+                            </div>
+                            <a href="#" class="text-primary text-sm font-bold flex items-center gap-1">Détails <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group flex flex-col bg-white rounded-2xl border border-[#f3ede7] overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <a href="#" class="h-48 overflow-hidden relative">
+                        <img alt="Kibo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&q=80&w=600" />
+                    </a>
+                    <div class="p-4 flex flex-grow flex-col">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="text-lg font-bold text-[#1b140d]">Kibo</h3>
+                                <p class="text-xs text-gray-500 italic">Éléphant d'Afrique</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded bg-[#f8f7f6] text-xs font-medium text-gray-600">Grands Lacs</span>
+                            <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium status-badge-danger">EN DANGER</span>
+                        </div>
+                        <div class="mt-auto pt-4 flex items-center justify-between border-t border-gray-100">
+                            <div class="flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                                <span class="material-symbols-outlined text-[16px] text-gray-400">location_on</span> Tanzanie
+                            </div>
+                            <a href="#" class="text-primary text-sm font-bold flex items-center gap-1">Détails <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group flex flex-col bg-white rounded-2xl border border-[#f3ede7] overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <a href="#" class="h-48 overflow-hidden relative">
+                        <img alt="Sultan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1541414779247-5ef73e7d7911?auto=format&fit=crop&q=80&w=600" />
+                    </a>
+                    <div class="p-4 flex flex-grow flex-col">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="text-lg font-bold text-[#1b140d]">Sultan</h3>
+                                <p class="text-xs text-gray-500 italic">Dromadaire du Sahara</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded bg-[#f8f7f6] text-xs font-medium text-gray-600">Désert</span>
+                            <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium status-badge-minor">PRÉOCCUPATION MINEURE</span>
+                        </div>
+                        <div class="mt-auto pt-4 flex items-center justify-between border-t border-gray-100">
+                            <div class="flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                                <span class="material-symbols-outlined text-[16px] text-gray-400">location_on</span> Algérie
+                            </div>
+                            <a href="#" class="text-primary text-sm font-bold flex items-center gap-1">Détails <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex justify-center mt-12">
+                <button class="flex items-center justify-center gap-2 px-6 py-3 border border-[#e5e5e5] hover:border-primary text-[#1b140d] hover:text-primary font-bold rounded-xl transition-all bg-white hover:bg-orange-50">
+                    Charger plus d'animaux
+                    <span class="material-symbols-outlined">expand_more</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#1b140d] text-white pt-16 pb-8 mt-auto">
+        <div class="max-w-[1200px] mx-auto px-4 md:px-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="text-primary">
+                            <span class="material-symbols-outlined text-4xl">pets</span>
+                        </div>
+                        <span class="font-bold text-xl">ASSAD Zoo</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Le premier zoo virtuel dédié à la faune africaine. Soutenez la conservation et célébrez la CAN 2025 avec nous.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Explorer</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a class="hover:text-primary transition-colors" href="#">Nos Animaux</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Réservation Visites</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Programme Éducatif</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">CAN 2025</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a class="hover:text-primary transition-colors" href="#">Billetterie</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Fan Zone Virtuelle</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Partenaires</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-4">Restez informé des naissances et des matchs.</p>
+                    <div class="flex gap-2">
+                        <input class="bg-white/10 border-none rounded-lg text-sm text-white px-3 py-2 w-full focus:ring-1 focus:ring-primary" placeholder="Votre email" type="email" />
+                        <button class="bg-primary hover:bg-orange-600 text-white rounded-lg px-3 py-2 transition-colors">
+                            <span class="material-symbols-outlined text-sm">send</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-xs">© 2025 Zoo Virtuel ASSAD. Tous droits réservés.</p>
+                <div class="flex gap-6 text-gray-500 text-xs">
+                    <a class="hover:text-white transition-colors" href="#">Confidentialité</a>
+                    <a class="hover:text-white transition-colors" href="#">Conditions</a>
+                    <a class="hover:text-white transition-colors" href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

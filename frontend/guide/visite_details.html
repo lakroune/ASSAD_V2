@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Détails : L'Heure du Repas - Lions de l'Atlas - ASSAD</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec7f13",
+                        "background-light": "#fcfaf8",
+                        "background-dark": "#221910",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d241b",
+                        "text-main-light": "#1b140d",
+                        "text-main-dark": "#fcfaf8",
+                        "text-sec-light": "#9a734c",
+                        "text-sec-dark": "#d0bba6",
+                        "border-light": "#e7dbcf",
+                        "border-dark": "#4a3b2f",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+        body { font-family: "Plus Jakarta Sans", sans-serif; }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-text-main-light dark:text-text-main-dark transition-colors duration-200">
+    <div class="flex h-screen w-full overflow-hidden">
+        <aside class="hidden lg:flex flex-col w-72 border-r border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark p-6 h-full justify-between">
+            <div class="flex flex-col gap-8">
+                <div class="flex items-center gap-3 px-2">
+                    <div class="bg-primary/20 p-2 rounded-lg">
+                        <span class="material-symbols-outlined text-primary text-3xl">pets</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight">ASSAD</h1>
+                        <p class="text-text-sec-light dark:text-text-sec-dark text-xs uppercase tracking-wider font-semibold">Guide Space</p>
+                    </div>
+                </div>
+                <nav class="flex flex-col gap-2">
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="tableau_de_bord.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">dashboard</span>
+                        <span>Tableau de bord</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary dark:text-primary font-bold" href="mes_visites.html">
+                        <span class="material-symbols-outlined">map</span>
+                        <span>Mes Visites</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="reservations.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">groups</span>
+                        <span>Réservations</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="parametres.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">settings</span>
+                        <span>Paramètres</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+                <div class="bg-center bg-cover rounded-full h-10 w-10 border-2 border-primary" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB6SweDCChTHrnzUi3ijD-HqKt7FximPeaVPRuHptoZB3gCiNIREev191XH6lCU2g9dWO-0nb19loXauXqO29KxIYeVB8L_qXV7j_z9ew9PCkxmtTGzyhArcCoyjioHHD9oWPKFoA4SKfrqRSRlWptyCfastPtNkgSlFizXCwA60Izfk-CrC13bruBTAOjH610XOUvFB1RnfkoM-IeFW7fkvzAujenUwRWp02gjgWiOhb4zpbuGErPegntLM0188b1Dkbt6DnzndgR5");'></div>
+                <div class="flex flex-col overflow-hidden">
+                    <p class="text-sm font-bold truncate">Guide Prénom</p>
+                    <p class="text-text-sec-light dark:text-text-sec-dark text-xs truncate">Guide Expert</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
+            <div class="lg:hidden flex items-center justify-between p-4 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark sticky top-0 z-20">
+                <span class="material-symbols-outlined text-primary">pets</span>
+                <span class="material-symbols-outlined text-text-main-light dark:text-text-main-dark">menu</span>
+            </div>
+            
+            <div class="p-6 md:p-10 max-w-7xl mx-auto w-full flex flex-col gap-8">
+                
+                <a href="mes_visites.html" class="text-sm text-text-sec-light dark:text-text-sec-dark hover:text-primary transition-colors flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    Retour à Mes Visites
+                </a>
+
+                <div class="flex flex-wrap justify-between items-start gap-4 pb-4 border-b border-border-light dark:border-border-dark">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">L'Heure du Repas - Lions de l'Atlas</h2>
+                        <p class="text-text-sec-light dark:text-text-sec-dark text-lg">Détails et gestion de la Visite #10</p>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <button class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold shadow-lg shadow-primary/30 transition-all">
+                            <span class="material-symbols-outlined text-[20px]">videocam</span>
+                            <span>Démarrer la Visite</span>
+                        </button>
+                        <a href="#" class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border-light dark:border-border-dark text-text-main-light dark:text-text-main-dark font-semibold hover:bg-border-light dark:hover:bg-surface-dark transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                            <span>Modifier</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <div class="lg:col-span-1 flex flex-col gap-6">
+                        <div class="h-60 rounded-xl bg-cover bg-center relative shadow-lg border border-border-light dark:border-border-dark" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBB3mzttMFekKaHiUMQgz9CbcCvR-LHMfkNamiYLEoaa6mr4VX3RGazcvrLyN6USTeeR3THkb5RzRgunm2nxYGRlj0JP37XKsb0oTpMuUfgiqYzKIQpDFu5Cwamtq0rGjsH93RIdsA6guKSg4KakhrlAV6mKU_SZGX00TM6y3-uGVugQHONmrBvFsVLmZ73htnyBEHRcaZXZ-cwzOoPb7aiKe-dIsmCV4By1n5q6PJKo8CSmh3GTGb2hDjnxSb8_vhCsJz-sArwzoL6");'>
+                            <div class="m-3 absolute top-0 left-0 inline-flex px-3 py-1 bg-blue-600/90 backdrop-blur-sm text-white text-sm font-bold rounded-lg items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px] leading-none">schedule</span>
+                                Programmée
+                            </div>
+                        </div>
+
+                        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-5 flex flex-col gap-4">
+                            <h3 class="text-xl font-bold flex items-center gap-2 text-primary">
+                                <span class="material-symbols-outlined">info</span>
+                                Informations Clés
+                            </h3>
+                            <ul class="space-y-3 text-sm">
+                                <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
+                                    <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Date & Heure :</span>
+                                    <span class="font-semibold">20 Jan 2025 à 14:00</span>
+                                </li>
+                                <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
+                                    <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Durée Estimée :</span>
+                                    <span class="font-semibold">45 minutes</span>
+                                </li>
+                                <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
+                                    <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Catégorie :</span>
+                                    <span class="font-semibold text-primary">Faune Africaine</span>
+                                </li>
+                                <li class="flex justify-between items-center pb-1">
+                                    <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Guide Assigné :</span>
+                                    <span class="font-semibold">Jean L.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-5">
+                            <h3 class="text-xl font-bold mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">description</span>
+                                Description
+                            </h3>
+                            <p class="text-sm text-text-main-light/90 dark:text-text-main-dark/90">Session exclusive et passionnante pour observer le repas des lions de l'Atlas en direct. Nous discuterons de leurs habitudes alimentaires et de la hiérarchie sociale.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-2 flex flex-col gap-6">
+                        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-5">
+                             <h3 class="text-xl font-bold mb-3 flex items-center gap-2 text-green-600">
+                                <span class="material-symbols-outlined">group</span>
+                                Résumé des Réservations
+                            </h3>
+                            <div class="grid grid-cols-3 gap-4 text-center border-t border-border-light dark:border-border-dark/50 pt-3">
+                                <div class="p-2 border-r border-border-light dark:border-border-dark/50">
+                                    <p class="text-3xl font-extrabold text-text-main-light dark:text-text-main-dark">32</p>
+                                    <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Places Confirmées</p>
+                                </div>
+                                <div class="p-2 border-r border-border-light dark:border-border-dark/50">
+                                    <p class="text-3xl font-extrabold text-blue-600">4</p>
+                                    <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Réservations</p>
+                                </div>
+                                <div class="p-2">
+                                    <p class="text-3xl font-extrabold text-text-main-light dark:text-text-main-dark">18</p>
+                                    <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Places Restantes</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-x-auto">
+                            <div class="p-5 border-b border-border-light dark:border-border-dark">
+                                <h3 class="text-xl font-bold flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">list_alt</span>
+                                    Liste des Participants
+                                </h3>
+                            </div>
+                            <table class="min-w-full divide-y divide-border-light dark:divide-border-dark">
+                                <thead class="bg-gray-50/50 dark:bg-white/5">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-bold text-text-sec-light uppercase">Visiteur</th>
+                                        <th class="px-6 py-3 text-center text-xs font-bold text-text-sec-light uppercase">Nb</th>
+                                        <th class="px-6 py-3 text-left text-xs font-bold text-text-sec-light uppercase">Statut</th>
+                                        <th class="px-6 py-3 text-right text-xs font-bold text-text-sec-light uppercase">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-border-light dark:divide-border-dark">
+                                    <tr class="hover:bg-background-light dark:hover:bg-white/5 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium">Amine Benali</div>
+                                            <div class="text-xs text-text-sec-light">amine.b@example.com</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-center font-bold">4</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-green-100 text-green-700">Confirmée</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="flex justify-end gap-2">
+                                                <button class="text-red-600 p-1"><span class="material-symbols-outlined text-[20px]">close</span></button>
+                                                <button class="text-blue-600 p-1"><span class="material-symbols-outlined text-[20px]">mail</span></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-primary/50 shadow-inner p-5 flex flex-col md:flex-row justify-between items-center gap-4 mt-4">
+                    <div class="flex flex-col gap-1">
+                        <h4 class="text-lg font-bold">Lien de la salle de Visite</h4>
+                        <code class="text-sm text-text-sec-light dark:text-text-sec-dark break-all">https://zoom.us/j/1234567890</code>
+                    </div>
+                    <button id="copy-link-btn" data-link="https://zoom.us/j/1234567890" class="flex items-center gap-2 bg-text-sec-light hover:bg-text-sec-light/80 text-white px-5 py-2 rounded-lg font-bold transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">content_copy</span>
+                        <span>Copier le Lien</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('copy-link-btn').addEventListener('click', function() {
+            const link = this.getAttribute('data-link');
+            navigator.clipboard.writeText(link).then(() => {
+                const originalContent = this.innerHTML;
+                this.innerHTML = '<span class="material-symbols-outlined text-[20px]">check</span> Copié !';
+                setTimeout(() => { this.innerHTML = originalContent; }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>

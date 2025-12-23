@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Paramètres - ASSAD</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec7f13",
+                        "background-light": "#fcfaf8",
+                        "background-dark": "#221910",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d241b",
+                        "text-main-light": "#1b140d",
+                        "text-main-dark": "#fcfaf8",
+                        "text-sec-light": "#9a734c",
+                        "text-sec-dark": "#d0bba6",
+                        "border-light": "#e7dbcf",
+                        "border-dark": "#4a3b2f",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+        body { font-family: "Plus Jakarta Sans", sans-serif; }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-text-main-light dark:text-text-main-dark transition-colors duration-200">
+    <div class="flex h-screen w-full overflow-hidden">
+        <aside class="hidden lg:flex flex-col w-72 border-r border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark p-6 h-full justify-between">
+            <div class="flex flex-col gap-8">
+                <div class="flex items-center gap-3 px-2">
+                    <div class="bg-primary/20 p-2 rounded-lg">
+                        <span class="material-symbols-outlined text-primary text-3xl">pets</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight">ASSAD</h1>
+                        <p class="text-text-sec-light dark:text-text-sec-dark text-xs uppercase tracking-wider font-semibold">Guide Space</p>
+                    </div>
+                </div>
+                <nav class="flex flex-col gap-2">
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="index.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">dashboard</span>
+                        <span>Tableau de bord</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="mes_visites.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">map</span>
+                        <span>Mes Visites</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-main-light dark:text-text-sec-dark hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="reservations.html">
+                        <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">groups</span>
+                        <span>Réservations</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary dark:text-primary font-bold" href="#">
+                        <span class="material-symbols-outlined">settings</span>
+                        <span>Paramètres</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+                <div class="bg-center bg-cover rounded-full h-10 w-10 border-2 border-primary" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB6SweDCChTHrnzUi3ijD-HqKt7FximPeaVPRuHptoZB3gCiNIREev191XH6lCU2g9dWO-0nb19loXauXqO29KxIYeVB8L_qXV7j_z9ew9PCkxmtTGzyhArcCoyjioHHD9oWPKFoA4SKfrqRSRlWptyCfastPtNkgSlFizXCwA60Izfk-CrC13bruBTAOjH610XOUvFB1RnfkoM-IeFW7fkvzAujenUwRWp02gjgWiOhb4zpbuGErPegntLM0188b1Dkbt6DnzndgR5");'></div>
+                <div class="flex flex-col overflow-hidden">
+                    <p class="text-sm font-bold truncate">Youssef El Fassi</p>
+                    <p class="text-text-sec-light dark:text-text-sec-dark text-xs truncate">Guide Professionnel</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
+            <div class="lg:hidden flex items-center justify-between p-4 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark sticky top-0 z-20">
+                <span class="material-symbols-outlined text-primary">pets</span>
+                <span class="material-symbols-outlined text-text-main-light dark:text-text-main-dark">menu</span>
+            </div>
+            
+            <div class="p-6 md:p-10 max-w-4xl mx-auto w-full flex flex-col gap-10">
+                <div class="flex flex-col gap-2 border-b border-border-light dark:border-border-dark pb-4">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Paramètres du compte</h2>
+                    <p class="text-text-sec-light dark:text-text-sec-dark text-lg">Gérez vos informations personnelles et vos préférences de sécurité.</p>
+                </div>
+
+                <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-lg">
+                    <div class="p-6 border-b border-border-light dark:border-border-dark flex justify-between items-center">
+                        <h3 class="text-xl font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">person</span>
+                            Informations personnelles
+                        </h3>
+                    </div>
+                    <form class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="col-span-1 md:col-span-2 flex items-center gap-4">
+                            <div class="h-16 w-16 rounded-full bg-cover bg-center border-2 border-primary shrink-0" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6SweDCChTHrnzUi3ijD-HqKt7FximPeaVPRuHptoZB3gCiNIREev191XH6lCU2g9dWO-0nb19loXauXqO29KxIYeVB8L_qXV7j_z9ew9PCkxmtTGzyhArcCoyjioHHD9oWPKFoA4SKfrqRSRlWptyCfastPtNkgSlFizXCwA60Izfk-CrC13bruBTAOjH610XOUvFB1RnfkoM-IeFW7fkvzAujenUwRWp02gjgWiOhb4zpbuGErPegntLM0188b1Dkbt6DnzndgR5');"></div>
+                            <div>
+                                <label for="photo" class="block text-sm font-medium text-text-main-light dark:text-text-main-dark mb-1">Photo de profil</label>
+                                <input type="file" id="photo" name="profile_picture" class="block w-full text-sm text-text-sec-light dark:text-text-sec-dark
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-primary/10 file:text-primary
+                                    hover:file:bg-primary/20" />
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Prénom</label>
+                            <input type="text" id="first_name" name="first_name" value="Youssef" required
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                        </div>
+                        
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Nom de famille</label>
+                            <input type="text" id="last_name" name="last_name" value="El Fassi" required
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Email (Non modifiable)</label>
+                            <input type="email" id="email" value="youssef.elfassi@zoo-assad.ma" disabled
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-gray-50 dark:bg-gray-800/50 text-text-sec-light dark:text-text-sec-dark cursor-not-allowed" />
+                        </div>
+                        
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Téléphone</label>
+                            <input type="tel" id="phone" name="phone" value="+212 6 XX XX XX XX"
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                        </div>
+                        
+                        <div class="col-span-1 md:col-span-2">
+                            <label for="bio" class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Biographie / Description (Apparaît sur vos visites)</label>
+                            <textarea id="bio" name="bio" rows="3"
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark resize-none">Guide spécialisé en faune africaine, avec 5 ans d'expérience dans les visites virtuelles éducatives.</textarea>
+                        </div>
+                        
+                        <div class="col-span-1 md:col-span-2 flex justify-end">
+                            <button type="button" class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-bold transition-all transform">
+                                <span class="material-symbols-outlined text-[20px]">save</span>
+                                <span>Sauvegarder les modifications</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-lg">
+                    <div class="p-6 border-b border-border-light dark:border-border-dark flex justify-between items-center">
+                        <h3 class="text-xl font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">lock</span>
+                            Sécurité
+                        </h3>
+                    </div>
+                    <form class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="old_password" class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Ancien mot de passe</label>
+                            <input type="password" id="old_password" name="old_password"
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                        </div>
+                        <div></div>
+                        <div>
+                            <label for="new_password" class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Nouveau mot de passe</label>
+                            <input type="password" id="new_password" name="new_password"
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                        </div>
+                        <div>
+                            <label for="confirm_password" class="block text-sm font-medium text-text-sec-light dark:text-text-sec-dark mb-1">Confirmer le nouveau mot de passe</label>
+                            <input type="password" id="confirm_password" name="confirm_password"
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-background-light dark:bg-surface-dark/50 focus:border-primary focus:ring-primary text-text-main-light dark:text-text-main-dark" />
+                        </div>
+                        <div class="col-span-1 md:col-span-2 flex justify-end">
+                            <button type="button" class="flex items-center gap-2 bg-text-sec-light dark:bg-text-sec-dark hover:bg-text-sec-light/80 text-white dark:text-text-main-dark px-6 py-2.5 rounded-lg font-bold transition-all">
+                                <span class="material-symbols-outlined text-[20px]">vpn_key</span>
+                                <span>Changer le mot de passe</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-200 dark:border-red-900/30 shadow-lg p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-red-700 dark:text-red-400">Déconnexion</h3>
+                        <p class="text-sm text-red-600 dark:text-red-300">Cliquez ici pour vous déconnecter de votre espace guide.</p>
+                    </div>
+                    <a href="deconnexion.html" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-lg font-bold transition-colors shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span>Se déconnecter</span>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Fiche de l'Animal - Zoo Virtuel ASSAD</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec7f13",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221910",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-[#1b140d] font-display min-h-screen flex flex-col">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#f3ede7]">
+        <div class="max-w-[1200px] mx-auto px-4 md:px-10 py-3">
+            <div class="flex items-center justify-between whitespace-nowrap">
+                <div class="flex items-center gap-4">
+                    <div class="text-primary">
+                        <span class="material-symbols-outlined text-4xl">pets</span>
+                    </div>
+                    <h2 class="text-[#1b140d] text-lg font-bold leading-tight tracking-[-0.015em]">Zoo Virtuel ASSAD</h2>
+                </div>
+                <div class="hidden lg:flex flex-1 justify-end gap-8">
+                    <div class="flex items-center gap-9">
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors" href="index.html">Accueil</a>
+                        <a class="text-primary text-sm font-bold hover:text-primary transition-colors" href="index.html">Animaux</a>
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors" href="#">CAN 2025</a>
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors" href="#">Billetterie</a>
+                    </div>
+                    <button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary hover:bg-orange-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">Rejoindre</span>
+                    </button>
+                </div>
+                <button class="lg:hidden text-[#1b140d]">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center py-10">
+        <div class="w-full max-w-[1200px] px-4 md:px-10">
+            <div class="mb-8">
+                <a href="index.html" class="flex items-center gap-1 text-primary hover:text-orange-600 text-sm font-bold transition-colors mb-4">
+                    <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    Retour à la liste des animaux
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 flex flex-col gap-6">
+                    <div class="h-[450px] rounded-xl overflow-hidden relative shadow-2xl shadow-primary/20">
+                        <img alt="Atlas le Lion" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=1200" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-white text-sm font-bold shadow-lg mb-2">
+                                <span class="material-symbols-outlined text-[18px]">stars</span>
+                                Mascotte
+                            </span>
+                            <h1 class="text-5xl font-black tracking-tight drop-shadow-lg">Atlas</h1>
+                            <p class="text-xl text-white/90 italic font-medium mt-1 drop-shadow-md">Lion de l'Atlas</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-[#f3ede7]">
+                        <h2 class="text-2xl font-bold text-primary mb-4 border-b border-gray-100 pb-2">À Propos de Atlas</h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            Atlas est le fier symbole du Zoo Virtuel ASSAD et de l'équipe nationale marocaine. Il est le dernier descendant d'une lignée historiquement célèbre, connu pour sa crinière sombre et son tempérament calme mais majestueux. Il est un élément clé de notre programme de conservation des espèces en voie de disparition.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-4 mt-6 pt-4 border-t border-gray-100">
+                            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-50 text-orange-600 text-sm font-bold">
+                                <span class="material-symbols-outlined text-lg">public</span>
+                                Maroc, Parc National d'Ifrane
+                            </span>
+                            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-red-600 text-sm font-bold">
+                                <span class="material-symbols-outlined text-lg">warning</span>
+                                En danger critique
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-[#f3ede7]">
+                        <h2 class="text-2xl font-bold text-primary mb-4 border-b border-gray-100 pb-2">Son Habitat : Savane Centrale</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+                            <p class="flex items-center gap-2"><span class="material-symbols-outlined text-primary">landscape</span> <strong>Type :</strong> Savane</p>
+                            <p class="flex items-center gap-2"><span class="material-symbols-outlined text-primary">person_pin</span> <strong>Guide Responsable :</strong> Yasmine Belkadi</p>
+                        </div>
+                        <button class="mt-4 flex items-center gap-2 text-sm font-bold text-primary hover:text-orange-600">
+                            Visiter l'Habitat Virtuel
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-1 flex flex-col gap-6">
+                    <div class="bg-primary/10 p-5 rounded-xl border border-primary/20 shadow-md flex flex-col gap-3">
+                        <h3 class="text-xl font-bold text-primary">Soutenez Atlas</h3>
+                        <p class="text-gray-700 text-sm">Votre don aide directement à la conservation des lions de l'Atlas.</p>
+                        <button class="h-12 px-6 bg-primary hover:bg-orange-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2">
+                            <span>Faire un Don / Adopter</span>
+                            <span class="material-symbols-outlined text-lg">favorite</span>
+                        </button>
+                         <button class="h-12 px-6 bg-white hover:bg-gray-100 text-[#1b140d] font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+                            <span>Réserver Visite Guidée</span>
+                            <span class="material-symbols-outlined text-lg">confirmation_number</span>
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-xl shadow-lg border border-[#f3ede7]">
+                         <h3 class="text-xl font-bold text-[#1b140d] mb-4 border-b border-gray-100 pb-2">Fiche Technique</h3>
+                         <ul class="space-y-3 text-sm text-gray-700">
+                             <li class="flex justify-between items-center"><span class="font-medium">Nom Scientifique :</span> <span class="italic">Panthera leo leo</span></li>
+                             <li class="flex justify-between items-center"><span class="font-medium">Dernier Check Santé :</span> <span>2025-12-10</span></li>
+                             <li class="flex justify-between items-start"><span class="font-medium">Régime :</span> <span class="w-1/2 text-right">5kg de viande rouge / jour</span></li>
+                         </ul>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-xl shadow-lg border border-[#f3ede7]">
+                        <h3 class="text-xl font-bold text-[#1b140d] mb-4 border-b border-gray-100 pb-2">Voisins de l'Habitat</h3>
+                        <div class="space-y-3">
+                            <a href="#" class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                                <div class="h-10 w-10 rounded-full overflow-hidden bg-gray-100 shrink-0">
+                                    <img alt="Zara" class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1547721064-3625203528f5?auto=format&fit=crop&q=80&w=150" />
+                                </div>
+                                <div>
+                                    <p class="font-bold text-sm text-[#1b140d]">Zara (Girafe)</p>
+                                    <p class="text-xs text-gray-500">Giraffa camelopardalis</p>
+                                </div>
+                            </a>
+                            <a href="#" class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                                <div class="h-10 w-10 rounded-full overflow-hidden bg-gray-100 shrink-0">
+                                    <img alt="Kibo" class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&q=80&w=150" />
+                                </div>
+                                <div>
+                                    <p class="font-bold text-sm text-[#1b140d]">Kibo (Éléphant)</p>
+                                    <p class="text-xs text-gray-500">Loxodonta africana</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#1b140d] text-white pt-16 pb-8 mt-auto">
+        <div class="max-w-[1200px] mx-auto px-4 md:px-10">
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-xs">© 2025 Zoo Virtuel ASSAD. Tous droits réservés.</p>
+                <div class="flex gap-6 text-gray-500 text-xs">
+                    <a class="hover:text-white transition-colors" href="#">Confidentialité</a>
+                    <a class="hover:text-white transition-colors" href="#">Conditions</a>
+                    <a class="hover:text-white transition-colors" href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
