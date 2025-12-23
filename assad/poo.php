@@ -299,7 +299,25 @@ class Animal
             return "error les champs vide";
         }
     }
+    public function afficher_animal(int $id_animal)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT a.*,h.nom_habitat FROM animaux a INNER JOIN habitats h on a.id_habitat=h.id_habitat WHERE id_animal = :id_animal";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return "erreur sur sql";
+        }
+        $stmt->bindParam(':id_animal', $id_animal);
+        $stmt->execute();
+        $animal = $stmt->fetch(pdo::FETCH_ASSOC);
+        if ($animal) {
+            return $animal;
+        } else {
+            return "animal non trouve";
+        }
+    }   
 }
 $chat = new Animal();
-echo $chat->modifier_animal(10,"Lion2", "Panthera leo", "Carnivore", "Afrique", "Le lion est un grand félin carnivore.", "lion.jpg", 3);
-// echo $chat->supprimer_animal(11);
+// echo $chat->modifier_animal(10,"Lion2", "Panthera leo", "Carnivore", "Afrique", "Le lion est un grand félin carnivore.", "lion.jpg", 3);
+print_r( $chat->afficher_animal(10));
