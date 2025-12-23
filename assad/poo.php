@@ -215,5 +215,43 @@ $habitat = new Habitat();
 print_r($habitat->afficher_habitat(2));
 
 
+class Animal
+{
+    private int $id_animal;
+    private string $nom_animal;
+    private string $espece_animal;
+    private string $type_alimentation;
+    private string $pays_origine;
+    private string $description_animal;
+    private string $image_url;
+    private int $id_habitat;
+
+    public function ajouter_animal(string $nom_animal, string $espece_animal, string $type_alimentation, string $pays_origine, string $description_animal, string $image_url, int $id_habitat)
+    {
+        if (!empty($nom_animal) && !empty($espece_animal) && !empty($type_alimentation) && !empty($pays_origine) && !empty($description_animal) && !empty($image_url) && !empty($id_habitat)) {
+            $conn = (new Connexion())->connect();
+            $sql = "INSERT INTO animaux (nom_animal, espece , alimentation_animal, pays_origine, description_animal, image_url, id_habitat) VALUES ( :nom_animal, :espece_animal, :type_alimentation, :pays_origine, :description_animal, : image_url, :id_habitat)";
+            try {
+                $stmt = $conn->prepare($sql);
+            } catch (Exception $e) {
+                return "erreur sur sql";
+            }
+            // $stmt->bindParam(':nom_animal', $nom_animal);
+            // $stmt->bindParam(':espece_animal', $espece_animal);
+            // $stmt->bindParam(':type_alimentation', $type_alimentation);
+            // $stmt->bindParam(':pays_origine', $pays_origine);
+            // $stmt->bindParam(':description_animal', $description_animal);
+            // $stmt->bindParam(':image_url', $image_url);
+            // $stmt->bindParam(':id_habitat', $id_habitat,PDO::PARAM_INT);
+            if ($stmt->execute(["nom_animal" => $nom_animal, "espece_animal" => $espece_animal, "type_alimentation" => $type_alimentation, "pays_origine" => $pays_origine, "description_animal" => $description_animal, "image_url" => $image_url, "id_habitat" => $id_habitat])) {
+                return "animal ajoute avec succes";
+            } else {
+                return "erreur lors de l'ajout de l'animal";
+            }
+        } else {
+            return "error les champs vide";
+        }
+    }
+}
 
 
