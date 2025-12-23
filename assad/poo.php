@@ -206,15 +206,15 @@ class Habitat
         $habitat = $stmt->fetch(pdo::FETCH_ASSOC);
         if ($habitat) {
             return $habitat;
-            // } else {
+        } else {
             return "habitat non trouve";
         }
     }
 }
 
-$habitat = new Habitat();
+// $habitat = new Habitat();
 // print_r($habitat->afficher_habitat(2));
-$habitat->modifier_habitat(3, "Savane", "Habitat de la savane africaine", "Zone X", "Tropicale");
+// $habitat->modifier_habitat(3, "Savane", "Habitat de la savane africaine", "Zone X", "Tropicale");
 // echo $habitat->supprimer_habitat(21);
 
 class Animal
@@ -232,20 +232,20 @@ class Animal
     {
         if (!empty($nom_animal) && !empty($espece_animal) && !empty($type_alimentation) && !empty($pays_origine) && !empty($description_animal) && !empty($image_url) && !empty($id_habitat)) {
             $conn = (new Connexion())->connect();
-            $sql = "INSERT INTO animaux (nom_animal, espece , alimentation_animal, pays_origine, description_animal, image_url, id_habitat) VALUES ( :nom_animal, :espece_animal, :type_alimentation, :pays_origine, :description_animal, : image_url, :id_habitat)";
+            $sql = "INSERT INTO animaux (nom_animal, espece , alimentation_animal, image_url ,pays_origine, description_animal, id_habitat) VALUES ( :nom_animal, :espece_animal, :type_alimentation, :image_url, :pays_origine, :description_animal,  :id_habitat)";
             try {
                 $stmt = $conn->prepare($sql);
             } catch (Exception $e) {
                 return "erreur sur sql";
             }
-            // $stmt->bindParam(':nom_animal', $nom_animal);
-            // $stmt->bindParam(':espece_animal', $espece_animal);
-            // $stmt->bindParam(':type_alimentation', $type_alimentation);
-            // $stmt->bindParam(':pays_origine', $pays_origine);
-            // $stmt->bindParam(':description_animal', $description_animal);
-            // $stmt->bindParam(':image_url', $image_url);
-            // $stmt->bindParam(':id_habitat', $id_habitat,PDO::PARAM_INT);
-            if ($stmt->execute(["nom_animal" => $nom_animal, "espece_animal" => $espece_animal, "type_alimentation" => $type_alimentation, "pays_origine" => $pays_origine, "description_animal" => $description_animal, "image_url" => $image_url, "id_habitat" => $id_habitat])) {
+            $stmt->bindParam(':nom_animal', $nom_animal);
+            $stmt->bindParam(':espece_animal', $espece_animal);
+            $stmt->bindParam(':type_alimentation', $type_alimentation);
+            $stmt->bindParam(':pays_origine', $pays_origine);
+            $stmt->bindParam(':description_animal', $description_animal);
+            $stmt->bindParam(':image_url', $image_url);
+            $stmt->bindParam(':id_habitat', $id_habitat,PDO::PARAM_INT);
+            if ($stmt->execute()) {
                 return "animal ajoute avec succes";
             } else {
                 return "erreur lors de l'ajout de l'animal";
@@ -255,3 +255,5 @@ class Animal
         }
     }
 }
+// $chat = new Animal();
+// echo $chat->ajouter_animal("Lion2", "Panthera leo", "Carnivore", "Afrique", "Le lion est un grand félin carnivore.", "lion.jpg", 3);
