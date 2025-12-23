@@ -132,7 +132,7 @@ class Habitat
     private string $zone_zoo;
     private string $type_climat;
 
-    public function ajouter_habitat(string $nom_habitat, string $description_habitat, string $zone_zoo, float $type_climat)
+    public function ajouter_habitat(string $nom_habitat, string $description_habitat, string $zone_zoo, string $type_climat): string
     {
         if (!empty($nom_habitat) && !empty($description_habitat) && !empty($zone_zoo) && !empty($type_climat)) {
             $conn = (new Connexion())->connect();
@@ -142,8 +142,12 @@ class Habitat
             } catch (Exception $e) {
                 return "erreur sur sql";
             }
+            $stmt->bindParam(':nom_habitat', $nom_habitat);
+            $stmt->bindParam(':description_habitat', $description_habitat);
+            $stmt->bindParam(':zone_zoo', $zone_zoo);
+            $stmt->bindParam(':type_climat', $type_climat);
 
-            if ($stmt->execute(["nom_habitat" => $nom_habitat, "description_habitat" => $description_habitat, "zone_zoo" => $zone_zoo, "type_climat" => $type_climat])) {
+            if ($stmt->execute()) {
                 return "habitat ajoute avec succes";
             } else {
                 return "erreur lors de l'ajout de l'habitat";
@@ -157,7 +161,7 @@ class Habitat
     public function supprimer_habitat(int $id_habitat)
     {
         $conn = (new Connexion())->connect();
-        $sql = "DELETE FROM habitats WHERE id_habitat = ?";
+        $sql = "DELETE FROM habitats WHERE id_habitat = :id_habitat";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
@@ -168,7 +172,6 @@ class Habitat
         } else {
             return "erreur lors de la suppression de l'habitat";
         }
-        $stmt->close();
     }
     public function modifier_habitat(int $id_habitat, string $nom_habitat, string $description_habitat, string $zone_zoo, string $type_climat)
     {
@@ -213,7 +216,8 @@ class Habitat
 
 $habitat = new Habitat();
 print_r($habitat->afficher_habitat(2));
-
+// $habitat->ajouter_habitat("Savane", "Habitat de la savane africaine", "Zone A", "Tropicale");
+echo $habitat->supprimer_habitat(12);
 
 class Animal
 {
@@ -253,5 +257,3 @@ class Animal
         }
     }
 }
-
-
