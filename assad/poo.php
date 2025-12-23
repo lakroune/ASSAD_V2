@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 class Connexion
 {
     private   $servername = "localhost";
@@ -28,6 +28,7 @@ class Utilisateur
     protected string $email;
     protected string $mot_passe;
     protected string $pays_utilisateur;
+
     public function seconnecter(string $email, string $password)
     {
         $conn = (new Connexion())->connect();
@@ -45,7 +46,6 @@ class Utilisateur
                 $hashedPassword = $user['motpasse_hash'];
                 if ($user["Approuver_utilisateur"]) {
                     if (password_verify($password, $hashedPassword)) {
-                        session_start();
                         $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
                         $_SESSION['nom_utilisateur'] = $user['nom_utilisateur'];
                         $_SESSION['role_utilisateur'] = $user['role'];
@@ -69,11 +69,11 @@ class Utilisateur
 
 
 
-// $user = new Admin();
-// echo $user->seconnecter("admin@admin", "admin");
+$user = new Admin();
+// echo $user->seconnecter("admin@admin", "admin")."</br>";
 // echo $user->approuver_guide(2);
 
-
+// echo $_SESSION["id_utilisateur"] . "</br>";
 
 
 
@@ -176,8 +176,8 @@ class Habitat
     public function modifier_habitat(int $id_habitat, string $nom_habitat, string $description_habitat, string $zone_zoo, string $type_climat)
     {
         if (!empty($nom_habitat) && !empty($description_habitat) && !empty($zone_zoo) && !empty($type_climat)) {
-            require("db_connect.php");
-            $sql = "UPDATE habitats SET nom_habitat = :nom_habitat, description_habitat = :description_habitat, zone_zoo = :zone_zoo, type_climat = type_climat WHERE id_habitat = id_habitat";
+            $conn = (new Connexion())->connect();
+            $sql = "UPDATE habitats SET nom_habitat = :nom_habitat, description_habitat = :description_habitat, zone_zoo = :zone_zoo, type_climat = :type_climat WHERE id_habitat = :id_habitat";
             try {
                 $stmt = $conn->prepare($sql);
             } catch (Exception $e) {
@@ -188,7 +188,6 @@ class Habitat
             } else {
                 return "erreur lors de la modification de l'habitat";
             }
-            $stmt->close();
         } else {
             return "error les champs vide";
         }
@@ -207,17 +206,16 @@ class Habitat
         $habitat = $stmt->fetch(pdo::FETCH_ASSOC);
         if ($habitat) {
             return $habitat;
-        } else {
+            // } else {
             return "habitat non trouve";
         }
-        $stmt->close();
     }
 }
 
 $habitat = new Habitat();
-print_r($habitat->afficher_habitat(2));
-// $habitat->ajouter_habitat("Savane", "Habitat de la savane africaine", "Zone A", "Tropicale");
-echo $habitat->supprimer_habitat(12);
+// print_r($habitat->afficher_habitat(2));
+$habitat->modifier_habitat(3, "Savane", "Habitat de la savane africaine", "Zone X", "Tropicale");
+// echo $habitat->supprimer_habitat(21);
 
 class Animal
 {
