@@ -46,8 +46,8 @@ class Animal
     {
         return $this->id_habitat;
     }
-// setters
-    public function setNomAnimal(string $nom_animal):bool
+    // setters
+    public function setNomAnimal(string $nom_animal): bool
     {
         $regix = "/^[a-zA-Z\s'-]{2,50}$/";
         if (preg_match($regix, $nom_animal)) {
@@ -57,7 +57,7 @@ class Animal
         return false;
     }
 
-    public function setEspeceAnimal(string $espece_animal):bool
+    public function setEspeceAnimal(string $espece_animal): bool
     {
         $regix = "/^[a-zA-Z\s'-]{2,50}$/";
         if (preg_match($regix, $espece_animal)) {
@@ -67,7 +67,7 @@ class Animal
         return false;
     }
 
-    public function setTypeAlimentation(string $type_alimentation):bool
+    public function setTypeAlimentation(string $type_alimentation): bool
     {
         $regix = "/^[a-zA-Z\s'-]{2,50}$/";
         if (preg_match($regix, $type_alimentation)) {
@@ -77,7 +77,7 @@ class Animal
         return false;
     }
 
-    public function setPaysOrigine(string $pays_origine):bool
+    public function setPaysOrigine(string $pays_origine): bool
     {
         $regix = "/^[a-zA-Z\s'-]{2,50}$/";
         if (preg_match($regix, $pays_origine)) {
@@ -87,7 +87,7 @@ class Animal
         return false;
     }
 
-    public function setDescriptionAnimal(string $description_animal):bool
+    public function setDescriptionAnimal(string $description_animal): bool
     {
         if (strlen($description_animal) >= 10 && strlen($description_animal) <= 500) {
             $this->description_animal = $description_animal;
@@ -95,7 +95,7 @@ class Animal
         }
         return false;
     }
-    public function setImageUrl(string $image_url):bool
+    public function setImageUrl(string $image_url): bool
     {
         $regix = "/^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/";
         if (preg_match($regix, $image_url)) {
@@ -104,7 +104,7 @@ class Animal
         }
         return false;
     }
-    public function setIdHabitat(int $id_habitat):bool
+    public function setIdHabitat(int $id_habitat): bool
     {
         if (is_int($id_habitat) && $id_habitat > 0) {
             $this->id_habitat = $id_habitat;
@@ -113,85 +113,77 @@ class Animal
         return false;
     }
 
-    public function ajouter_animal(string $nom_animal, string $espece_animal, string $type_alimentation, string $pays_origine, string $description_animal, string $image_url, int $id_habitat)
+    public function ajouter_animal(): bool
     {
-        if (!empty($nom_animal) && !empty($espece_animal) && !empty($type_alimentation) && !empty($pays_origine) && !empty($description_animal) && !empty($image_url) && !empty($id_habitat)) {
-            $conn = (new Connexion())->connect();
-            $sql = "INSERT INTO animaux (nom_animal, espece , alimentation_animal, image_url ,pays_origine, description_animal, id_habitat) VALUES ( :nom_animal, :espece_animal, :type_alimentation, :image_url, :pays_origine, :description_animal,  :id_habitat)";
-            try {
-                $stmt = $conn->prepare($sql);
-            } catch (Exception $e) {
-                return "erreur sur sql";
-            }
-            $stmt->bindParam(':nom_animal', $nom_animal);
-            $stmt->bindParam(':espece_animal', $espece_animal);
-            $stmt->bindParam(':type_alimentation', $type_alimentation);
-            $stmt->bindParam(':pays_origine', $pays_origine);
-            $stmt->bindParam(':description_animal', $description_animal);
-            $stmt->bindParam(':image_url', $image_url);
-            $stmt->bindParam(':id_habitat', $id_habitat, PDO::PARAM_INT);
-            if ($stmt->execute()) {
-                return "animal ajoute avec succes";
-            } else {
-                return "erreur lors de l'ajout de l'animal";
-            }
+        $conn = (new Connexion())->connect();
+        $sql = "INSERT INTO animaux (nom_animal, espece , alimentation_animal, image_url ,pays_origine, description_animal, id_habitat) VALUES ( :nom_animal, :espece_animal, :type_alimentation, :image_url, :pays_origine, :description_animal,  :id_habitat)";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':nom_animal', $this->nom_animal);
+        $stmt->bindParam(':espece_animal', $this->espece_animal);
+        $stmt->bindParam(':type_alimentation', $this->type_alimentation);
+        $stmt->bindParam(':pays_origine', $this->pays_origine);
+        $stmt->bindParam(':description_animal', $this->description_animal);
+        $stmt->bindParam(':image_url', $this->image_url);
+        $stmt->bindParam(':id_habitat', $this->id_habitat, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            return true;
         } else {
-            return "error les champs vide";
+            return false;
         }
     }
 
-    public function supprimer_animal(int $id_animal)
+    public function supprimer_animal(int $id_animal): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "DELETE FROM animaux WHERE id_animal = :id_animal";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
-            return "erreur sur sql";
+            return false;
         }
         $stmt->bindParam(':id_animal', $id_animal);
         if ($stmt->execute()) {
-            return "animal supprime avec succes";
+            return true;
         } else {
-            return "erreur lors de la suppression de l'animal";
+            return false;
         }
     }
-    public function modifier_animal(int $id_animal, string $nom_animal, string $espece_animal, string $type_alimentation, string $pays_origine, string $description_animal, string $image_url, int $id_habitat)
+    public function modifier_animal(): bool
     {
-        if (!empty($nom_animal) && !empty($espece_animal) && !empty($type_alimentation) && !empty($pays_origine) && !empty($description_animal) && !empty($image_url) && !empty($id_habitat)) {
-            $conn = (new Connexion())->connect();
-            $sql = "UPDATE animaux SET nom_animal = :nom_animal, espece = :espece_animal, alimentation_animal = :type_alimentation, pays_origine = :pays_origine, description_animal = :description_animal, image_url = :image_url, id_habitat = :id_habitat WHERE id_animal = :id_animal";
-            try {
-                $stmt = $conn->prepare($sql);
-            } catch (Exception $e) {
-                return "erreur sur sql";
-            }
-            $stmt->bindParam(':id_animal', $id_animal);
-            $stmt->bindParam(':nom_animal', $nom_animal);
-            $stmt->bindParam(":espece_animal", $espece_animal);
-            $stmt->bindParam(":type_alimentation", $type_alimentation);
-            $stmt->bindParam(":pays_origine", $pays_origine);
-            $stmt->bindParam(":description_animal", $description_animal);
-            $stmt->bindParam(":image_url", $image_url);
-            $stmt->bindParam(":id_habitat", $id_habitat);
+        $conn = (new Connexion())->connect();
+        $sql = "UPDATE animaux SET nom_animal = :nom_animal, espece = :espece_animal, alimentation_animal = :type_alimentation, pays_origine = :pays_origine, description_animal = :description_animal, image_url = :image_url, id_habitat = :id_habitat WHERE id_animal = :id_animal";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_animal', $id_animal);
+        $stmt->bindParam(':nom_animal', $nom_animal);
+        $stmt->bindParam(":espece_animal", $espece_animal);
+        $stmt->bindParam(":type_alimentation", $type_alimentation);
+        $stmt->bindParam(":pays_origine", $pays_origine);
+        $stmt->bindParam(":description_animal", $description_animal);
+        $stmt->bindParam(":image_url", $image_url);
+        $stmt->bindParam(":id_habitat", $id_habitat);
 
-            if ($stmt->execute()) {
-                return "animal modifie avec succes";
-            } else {
-                return "erreur lors de la modification de l'animal";
-            }
+        if ($stmt->execute()) {
+            return true;
         } else {
-            return "error les champs vide";
+            return false;
         }
     }
-    public function afficher_animal(int $id_animal)
+    public function afficher_animal(int $id_animal): Animal|bool
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT a.*,h.nom_habitat FROM animaux a INNER JOIN habitats h on a.id_habitat=h.id_habitat WHERE id_animal = :id_animal";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
-            return "erreur sur sql";
+            return false;
         }
         $stmt->bindParam(':id_animal', $id_animal);
         $stmt->execute();
@@ -199,7 +191,7 @@ class Animal
         if ($animal) {
             return $animal;
         } else {
-            return "animal non trouve";
+            return false;
         }
     }
 }
