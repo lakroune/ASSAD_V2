@@ -367,4 +367,4 @@ WHERE
 
 SELECT COUNT(*) from visitesguidees;
 
-SELECT *  from  visitesguidees;
+SELECT *  from  utilisateurs;

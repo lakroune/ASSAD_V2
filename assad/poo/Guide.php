@@ -4,7 +4,7 @@
 
 class Guide extends Utilisateur
 {
-    private string $role = "guide";
+
     private int $is_Approuver;
     private string $statut_utilisateur;
 
@@ -12,10 +12,7 @@ class Guide extends Utilisateur
     {
         return parent::__construct();
     }
-    public  function getRoleUtilisateur()
-    {
-        return $this->role;
-    }
+
     public function getIsApprouver()
     {
         return $this->is_Approuver;
@@ -30,12 +27,7 @@ class Guide extends Utilisateur
             $this->statut_utilisateur = $statut_utilisateur;
         }
     }
-    public function setRoleUtilisateur(string $role)
-    {
-        if ($role == "guide") {
-            $this->role = $role;
-        }
-    }
+
     public function setIsApprouver(int $approuver)
     {
         if ($approuver == 0 || $approuver == 1) {

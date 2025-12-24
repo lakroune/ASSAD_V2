@@ -8,6 +8,7 @@ class Utilisateur
     protected string $email;
     protected string $mot_passe;
     protected string $pays_utilisateur;
+    protected string $role;
 
 
     public function __construct() {}
@@ -32,6 +33,24 @@ class Utilisateur
     {
         return $this->mot_passe;
     }
+    public  function getRoleUtilisateur()
+    {
+        return $this->role;
+    }
+    public function setRoleUtilisateur(string $role)
+    {
+        if ($role == "visiteur") {
+            $this->role = $role;
+            return true;
+        } elseif ($role == "guide") {
+            $this->role = $role;
+            return true;
+        } elseif ($role == "admin") {
+            $this->role = $role;
+            return true;
+        }
+        return false;
+    }
     public function  setIdUtilisateur($id_utilisateur): bool
     {
         if (is_int($id_utilisateur) && $id_utilisateur > 0) {
@@ -40,7 +59,7 @@ class Utilisateur
         }
         return false;
     }
-    public function setNonUtilisateur($nom_utilisateur): bool
+    public function setNomUtilisateur($nom_utilisateur): bool
     {
         $regex = '/^[a-zA-Z]{5,50}$/';
         if (preg_match($regex, $nom_utilisateur)) {
@@ -116,14 +135,14 @@ class Utilisateur
     }
 }
 
-$user = new Utilisateur();
+// $user = new Utilisateur();
 
-$user->setEmail("admin@admin.com");
-$user->setMotPasse("admin");
-$user->setIdUtilisateur(1);
-$user->setNonUtilisateur("administrateur");
-$user->setPaysUtilisateur("Maroc");
+// $user->setEmail("admin@admin.com");
+// $user->setMotPasse("admin");
+// $user->setIdUtilisateur(1);
+// $user->setNomUtilisateur("administrateur");
+// $user->setPaysUtilisateur("Maroc");
 
 
 
-echo  $user;
+// echo  $user;

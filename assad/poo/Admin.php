@@ -6,25 +6,17 @@ require_once 'Utilisateur.php';
 
 class Admin extends Utilisateur
 {
-    private string $role = "admin";
+
 
     public function __construct()
     {
         return parent::__construct();
     }
-    public  function getRoleUtilisateur()
-    {
-        return $this->role;
-    }
-    public function setRoleUtilisateur(string $role)
-    {
-        if ($role == "admin") {
-            $this->role = $role;
-        }
-    }
+
+
     public function __toString()
     {
-        return parent::__toString() . " role :" . $this->getRoleUtilisateur();
+        return parent::__toString();
     }
     public function approuver_guide($id_utilisateur): bool
     {
