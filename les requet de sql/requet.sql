@@ -41,7 +41,7 @@ CREATE TABLE utilisateurs (
     )
 );
 
-DELETE  from utilisateurs  WHERE `Approuver_utilisateur` =0;
+DELETE from utilisateurs WHERE `Approuver_utilisateur` = 0;
 
 CREATE TABLE visitesguidees (
     id_visite INT PRIMARY KEY AUTO_INCREMENT,
@@ -57,7 +57,11 @@ CREATE TABLE visitesguidees (
     FOREIGN KEY (id_guide) REFERENCES utilisateurs (id_utilisateur) on delete CASCADE
 );
 
-UPDATE utilisateurs set statut_utilisateur = 1 WHERE id_utilisateur= ;
+UPDATE utilisateurs
+set
+    statut_utilisateur = 1
+WHERE
+    id_utilisateur =1;
 
 CREATE TABLE etapesvisite (
     id_etape INT PRIMARY KEY AUTO_INCREMENT,
@@ -65,21 +69,23 @@ CREATE TABLE etapesvisite (
     description_etape VARCHAR(500),
     ordre_etape INT NOT NULL,
     id_visite INT NOT NULL,
-    FOREIGN KEY (id_visite) REFERENCES visitesguidees (id_visite)
+    FOREIGN KEY (id_visite) REFERENCES visitesguidees (id_visite) ON DELETE CASCADE
 );
 
-DROP TABLE reservations;
+-- DROP TABLE reservations;
+
 CREATE TABLE reservations (
     id_reservations INT PRIMARY KEY AUTO_INCREMENT,
     id_visite INT NOT NULL,
     id_utilisateur INT NOT NULL,
     nb_personnes INT NOT NULL,
     date_reservation DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_visite) REFERENCES visitesguidees (id_visite),
-    FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur)
+    FOREIGN KEY (id_visite) REFERENCES visitesguidees (id_visite) ON DELETE CASCADE,
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur) ON DELETE CASCADE
 );
 
-SELECT * from reservations ;
+SELECT * from reservations;
+
 CREATE TABLE commentaires (
     id_commentaire INT PRIMARY KEY AUTO_INCREMENT,
     id_visite INT NOT NULL,
@@ -87,8 +93,8 @@ CREATE TABLE commentaires (
     note INT,
     texte VARCHAR(500),
     date_commentaire DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_visite) REFERENCES visitesguidees (id_visite),
-    FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur)
+    FOREIGN KEY (id_visite) REFERENCES visitesguidees (id_visite) ON DELETE CASCADE,
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur) ON DELETE CASCADE
 );
 
 INSERT INTO
@@ -340,7 +346,7 @@ SELECT COUNT(*) as count FROM reservations;
 
 SELECT * FROM habitats;
 
-SELECT  * FROM utilisateurs ;
+SELECT * FROM utilisateurs;
 
 UPDATE utilisateurs
 SET
@@ -348,7 +354,15 @@ SET
 WHERE
     id_utilisateur = 9;
 
- UPDATE utilisateurs set role= "admin" WHERE email ="jaka@gmail.com";
- UPDATE utilisateurs set email= "admin@admin.com" WHERE id_utilisateur =13;
- 
- SELECT *  from utilisateurs;
+UPDATE utilisateurs
+set role = "admin"
+WHERE
+    email = "jaka@gmail.com";
+
+UPDATE utilisateurs
+set
+    email = "admin@admin.com"
+WHERE
+    id_utilisateur = 13;
+
+SELECT COUNT(*) from visitesguidees;
