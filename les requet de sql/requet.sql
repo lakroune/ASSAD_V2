@@ -346,4 +346,7 @@ SET
 WHERE
     id_utilisateur = 9;
 
- UPDATE utilisateurs set role= "admin" WHERE email ="jaka@gmail.com"
+ UPDATE utilisateurs set role= "admin" WHERE email ="jaka@gmail.com";
+ UPDATE utilisateurs set email= "admin@admin.com" WHERE id_utilisateur =13;
+ 
+ SELECT *  from utilisateurs;
