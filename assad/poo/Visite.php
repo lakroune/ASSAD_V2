@@ -10,12 +10,130 @@ class Visite
     private DateTime $dateheure_viste;
     private string $langue__visite;
     private DateTime $duree__visite;
-    private string $capacite_max__visite;
+    private int $capacite_max__visite;
     private float $prix__visite;
     private int $statut__visite;
     private int $id_guide;
 
 
-    // public function reserver_visite(int $id);
+    public function __construct() {}
 
+    public function getIdVisite(): int
+    {
+        return $this->id_visite;
+    }
+    public function getTitreVisite(): string
+    {
+        return $this->titre_visite;
+    }
+    public function getDescriptionVisite(): string
+    {
+        return $this->description_visite;
+    }
+    public function getDateheureViste(): DateTime
+    {
+        return $this->dateheure_viste;
+    }
+    public function getLangueVisite(): string
+    {
+        return $this->langue__visite;
+    }
+    public function getDureeVisite(): DateTime
+    {
+        return $this->duree__visite;
+    }
+    public function getCapaciteMaxVisite(): string
+    {
+        return $this->capacite_max__visite;
+    }
+    public function getPrixVisite(): float
+    {
+        return $this->prix__visite;
+    }
+    public function getStatutVisite(): int
+    {
+        return $this->statut__visite;
+    }
+
+    public function getIdGuide(): int
+    {
+        return $this->id_guide;
+    }
+    public function setIdVisite(int $id_visite)
+    {
+        if ($id_visite > 0) {
+            $this->id_visite = $id_visite;
+        }
+    }
+    public function setTitreVisite(string $titre_visite)
+    {
+        $regix = "/^[a-zA-Z\s'-]{2,100}$/";
+        if (preg_match($regix, $titre_visite)) {
+            $this->titre_visite = $titre_visite;
+            return true;
+        }
+        return false;
+    }
+    public function setDescriptionVisite(string $description_visite)
+    {
+        if (strlen($description_visite) >= 10 && strlen($description_visite) <= 500) {
+            $this->description_visite = $description_visite;
+            return true;
+        }
+        return false;
+    }
+    public function setDateheureViste(DateTime $dateheure_viste)
+    {
+        $this->dateheure_viste = $dateheure_viste;
+    }
+    public function setLangueVisite(string $langue__visite)
+    {
+        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        if (preg_match($regix, $langue__visite)) {
+            $this->langue__visite = $langue__visite;
+            return true;
+        }
+        return false;
+    }
+    public function setDureeVisite(DateTime $duree__visite)
+    {
+        $this->duree__visite = $duree__visite;
+    }
+    public function setCapaciteMaxVisite(int $capacite_max__visite): bool
+    { // function is_numeric to allow string numbers
+        if ($capacite_max__visite > 0) {
+            $this->capacite_max__visite = $capacite_max__visite;
+            return true;
+        }
+        return false;
+    }
+    public function setPrixVisite(float $prix__visite)
+    {
+        if ($prix__visite >= 0) {
+            $this->prix__visite = $prix__visite;
+            return true;
+        }
+        return false;
+    }
+    public function setStatutVisite(int $statut__visite)
+    {
+        if ($statut__visite == 0 || $statut__visite == 1) {
+            $this->statut__visite = $statut__visite;
+            return true;
+        }
+        return false;
+    }
+    public function setIdGuide(int $id_guide)
+    {
+        if ($id_guide > 0) {
+            $this->id_guide = $id_guide;
+            return true;
+        }
+        return false;
+    }
+
+    public function __toString()
+    {
+        return " id_visite :" . $this->id_visite . " titre_visite :" . $this->titre_visite . " description_visite :" . $this->description_visite . " dateheure_viste :" . $this->dateheure_viste->format('Y-m-d H:i:s') . " langue__visite :" . $this->langue__visite . " duree__visite :" . $this->duree__visite->format('H:i:s') . " capacite_max__visite :" . $this->capacite_max__visite . " prix__visite :" . $this->prix__visite . " statut__visite :" . $this->statut__visite . " id_guide :" . $this->id_guide;
+    }
 }

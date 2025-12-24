@@ -112,6 +112,19 @@ class Animal
         }
         return false;
     }
+    public function setIdAnimal(int $id_animal): bool
+    {
+        if ($id_animal > 0) {
+            $this->id_animal = $id_animal;
+            return true;
+        }
+        return false;
+    }
+    public function __toString()
+    {
+        return " id_animal :" . $this->id_animal . " nom_animal :" . $this->nom_animal . " espece_animal :" . $this->espece_animal . " type_alimentation :" . $this->type_alimentation . " pays_origine :" . $this->pays_origine . " description_animal :" . $this->description_animal . " image_url :" . $this->image_url . " id_habitat :" . $this->id_habitat;
+    }
+
 
     public function ajouter_animal(): bool
     {

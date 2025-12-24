@@ -63,7 +63,18 @@ class Habitat
         return false;
     }
 
-
+    public function setIdHabitat(int $id_habitat)
+    {
+        if ($id_habitat > 0) {
+            $this->id_habitat = $id_habitat;
+            return true;
+        }
+        return false;
+    }
+    public function __toString()
+    {
+        return " id_habitat :" . $this->id_habitat . " nom_habitat :" . $this->nom_habitat . " description_habitat :" . $this->description_habitat . " zone_zoo :" . $this->zone_zoo . " type_climat :" . $this->type_climat;
+    }
     public function ajouter_habitat(): bool
     {
         $conn = (new Connexion())->connect();
