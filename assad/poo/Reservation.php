@@ -110,11 +110,11 @@ class Reservation
     // public function 
 }
 
-$res = new Reservation();
-$res->setIdReservation(1);
-$res->setNombrePersonnes(4);
-$res->setIdVisiteur(2);
-$res->setIdVisite(3);
-$res->setDateReservation(new DateTime('2024-07-01 10:00:00'));
-echo $res;
-print_r($res->getResrvation());
+// $res = new Reservation();
+// $res->setIdReservation(1);
+// $res->setNombrePersonnes(4);
+// $res->setIdVisiteur(2);
+// $res->setIdVisite(3);
+// $res->setDateReservation(new DateTime('2024-07-01 10:00:00'));
+// echo $res;
+// print_r($res->getResrvation());
