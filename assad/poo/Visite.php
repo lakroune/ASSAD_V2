@@ -141,7 +141,7 @@ class Visite
     }
 
 
-    public   function ajouter_visite(): bool|string
+    public   function ajouter_visite()  
     {
         $conn = (new Connexion())->connect();
         $sql = "INSERT INTO visitesguidees ( titre_visite, description_visite, dateheure_viste, langue__visite, duree__visite, capacite_max__visite, prix__visite, statut__visite, id_guide) VALUES ( :titre_visite, :description_visite, :dateheure_viste, :langue__visite, :duree__visite, :capacite_max__visite, :prix__visite, :statut__visite, :id_guide)";
@@ -163,7 +163,7 @@ class Visite
             $stmt->execute();
             return true;
         } catch (Exception $e) {
-            return false;
+            return $e->getMessage();
         }
     }
 
@@ -183,17 +183,61 @@ class Visite
             return false;
         }
     }
+
+    public function  modifier_visite(): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "UPDATE visitesguidees SET titre_visite = :titre_visite, description_visite = :description_visite, dateheure_viste = :dateheure_viste, langue__visite = :langue__visite, duree__visite = :duree__visite, capacite_max__visite = :capacite_max__visite, prix__visite = :prix__visite, statut__visite = :statut__visite, id_guide = :id_guide WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_visite', $this->id_visite);
+        $stmt->bindParam(':titre_visite', $this->titre_visite);
+        $stmt->bindParam(':description_visite', $this->description_visite);
+        $stmt->bindValue(':dateheure_viste', $this->dateheure_viste->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+        $stmt->bindParam(':langue__visite', $this->langue__visite);
+        $stmt->bindValue(':duree__visite', $this->duree__visite->format('H:i:s'));
+        $stmt->bindParam(':capacite_max__visite', $this->capacite_max__visite);
+        $stmt->bindParam(':prix__visite', $this->prix__visite);
+        $stmt->bindParam(':statut__visite', $this->statut__visite);
+        $stmt->bindParam(':id_guide', $this->id_guide);
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 $vis = new Visite();
-$vis->setIdVisite(1);
-$vis->setTitreVisite("Visite des lions");
-$vis->setDescriptionVisite("Une visite passionnante pour découvrir les lions et leur habitat.");
+if (!$vis->setIdVisite(44)) {
+    echo "ID visite invalide.\n";
+}
+if (!$vis->setTitreVisite("Visite des lions")) {
+    echo "Titre visite invalide.\n";
+}
+if (!$vis->setDescriptionVisite("Une visite passionnante pour découvrir les lions et leur habitat.")) {
+    echo "Description visite invalide.\n";
+}
 $vis->setDateheureViste("2024-12-15 14:00:00");
-$vis->setLangueVisite("Francais");
+if (!$vis->setLangueVisite("anglis")) {
+    echo "Langue visite invalide.\n";
+}
 $vis->setDureeVisite("02:00:00");
-$vis->setCapaciteMaxVisite(20);
-$vis->setPrixVisite(15.50);
-$vis->setStatutVisite(1);
-$vis->setIdGuide(3);
-echo $vis->supprimer_visite(2);
+if (!$vis->setCapaciteMaxVisite(20)) {
+    echo "Capacite max visite invalide.\n";
+}
+if (!$vis->setPrixVisite(15.50)) {      
+    echo "Prix visite invalide.\n";
+}
+if (!$vis->setStatutVisite(1)) {
+    echo "Statut visite invalide.\n";
+}
+if (!$vis->setIdGuide(1)) {
+    echo "ID guide invalide.\n";
+}    
+// echo $vis->ajouter_visite() ;
+// echo $vis->supprimer_visite(43);
+echo $vis->modifier_visite();

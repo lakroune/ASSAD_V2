@@ -366,3 +366,5 @@ WHERE
     id_utilisateur = 13;
 
 SELECT COUNT(*) from visitesguidees;
+
+SELECT *  from  visitesguidees;
