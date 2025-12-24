@@ -362,7 +362,7 @@ if (
                 <div class="mb-8">
                     <p class="text-xs text-text-secondary-light mb-2">Description</p>
                     <p class="text-sm leading-relaxed italic text-text-secondary-dark bg-gray-50 dark:bg-background-dark p-4 rounded-lg">
-                        "<?= nl2br(($info_animal->getDescriptionAnimal())) ?>"
+                        "<?= (($info_animal->getDescriptionAnimal())) ?>"
                     </p>
                 </div>
                 <button onclick="closeModal('modalInfoAnimal')" class="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors">Fermer</button>

@@ -104,7 +104,7 @@ class Guide extends Utilisateur
     public static function getAllGuides()
     {
         $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM utilisateurs ";
+        $sql = "SELECT * FROM utilisateurs where role ='guide' ";
         try {
             $stmt = $conn->prepare($sql);
             $stmt->execute();

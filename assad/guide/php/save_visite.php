@@ -17,7 +17,7 @@ $guide->getGuide($id_guide);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $visite = new Visite();
 
-    // CASE 1: UPDATE (Modifier)  
+    //(Modifier)  
     if (isset($_POST['id_visite']) && !empty($_POST['id_visite'])) {
 
         if (
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $visite->setIdGuide($guide->getIdUtilisateur()) &&
             $visite->modifierVisite()
         ) {
-            // Modification des étapes (Etapes)
+            // Modification
             $etapes = isset($_POST['etapes']) ? $_POST['etapes'] : [];
             $eat = new Etape();
             $eat->supprimerEtapesViste((int)$_POST['id_visite']);

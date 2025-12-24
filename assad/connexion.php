@@ -267,7 +267,66 @@
              </div>
          </div>
      </main>
+     <?php
 
+        if (isset($_GET['message']) && $_GET['message'] == "userNotFound") :
+        ?>
+         <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+
+             <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 transform transition-all">
+
+                 <div class="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mx-auto mb-6">
+                     <svg class="w-8 h-8 text-blue-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Set-12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                     </svg>
+                 </div>
+
+                 <div class="text-center">
+                     <h3 class="text-xl font-bold text-gray-900 mb-2">Compte non trouvé</h3>
+                     <p class="text-gray-600 mb-6">
+                         Veuillez entrer des informations valides.
+                     </p>
+                 </div>
+
+                 <form action="">
+                     <div class="flex justify-center">
+                         <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300">
+                             Compris
+                         </button>
+                     </div>
+
+                 </form>
+             </div>
+         </div>
+     <?php elseif (isset($_GET['message']) && $_GET['message'] == "notApproved"): ?>
+          <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+
+             <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 transform transition-all">
+
+                 <div class="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mx-auto mb-6">
+                     <svg class="w-8 h-8 text-blue-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Set-12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                     </svg>
+                 </div>
+
+                 <div class="text-center">
+                     <h3 class="text-xl font-bold text-gray-900 mb-2">Demande envoyée</h3>
+                     <p class="text-gray-600 mb-6">
+                         Votre compte est actuellement en attente d'approbation par un administrateur. Vous recevrez une notification dès que possible.
+                     </p>
+                 </div>
+
+                 <form action="">
+                     <div class="flex justify-center">
+                         <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300">
+                             Compris
+                         </button>
+                     </div>
+
+                 </form>
+             </div>
+         </div>
+     <?php endif; ?>
      <script>
          document.addEventListener('DOMContentLoaded', function() {
              const loginTabButton = document.getElementById('loginTabButton');

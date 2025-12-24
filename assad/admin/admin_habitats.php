@@ -222,7 +222,7 @@
                                              </div>
                                          </td>
                                          <td class="px-6 py-3">
-                                             <span class="text-text-light dark:text-text-dark font-medium"><?= "non renseigné" //($habitat->getTypeHabitat()) 
+                                             <span class="text-text-light dark:text-text-dark font-medium"><?= ($habitat->getTypeClimat()) 
                                                                                                             ?></span>
                                          </td>
                                          <td class="px-6 py-3 text-start">
@@ -415,7 +415,7 @@
                  <div class="mb-8">
                      <p class="text-xs text-text-secondary-light mb-2">Description complète</p>
                      <p class="text-sm leading-relaxed italic text-text-secondary-dark">
-                         "<?= nl2br(($info_habitat->getDescriptionHabitat())) ?>"
+                         "<?= (($info_habitat->getDescriptionHabitat())) ?>"
                      </p>
                  </div>
                  <button onclick="closeInfoModal()" class="w-full py-3 bg-primary text-white font-bold rounded-xl">Fermer</button>
