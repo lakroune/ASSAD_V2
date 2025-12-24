@@ -13,6 +13,106 @@ class Animal
     private string $image_url;
     private int $id_habitat;
 
+    public function __construct() {}
+    public function getIdAnimal(): int
+    {
+        return $this->id_animal;
+    }
+    public function getNomAnimal(): string
+    {
+        return $this->nom_animal;
+    }
+    public function getEspeceAnimal(): string
+    {
+        return $this->espece_animal;
+    }
+    public function getTypeAlimentation(): string
+    {
+        return $this->type_alimentation;
+    }
+    public function getPaysOrigine(): string
+    {
+        return $this->pays_origine;
+    }
+    public function getDescriptionAnimal(): string
+    {
+        return $this->description_animal;
+    }
+    public function getImageUrl(): string
+    {
+        return $this->image_url;
+    }
+    public function getIdHabitat(): int
+    {
+        return $this->id_habitat;
+    }
+// setters
+    public function setNomAnimal(string $nom_animal):bool
+    {
+        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        if (preg_match($regix, $nom_animal)) {
+            $this->nom_animal = $nom_animal;
+            return true;
+        }
+        return false;
+    }
+
+    public function setEspeceAnimal(string $espece_animal):bool
+    {
+        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        if (preg_match($regix, $espece_animal)) {
+            $this->espece_animal = $espece_animal;
+            return true;
+        }
+        return false;
+    }
+
+    public function setTypeAlimentation(string $type_alimentation):bool
+    {
+        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        if (preg_match($regix, $type_alimentation)) {
+            $this->type_alimentation = $type_alimentation;
+            return true;
+        }
+        return false;
+    }
+
+    public function setPaysOrigine(string $pays_origine):bool
+    {
+        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        if (preg_match($regix, $pays_origine)) {
+            $this->pays_origine = $pays_origine;
+            return true;
+        }
+        return false;
+    }
+
+    public function setDescriptionAnimal(string $description_animal):bool
+    {
+        if (strlen($description_animal) >= 10 && strlen($description_animal) <= 500) {
+            $this->description_animal = $description_animal;
+            return true;
+        }
+        return false;
+    }
+    public function setImageUrl(string $image_url):bool
+    {
+        $regix = "/^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/";
+        if (preg_match($regix, $image_url)) {
+            $this->image_url = $image_url;
+            return true;
+        }
+        return false;
+    }
+    public function setIdHabitat(int $id_habitat):bool
+    {
+        if (is_int($id_habitat) && $id_habitat > 0) {
+            $this->id_habitat = $id_habitat;
+            return true;
+        }
+        return false;
+    }
+
     public function ajouter_animal(string $nom_animal, string $espece_animal, string $type_alimentation, string $pays_origine, string $description_animal, string $image_url, int $id_habitat)
     {
         if (!empty($nom_animal) && !empty($espece_animal) && !empty($type_alimentation) && !empty($pays_origine) && !empty($description_animal) && !empty($image_url) && !empty($id_habitat)) {
