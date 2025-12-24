@@ -1,6 +1,7 @@
 <?php
 
-
+require_once 'Connexion.php';
+require_once 'Utilisateur.php';
 
 
 class Admin extends Utilisateur
@@ -15,54 +16,58 @@ class Admin extends Utilisateur
     {
         return $this->role;
     }
-    public function approuver_guide($id_utilisateur)
+    public function __toString()
+    {
+        return parent::__toString() . "role :" . $this->getRoleUtilisateur();
+    }
+    public function approuver_guide($id_utilisateur): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE utilisateurs SET Approuver_utilisateur = 1 WHERE role ='guide' and id_utilisateur = :id_utilisateur";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
-            return "erreur sur sql";
+            return false;
         }
 
         if ($stmt->execute(["id_utilisateur" => $id_utilisateur])) {
-            return "utilisateur approuve avec succes";
+            return true;
         } else {
-            return "erreur lors de l'approbation de l'utilisateur";
+            return false;
         }
     }
 
-    public function acitiver_utilisateur(int $id_utilisateur)
+    public function acitiver_utilisateur(int $id_utilisateur): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE utilisateurs SET statut_utilisateur = 1 WHERE (role ='guide' or role ='visiteur') and id_utilisateur = :id_utilisateur";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
-            return "erreur sur sql";
+            return false;
         }
         $stmt->bindParam(':id_utilisateur', $id_utilisateur);
         if ($stmt->execute()) {
-            return "statut modifie avec succes";
+            return true;
         } else {
-            return "erreur lors de la modification du statut";
+            return false;
         }
     }
 
-    public function desactiver_utilisateur(int $id_utilisateur)
+    public function desactiver_utilisateur(int $id_utilisateur): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE utilisateurs SET statut_utilisateur = 0 WHERE (role ='guide' or role ='visiteur') and id_utilisateur = :id_utilisateur";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
-            return "erreur sur sql";
+            return false;
         }
         $stmt->bindParam(':id_utilisateur', $id_utilisateur);
         if ($stmt->execute()) {
-            return "statut modifie avec succes";
+            return true;
         } else {
-            return "erreur lors de la modification du statut";
+            return  false;
         }
     }
 }
