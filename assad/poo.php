@@ -29,6 +29,65 @@ class Utilisateur
     protected string $mot_passe;
     protected string $pays_utilisateur;
 
+
+    public function __construct() {}
+
+
+    // public function __construct($nom_animal, $email, $mot_passe, $pays_utilisateur)
+    // {
+    //     setNonUtilisateur($nom_animal);
+    //     setEmail($email);
+    //     setMotPasse($mot_passe);
+    //     setPaysUtilisateur($pays_utilisateur);
+    // }
+
+    public function getIdUtilisateur()
+    {
+        return $this->id_utilisateur;
+    }
+    public function getNomUtilisateur()
+    {
+        return $this->nom_utilisateur;
+    }
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    public function getPaysUtilisateur()
+    {
+        return $this->pays_utilisateur;
+    }
+
+    public function setNonUtilisateur($nom_utilisateur)
+    {
+        $regex = '/^[a-zA-Z]{5,50}$/';
+        if (preg_match($regex, $nom_utilisateur))
+            $this->nom_utilisateur = $nom_utilisateur;
+    }
+    public function setEmail($email)
+    {
+        $regex = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+        if (preg_match($regex, $email))
+            $this->email = $email;
+    }
+
+    public function setPaysUtilisateur($pays_utilisateur)
+    {
+        $regex = '/^[a-zA-Z]{2,50}$/';
+        if (preg_match($regex, $pays_utilisateur))
+            $this->pays_utilisateur = $pays_utilisateur;
+    }
+
+    public function setMotPasse($mot_passe)
+    {
+        $regex = '/^[A-Za-z@&1-9!?]{8,20}$/';
+        if (preg_match($regex, $mot_passe))
+            $this->mot_passe = $mot_passe;
+    }
+    public function __toString()
+    {
+        return "id_utilisateur" . $this->id_utilisateur;
+    }
     public function seconnecter(string $email, string $password)
     {
         $conn = (new Connexion())->connect();
@@ -69,7 +128,7 @@ class Utilisateur
 
 
 
-$user = new Admin();
+// $user = new Admin();
 // echo $user->seconnecter("admin@admin", "admin")."</br>";
 // echo $user->approuver_guide(2);
 
@@ -86,6 +145,14 @@ class Admin extends Utilisateur
 {
     private string $role = "admin";
 
+    public function __construct()
+    {
+        return parent::__construct();
+    }
+    public  function getRoleUtilisateur()
+    {
+        return $this->role;
+    }
     public function approuver_guide($id_utilisateur)
     {
         $conn = (new Connexion())->connect();
@@ -101,7 +168,6 @@ class Admin extends Utilisateur
         } else {
             return "erreur lors de l'approbation de l'utilisateur";
         }
-        $stmt->close();
     }
 }
 
@@ -109,10 +175,50 @@ class Admin extends Utilisateur
 class Guide extends Utilisateur
 {
     private string $role = "guide";
-    private int $Approuver_utilisateur;
+    private int $is_Approuver;
     private string $statut_utilisateur;
+
+    public function __construct()
+    {
+        return parent::__construct();
+    }
+    public  function getRoleUtilisateur()
+    {
+        return $this->role;
+    }
+    public function getIsApprouver()
+    {
+        return $this->is_Approuver;
+    }
+    public function getStatutUtilisateur()
+    {
+        return $this->statut_utilisateur;
+    }
+    public function setStatutUtilisateur(int $statut_utilisateur)
+    {
+       if($statut_utilisateur == 0 || $statut_utilisateur == 1) {
+            $this->statut_utilisateur = $statut_utilisateur;
+       }
+    }
 }
 
+    // public function changer_statut(int $statut_utilisateur)
+    // {
+    //     $conn = (new Connexion())->connect();
+    //     $sql = "UPDATE utilisateurs SET statut_utilisateur = :statut_utilisateur WHERE role ='guide' and id_utilisateur = :id_utilisateur";
+    //     try {
+    //         $stmt = $conn->prepare($sql);
+    //     } catch (Exception $e) {
+    //         return "erreur sur sql";
+    //     }
+
+    //     if ($stmt->execute(["statut_utilisateur" => $statut_utilisateur, "id_utilisateur" => $this->id_utilisateur])) {
+    //         return "statut modifie avec succes";
+    //     } else {
+    //         return "erreur lors de la modification du statut";
+    //     }
+
+        
 
 
 class Visiteur extends Utilisateur
@@ -283,12 +389,12 @@ class Animal
             }
             $stmt->bindParam(':id_animal', $id_animal);
             $stmt->bindParam(':nom_animal', $nom_animal);
-            $stmt->bindParam(":espece_animal",$espece_animal);
-            $stmt->bindParam(":type_alimentation",$type_alimentation);
-            $stmt->bindParam(":pays_origine",$pays_origine);
-            $stmt->bindParam(":description_animal",$description_animal);
-            $stmt->bindParam(":image_url",$image_url);
-            $stmt->bindParam(":id_habitat",$id_habitat);
+            $stmt->bindParam(":espece_animal", $espece_animal);
+            $stmt->bindParam(":type_alimentation", $type_alimentation);
+            $stmt->bindParam(":pays_origine", $pays_origine);
+            $stmt->bindParam(":description_animal", $description_animal);
+            $stmt->bindParam(":image_url", $image_url);
+            $stmt->bindParam(":id_habitat", $id_habitat);
 
             if ($stmt->execute()) {
                 return "animal modifie avec succes";
@@ -316,8 +422,26 @@ class Animal
         } else {
             return "animal non trouve";
         }
-    }   
+    }
 }
-$chat = new Animal();
+// $chat = new Animal();
 // echo $chat->modifier_animal(10,"Lion2", "Panthera leo", "Carnivore", "Afrique", "Le lion est un grand félin carnivore.", "lion.jpg", 3);
-print_r( $chat->afficher_animal(10));
+// print_r($chat->afficher_animal(10));
+
+class Visite
+{
+    private int $id_visite;
+    private string $titre_visite;
+    private string $description_visite;
+    private DateTime $dateheure_viste;
+    private string $langue__visite;
+    private DateTime $duree__visite;
+    private string $capacite_max__visite;
+    private float $prix__visite;
+    private int $statut__visite;
+    private int $id_guide;
+
+
+    // public function reserver_visite(int $id);
+
+}
