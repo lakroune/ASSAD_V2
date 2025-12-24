@@ -68,6 +68,7 @@ CREATE TABLE etapesvisite (
     FOREIGN KEY (id_visite) REFERENCES visitesguidees (id_visite)
 );
 
+DROP TABLE reservations;
 CREATE TABLE reservations (
     id_reservations INT PRIMARY KEY AUTO_INCREMENT,
     id_visite INT NOT NULL,
@@ -78,6 +79,7 @@ CREATE TABLE reservations (
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur)
 );
 
+SELECT * from reservations ;
 CREATE TABLE commentaires (
     id_commentaire INT PRIMARY KEY AUTO_INCREMENT,
     id_visite INT NOT NULL,

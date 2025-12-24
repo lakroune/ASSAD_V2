@@ -73,13 +73,12 @@ class Reservation
     public function reserver(): bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "INSERT INTO reservations (date_reservation, nb_personnes, id_utilisateur, id_visite) VALUES (:date_reservation, :nombre_personnes, :id_visiteur, :id_visite)";
+        $sql = "INSERT INTO reservations ( nb_personnes, id_utilisateur, id_visite) VALUES ( :nombre_personnes, :id_visiteur, :id_visite)";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
             return false;
         }
-        $stmt->bindParam(':date_reservation', $this->date_reservation->format('Y-m-d H:i:s'));
         $stmt->bindParam(':nombre_personnes', $this->nombre_personnes);
         $stmt->bindParam(':id_visiteur', $this->id_visiteur);
         $stmt->bindParam(':id_visite', $this->id_visite);
@@ -90,4 +89,32 @@ class Reservation
             return false;
         }
     }
+    public function getResrvation(): array|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM reservations WHERE id_reservations = :id_reservation";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_reservation', $this->id_reservation);
+        $stmt->execute();
+        $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($reservation) {
+            return $reservation;
+        } else {
+            return false;
+        }
+    }
+    // public function 
 }
+
+$res = new Reservation();
+$res->setIdReservation(1);
+$res->setNombrePersonnes(4);
+$res->setIdVisiteur(2);
+$res->setIdVisite(3);
+$res->setDateReservation(new DateTime('2024-07-01 10:00:00'));
+echo $res;
+print_r($res->getResrvation());
