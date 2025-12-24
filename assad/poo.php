@@ -200,25 +200,11 @@ class Guide extends Utilisateur
             $this->statut_utilisateur = $statut_utilisateur;
        }
     }
+
+
 }
 
-    // public function changer_statut(int $statut_utilisateur)
-    // {
-    //     $conn = (new Connexion())->connect();
-    //     $sql = "UPDATE utilisateurs SET statut_utilisateur = :statut_utilisateur WHERE role ='guide' and id_utilisateur = :id_utilisateur";
-    //     try {
-    //         $stmt = $conn->prepare($sql);
-    //     } catch (Exception $e) {
-    //         return "erreur sur sql";
-    //     }
-
-    //     if ($stmt->execute(["statut_utilisateur" => $statut_utilisateur, "id_utilisateur" => $this->id_utilisateur])) {
-    //         return "statut modifie avec succes";
-    //     } else {
-    //         return "erreur lors de la modification du statut";
-    //     }
-
-        
+    
 
 
 class Visiteur extends Utilisateur
