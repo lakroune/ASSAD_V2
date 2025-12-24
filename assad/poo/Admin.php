@@ -16,9 +16,15 @@ class Admin extends Utilisateur
     {
         return $this->role;
     }
+    public function setRoleUtilisateur(string $role)
+    {
+        if ($role == "admin") {
+            $this->role = $role;
+        }
+    }
     public function __toString()
     {
-        return parent::__toString() . "role :" . $this->getRoleUtilisateur();
+        return parent::__toString() . " role :" . $this->getRoleUtilisateur();
     }
     public function approuver_guide($id_utilisateur): bool
     {

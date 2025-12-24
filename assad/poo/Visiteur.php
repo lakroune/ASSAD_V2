@@ -1,10 +1,9 @@
 <?php
-
+require_once 'Utilisateur.php';
 
 class Visiteur extends Utilisateur
 {
     private string $role = "visiteur";
-    private int $Approuver_utilisateur;
     private string $statut_utilisateur;
     public function __construct()
     {
@@ -24,5 +23,15 @@ class Visiteur extends Utilisateur
         if ($statut_utilisateur == 0 || $statut_utilisateur == 1) {
             $this->statut_utilisateur = $statut_utilisateur;
         }
+    }
+    public function setRoleUtilisateur(string $role)
+    {
+       if($role == "visiteur"){
+        $this->role = $role;
+       }
+    }
+    public function __toString()
+    {
+        return parent::__toString() . " role :" . $this->getRoleUtilisateur()." statut :" . $this->getStatutUtilisateur();
     }
 }

@@ -30,5 +30,20 @@ class Guide extends Utilisateur
             $this->statut_utilisateur = $statut_utilisateur;
         }
     }
+    public function setRoleUtilisateur(string $role)
+    {
+        if ($role == "guide") {
+            $this->role = $role;
+        }
+    }
+    public function setIsApprouver(int $approuver)
+    {
+        if ($approuver == 0 || $approuver == 1) {
+            $this->is_Approuver = $approuver;
+        }
+    }
+    public function __toString()
+    {
+        return parent::__toString() . " role :" . $this->getRoleUtilisateur() . " approuver :" . $this->getIsApprouver() . " statut :" . $this->getStatutUtilisateur();
+    }
 }
-

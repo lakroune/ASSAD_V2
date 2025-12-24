@@ -28,7 +28,18 @@ class Utilisateur
     {
         return $this->pays_utilisateur;
     }
-
+    public function getMotPasse()
+    {
+        return $this->mot_passe;
+    }
+    public function  setIdUtilisateur($id_utilisateur): bool
+    {
+        if (is_int($id_utilisateur) && $id_utilisateur > 0) {
+            $this->id_utilisateur = $id_utilisateur;
+            return true;
+        }
+        return false;
+    }
     public function setNonUtilisateur($nom_utilisateur): bool
     {
         $regex = '/^[a-zA-Z]{5,50}$/';
@@ -69,7 +80,7 @@ class Utilisateur
     }
     public function __toString()
     {
-        return "id_utilisateur" . $this->id_utilisateur;
+        return " id_utilisateur :" . $this->id_utilisateur . " nom_utilisateur :" . $this->nom_utilisateur . " email :" . $this->email . " pays_utilisateur :" . $this->pays_utilisateur . " mot_passe :" . $this->mot_passe;
     }
     public function seconnecter(): string
     {
@@ -105,11 +116,14 @@ class Utilisateur
     }
 }
 
-// $user = new Utilisateur();
-// if (
-//     $user->setEmail("admin@admin.com") and
-//     $user->setMotPasse("admin")
-// )
-//     echo $user->seconnecter();
-// else
-//     echo "erreur dans les champs";
+$user = new Utilisateur();
+
+$user->setEmail("admin@admin.com");
+$user->setMotPasse("admin");
+$user->setIdUtilisateur(1);
+$user->setNonUtilisateur("administrateur");
+$user->setPaysUtilisateur("Maroc");
+
+
+
+echo  $user;
