@@ -1,6 +1,6 @@
 
 <?php
-
+require_once 'Connexion.php';
 class Commentaire
 {
     private int $id_commentaire;
@@ -40,9 +40,116 @@ class Commentaire
 
     public function setContenuCommentaire(string $contenu_commentaire)
     {
-       if(strlen($contenu_commentaire) > 0 && strlen($contenu_commentaire) <= 500) {    
+        if (strlen($contenu_commentaire) > 0 && strlen($contenu_commentaire) <= 500) {
             $this->contenu_commentaire = $contenu_commentaire;
         }
     }
-   
+    public function setDateCommentaire(string $date_commentaire)
+    {
+        $this->date_commentaire = new DateTime($date_commentaire);
+    }
+    public function setNote(int $note)
+    {
+        if ($note >= 1 && $note <= 5) {
+            $this->note = $note;
+            return true;
+        }
+        return false;   
+    }
+    public function setIdVisiteur(int $id_visiteur)
+    {
+        if ($id_visiteur > 0) {
+            $this->id_visiteur = $id_visiteur;
+              return true;
+        }
+        return false;
+    }
+    public function setIdVisite(int $id_visite)
+    {
+        if ($id_visite > 0) {
+            $this->id_visite = $id_visite;
+              return true;
+        }
+        return false;
+    }
+    public function setIdCommentaire(int $id_commentaire)
+    {
+        if ($id_commentaire > 0) {
+            $this->id_commentaire = $id_commentaire;
+              return true;
+        }
+        return false;
+    }
+    public function __toString()
+    {
+        return "Commentaire ID: " . $this->id_commentaire . "\n" .
+               "Contenu: " . $this->contenu_commentaire . "\n" .
+               "Date: " . $this->date_commentaire->format('Y-m-d H:i:s') . "\n" .
+               "Note: " . $this->note . "\n" .
+               "Visiteur ID: " . $this->id_visiteur . "\n" .
+               "Visite ID: " . $this->id_visite . "\n";
+    }
+    public function getCommentaire(): array
+    {
+        return [
+            'id_commentaire' => $this->id_commentaire,
+            'contenu_commentaire' => $this->contenu_commentaire,
+            'date_commentaire' => $this->date_commentaire->format('Y-m-d H:i:s'),
+            'note' => $this->note,
+            'id_visiteur' => $this->id_visiteur,
+            'id_visite' => $this->id_visite
+        ];
+    }
+    public function setCommentaire(array $data): void
+    {
+        if (isset($data['id_commentaire'])) {
+            $this->setIdCommentaire($data['id_commentaire']);
+        }
+        if (isset($data['contenu_commentaire'])) {
+            $this->setContenuCommentaire($data['contenu_commentaire']);
+        }
+        if (isset($data['date_commentaire'])) {
+            $this->setDateCommentaire($data['date_commentaire']);
+        }
+        if (isset($data['note'])) {
+            $this->setNote($data['note']);
+        }
+        if (isset($data['id_visiteur'])) {
+            $this->setIdVisiteur($data['id_visiteur']);
+        }
+        if (isset($data['id_visite'])) {
+            $this->setIdVisite($data['id_visite']);
+        }
+    }
+    public function ajouter_commentaire(): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "INSERT INTO commentaires (texte, date_commentaire, note, id_utilisateur, id_visite) VALUES (:contenu_commentaire, :date_commentaire, :note, :id_visiteur, :id_visite)";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':contenu_commentaire', $this->contenu_commentaire);
+        $stmt->bindValue(':date_commentaire', $this->date_commentaire->format('Y-m-d H:i:s'));
+        $stmt->bindParam(':note', $this->note);
+        $stmt->bindParam(':id_visiteur', $this->id_visiteur);
+        $stmt->bindParam(':id_visite', $this->id_visite);
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+
+$comm= new Commentaire();
+$comm->setIdCommentaire(1);
+$comm->setContenuCommentaire("Très belle visite !");
+$comm->setDateCommentaire("2024-06-15 10:30:00");
+$comm->setNote(5);  
+$comm->setIdVisiteur(2);
+$comm->setIdVisite(1);
+// echo $comm;
+// print_r($comm->getCommentaire());
+echo $comm->ajouter_commentaire();
