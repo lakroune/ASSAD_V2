@@ -84,9 +84,13 @@ class Visite
         }
         return false;
     }
-    public function setDateheureViste(string $dateheure_viste)
+    public function setDateheureVisite(string $dateheure_viste)
     {
-        $this->dateheure_viste = new DateTime($dateheure_viste);
+        if (strtotime($dateheure_viste) !== false) {
+            $this->dateheure_viste = new DateTime($dateheure_viste);
+            return true;
+        }
+        return false;
     }
     public function setLangueVisite(string $langue__visite): bool
     {
@@ -99,7 +103,11 @@ class Visite
     }
     public function setDureeVisite(string $duree__visite)
     {
-        $this->duree__visite = new DateTime($duree__visite);
+       if(strtotime($duree__visite) !== false) {
+            $this->duree__visite = new DateTime($duree__visite);
+            return true;
+        }
+        return false;
     }
     public function setCapaciteMaxVisite(int $capacite_max__visite): bool
     {
@@ -141,7 +149,7 @@ class Visite
     }
 
 
-    public   function ajouter_visite()  
+    public   function ajouter_visite()
     {
         $conn = (new Connexion())->connect();
         $sql = "INSERT INTO visitesguidees ( titre_visite, description_visite, dateheure_viste, langue__visite, duree__visite, capacite_max__visite, prix__visite, statut__visite, id_guide) VALUES ( :titre_visite, :description_visite, :dateheure_viste, :langue__visite, :duree__visite, :capacite_max__visite, :prix__visite, :statut__visite, :id_guide)";
@@ -211,33 +219,33 @@ class Visite
     }
 }
 
-$vis = new Visite();
-if (!$vis->setIdVisite(44)) {
-    echo "ID visite invalide.\n";
-}
-if (!$vis->setTitreVisite("Visite des lions")) {
-    echo "Titre visite invalide.\n";
-}
-if (!$vis->setDescriptionVisite("Une visite passionnante pour découvrir les lions et leur habitat.")) {
-    echo "Description visite invalide.\n";
-}
-$vis->setDateheureViste("2024-12-15 14:00:00");
-if (!$vis->setLangueVisite("anglis")) {
-    echo "Langue visite invalide.\n";
-}
-$vis->setDureeVisite("02:00:00");
-if (!$vis->setCapaciteMaxVisite(20)) {
-    echo "Capacite max visite invalide.\n";
-}
-if (!$vis->setPrixVisite(15.50)) {      
-    echo "Prix visite invalide.\n";
-}
-if (!$vis->setStatutVisite(1)) {
-    echo "Statut visite invalide.\n";
-}
-if (!$vis->setIdGuide(1)) {
-    echo "ID guide invalide.\n";
-}    
+// $vis = new Visite();
+// if (!$vis->setIdVisite(44)) {
+//     echo "ID visite invalide.\n";
+// }
+// if (!$vis->setTitreVisite("Visite des lions")) {
+//     echo "Titre visite invalide.\n";
+// }
+// if (!$vis->setDescriptionVisite("Une visite passionnante pour découvrir les lions et leur habitat.")) {
+//     echo "Description visite invalide.\n";
+// }
+// $vis->setDateheureVisite("2024-12-15 14:00:00");
+// if (!$vis->setLangueVisite("anglis")) {
+//     echo "Langue visite invalide.\n";
+// }
+// $vis->setDureeVisite("02:00:00");
+// if (!$vis->setCapaciteMaxVisite(20)) {
+//     echo "Capacite max visite invalide.\n";
+// }
+// if (!$vis->setPrixVisite(15.50)) {
+//     echo "Prix visite invalide.\n";
+// }
+// if (!$vis->setStatutVisite(1)) {
+//     echo "Statut visite invalide.\n";
+// }
+// if (!$vis->setIdGuide(1)) {
+//     echo "ID guide invalide.\n";
+// }
 // echo $vis->ajouter_visite() ;
 // echo $vis->supprimer_visite(43);
-echo $vis->modifier_visite();
+// echo $vis->modifier_visite();

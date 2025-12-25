@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Utilisateur.php';
-
+require_once 'Visite.php';
 class Guide extends Utilisateur
 {
 
@@ -56,7 +56,27 @@ class Guide extends Utilisateur
         }
     }
 
-    public function ajouterVisite($titre_visite, $description_visite, $dateheure_viste, $langue__visite, $duree__visite): bool {
-        
+    public function ajouterVisite(string $titre_visite,string $description_visite, string $dateheure_viste, string $langue__visite, string $duree__visite,int $nombreMaxParticipants,float $prix,int $status): bool
+    {
+        $Visite = new Visite();
+        if (
+            $Visite->setIdGuide($this->getIdUtilisateur()) &&
+            $Visite->setTitreVisite($titre_visite) &&
+            $Visite->setDescriptionVisite($description_visite) &&
+            $Visite->setDateheureVisite($dateheure_viste) &&
+            $Visite->setLangueVisite($langue__visite) &&
+            $Visite->setDureeVisite($duree__visite) &&
+            $Visite->setCapaciteMaxVisite($nombreMaxParticipants) &&
+            $Visite->setPrixVisite($prix) &&
+            $Visite->setStatutVisite($status) &&
+            $Visite->ajouter_visite()
+        )
+            return true;
+        return false;
     }
+   
 }
+ 
+$guide = new Guide();
+$guide->setIdUtilisateur(1);
+echo $guide->ajouterVisite("titre","desczzzzzzzzz","2024-12-12 10:00:00","francais","02:00:00",20,50.0,1)?"Visite ajoutée avec succès":"Echec de l'ajout de la visite";  
