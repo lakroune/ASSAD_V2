@@ -125,19 +125,19 @@ class Animal
     {
         return " id_animal :" . $this->id_animal . " nom_animal :" . $this->nom_animal . " espece_animal :" . $this->espece_animal . " type_alimentation :" . $this->type_alimentation . " pays_origine :" . $this->pays_origine . " description_animal :" . $this->description_animal . " image_url :" . $this->image_url . " id_habitat :" . $this->id_habitat;
     }
-    public function getAnimal(): array
-    {
-        return [
-            'id_animal' => $this->id_animal,
-            'nom_animal' => $this->nom_animal,
-            'espece_animal' => $this->espece_animal,
-            'type_alimentation' => $this->type_alimentation,
-            'pays_origine' => $this->pays_origine,
-            'description_animal' => $this->description_animal,
-            'image_url' => $this->image_url,
-            'id_habitat' => $this->id_habitat
-        ];
-    }
+    // public function getAnimal(): array
+    // {
+    //     return [
+    //         'id_animal' => $this->id_animal,
+    //         'nom_animal' => $this->nom_animal,
+    //         'espece_animal' => $this->espece_animal,
+    //         'type_alimentation' => $this->type_alimentation,
+    //         'pays_origine' => $this->pays_origine,
+    //         'description_animal' => $this->description_animal,
+    //         'image_url' => $this->image_url,
+    //         'id_habitat' => $this->id_habitat
+    //     ];
+    // }
 
     public function ajouter_animal(): bool
     {
@@ -202,7 +202,7 @@ class Animal
             return false;
         }
     }
-    public function afficher_animal(int $id_animal): Animal|bool
+    public function getAnimal(int $id_animal): Animal|bool
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT a.*,h.nom_habitat FROM animaux a INNER JOIN habitats h on a.id_habitat=h.id_habitat WHERE id_animal = :id_animal";
@@ -220,4 +220,34 @@ class Animal
             return false;
         }
     }
+
+    public function getAnimaux() 
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM animaux a INNER JOIN habitats h on a.id_habitat=h.id_habitat";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        $stmt->execute();
+        $animaux = $stmt->fetchAll(pdo::FETCH_ASSOC);
+        $animalList = [];
+        foreach ($animaux as $animal) {
+            $animal = new Animal();
+            $animal->setIdAnimal($animal['id_animal']);
+            $animal->setNomAnimal($animal['nom_animal']);
+            $animal->setEspeceAnimal($animal['espece']);
+            $animal->setTypeAlimentation($animal['alimentation_animal']);
+            $animal->setPaysOrigine($animal['pays_origine']);
+            $animal->setDescriptionAnimal($animal['description_animal']);
+            $animal->setImageUrl($animal['image_url']);
+            $animal->setIdHabitat($animal['id_habitat']);
+            $animalList[] = $animal;
+        }
+        return $animalList;
+    }
 }
+
+$animal = new Animal();
+print_r($animal->getAnimaux());

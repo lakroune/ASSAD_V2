@@ -1,14 +1,13 @@
 <?php
-session_start();
 
- 
-require_once '../Class/Connexion.php';
 
-  if (
-        isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur']) &&
-        $_SESSION['role_utilisateur'] === "visiteur" &&
-        $_SESSION['logged_in'] === TRUE
-    ) {
+
+require_once '../Class/Visiteur.php';
+$visiteur_connect = new Visiteur();
+
+if (
+    $visiteur_connect->isConnected()
+) {
 
 
 
@@ -95,10 +94,10 @@ require_once '../Class/Connexion.php';
                             href="animaux.php">Animaux</a>
                         <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
                             href="reservation.php">Réservation</a>
-                         <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
-                             href="./mes_reservations.php">Mes Reservations</a>
-                         <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
-                             href="./../php/sedeconnecter.php"> Se Deconnecter</a>
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
+                            href="./mes_reservations.php">Mes Reservations</a>
+                        <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
+                            href="./../php/sedeconnecter.php"> Se Deconnecter</a>
                     </div>
 
                 </div>
@@ -166,7 +165,7 @@ require_once '../Class/Connexion.php';
             </div>
         </section>
 
-     
+
 
     </main>
 

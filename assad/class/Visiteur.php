@@ -1,6 +1,6 @@
 <?php
 require_once 'Utilisateur.php';
-
+require_once 'Reservation.php';
 class Visiteur extends Utilisateur
 {
     private string $statut_utilisateur;
@@ -21,9 +21,44 @@ class Visiteur extends Utilisateur
         }
     }
 
- 
+
     public function __toString()
     {
         return parent::__toString()  . " statut :" . $this->getStatutUtilisateur();
     }
+    //recuperer les info de visiteur
+    public function  getVisteur(int $id_visiteur)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = :id_visiteur AND role='visiteur'";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_visiteur', $id_visiteur);
+        if ($stmt->execute()) {
+            $visiteur = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (
+                $this->setIdUtilisateur($visiteur['id_utilisateur']) &&
+                $this->setNomUtilisateur($visiteur['nom_utilisateur']) &&
+                $this->setEmail($visiteur['email']) &&
+                $this->setPaysUtilisateur($visiteur['pays_utilisateur']) &&
+                $this->setStatutUtilisateur($visiteur['statut_utilisateur'])
+            )
+                return $this;
+        } else {
+            return false;
+        }
+    }
+    public function reserverVisite(int $idVisite, int $nombreParticipants): bool
+    {
+        $reservation = new Reservation();
+        $reservation->setIdVisiteur($this->getIdUtilisateur());
+        $reservation->setIdVisite($idVisite);
+        $reservation->setNombrePersonnes($nombreParticipants);
+        return $reservation->reserver();
+    }
 }
+$visiteur = new Visiteur();
+print_r($visiteur->getVisteur(14));

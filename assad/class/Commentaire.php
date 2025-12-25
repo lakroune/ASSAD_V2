@@ -89,38 +89,38 @@ class Commentaire
                "Visiteur ID: " . $this->id_visiteur . "\n" .
                "Visite ID: " . $this->id_visite . "\n";
     }
-    public function getCommentaire(): array
-    {
-        return [
-            'id_commentaire' => $this->id_commentaire,
-            'contenu_commentaire' => $this->contenu_commentaire,
-            'date_commentaire' => $this->date_commentaire->format('Y-m-d H:i:s'),
-            'note' => $this->note,
-            'id_visiteur' => $this->id_visiteur,
-            'id_visite' => $this->id_visite
-        ];
-    }
-    public function setCommentaire(array $data): void
-    {
-        if (isset($data['id_commentaire'])) {
-            $this->setIdCommentaire($data['id_commentaire']);
-        }
-        if (isset($data['contenu_commentaire'])) {
-            $this->setContenuCommentaire($data['contenu_commentaire']);
-        }
-        if (isset($data['date_commentaire'])) {
-            $this->setDateCommentaire($data['date_commentaire']);
-        }
-        if (isset($data['note'])) {
-            $this->setNote($data['note']);
-        }
-        if (isset($data['id_visiteur'])) {
-            $this->setIdVisiteur($data['id_visiteur']);
-        }
-        if (isset($data['id_visite'])) {
-            $this->setIdVisite($data['id_visite']);
-        }
-    }
+    // public function getCommentaire(): array
+    // {
+    //     return [
+    //         'id_commentaire' => $this->id_commentaire,
+    //         'contenu_commentaire' => $this->contenu_commentaire,
+    //         'date_commentaire' => $this->date_commentaire->format('Y-m-d H:i:s'),
+    //         'note' => $this->note,
+    //         'id_visiteur' => $this->id_visiteur,
+    //         'id_visite' => $this->id_visite
+    //     ];
+    // }
+    // public function setCommentaire(array $data): void
+    // {
+    //     if (isset($data['id_commentaire'])) {
+    //         $this->setIdCommentaire($data['id_commentaire']);
+    //     }
+    //     if (isset($data['contenu_commentaire'])) {
+    //         $this->setContenuCommentaire($data['contenu_commentaire']);
+    //     }
+    //     if (isset($data['date_commentaire'])) {
+    //         $this->setDateCommentaire($data['date_commentaire']);
+    //     }
+    //     if (isset($data['note'])) {
+    //         $this->setNote($data['note']);
+    //     }
+    //     if (isset($data['id_visiteur'])) {
+    //         $this->setIdVisiteur($data['id_visiteur']);
+    //     }
+    //     if (isset($data['id_visite'])) {
+    //         $this->setIdVisite($data['id_visite']);
+    //     }
+    // }
     public function ajouter_commentaire(): bool
     {
         $conn = (new Connexion())->connect();
@@ -141,6 +141,25 @@ class Commentaire
             return false;
         }
     }
+
+    public function getCommentaire(): array|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM commentaires WHERE id_commentaire = :id_commentaire";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_commentaire', $this->id_commentaire);
+        if ($stmt->execute()) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result : false;
+        } else {
+            return false;
+        }
+    }
+
 }
 
 // $comm= new Commentaire();

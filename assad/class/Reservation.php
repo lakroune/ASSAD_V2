@@ -89,7 +89,7 @@ class Reservation
             return false;
         }
     }
-    public function getResrvation(): array|bool
+    public function getResrvation() 
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM reservations WHERE id_reservations = :id_reservation";
@@ -114,7 +114,7 @@ class Reservation
 // $res->setIdReservation(1);
 // $res->setNombrePersonnes(4);
 // $res->setIdVisiteur(2);
-// $res->setIdVisite(3);
+// $res->setIdVisite(1);
 // $res->setDateReservation(new DateTime('2024-07-01 10:00:00'));
-// echo $res;
-// print_r($res->getResrvation());
+// // echo $res;
+// print_r($res->reserver());

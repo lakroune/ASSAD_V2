@@ -139,7 +139,10 @@ class Utilisateur
         session_destroy();
     }
 
-    
+    public function isConnected(): bool
+    {
+        return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === TRUE;
+    }
 }
 
 // $user = new Utilisateur();

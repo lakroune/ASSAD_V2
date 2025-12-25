@@ -67,4 +67,53 @@ class Admin extends Utilisateur
             return  false;
         }
     }
+    public function afficher_utilisateur(int $id_utilisateur): Utilisateur|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = :id_utilisateur";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_utilisateur', $id_utilisateur);
+        $stmt->execute();
+        $utilisateur = $stmt->fetch(pdo::FETCH_ASSOC);
+        if ($utilisateur) {
+            $user = new Utilisateur();
+            $user->setIdUtilisateur($utilisateur['id_utilisateur']);
+            $user->setNomUtilisateur($utilisateur['nom_utilisateur']);
+            $user->setEmail($utilisateur['email']);
+            $user->setPaysUtilisateur($utilisateur['pays_utilisateur']);
+            $user->setRoleUtilisateur($utilisateur['role']);
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
+    public function afficher_tous_utilisatdeurs(): array|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM utilisateurs";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->execute();
+        $utilisateurs = $stmt->fetchAll(pdo::FETCH_ASSOC);
+        $users = [];
+        foreach ($utilisateurs as $utilisateur) {
+            $user = new Utilisateur();
+            $user->setIdUtilisateur($utilisateur['id_utilisateur']);
+            $user->setNomUtilisateur($utilisateur['nom_utilisateur']);
+            $user->setEmail($utilisateur['email']);
+            $user->setPaysUtilisateur($utilisateur['pays_utilisateur']);
+            $user->setRoleUtilisateur($utilisateur['role']);
+            $users[] = $user;
+        }
+        return $users;
+    }
+
 }
