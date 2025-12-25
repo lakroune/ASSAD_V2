@@ -214,35 +214,45 @@ class Animal
         $stmt->bindParam(':id_animal', $id_animal);
         $stmt->execute();
         $animal = $stmt->fetch(pdo::FETCH_ASSOC);
-        if ($animal) {
-            return $animal;
+        if (
+            !empty($animal) &&
+            $this->setIdAnimal($animal['id_animal']) &&
+            $this->setNomAnimal($animal['nom_animal']) &&
+            $this->setEspeceAnimal($animal['espece']) &&
+            $this->setTypeAlimentation($animal['alimentation_animal']) &&
+            $this->setPaysOrigine($animal['pays_origine']) &&
+            $this->setDescriptionAnimal($animal['description_animal']) &&
+            $this->setImageUrl($animal['image_url']) &&
+            $this->setIdHabitat($animal['id_habitat'])
+        ) {
+            return $this;
         } else {
             return false;
         }
     }
 
-    public function getAnimaux() 
+    static function getAnimaux()
     {
         $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM animaux a INNER JOIN habitats h on a.id_habitat=h.id_habitat";
+        $sql = "SELECT * FROM animaux a INNER JOIN habitats h on a.id_habitat=h.id_habitat ";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
             return $e->getMessage();
         }
         $stmt->execute();
-        $animaux = $stmt->fetchAll(pdo::FETCH_ASSOC);
+        $animaux = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $animalList = [];
-        foreach ($animaux as $animal) {
+        foreach ($animaux as $anima) {
             $animal = new Animal();
-            $animal->setIdAnimal($animal['id_animal']);
-            $animal->setNomAnimal($animal['nom_animal']);
-            $animal->setEspeceAnimal($animal['espece']);
-            $animal->setTypeAlimentation($animal['alimentation_animal']);
-            $animal->setPaysOrigine($animal['pays_origine']);
-            $animal->setDescriptionAnimal($animal['description_animal']);
-            $animal->setImageUrl($animal['image_url']);
-            $animal->setIdHabitat($animal['id_habitat']);
+            $animal->setIdAnimal($anima['id_animal']);
+            $animal->setNomAnimal($anima['nom_animal']);
+            $animal->setEspeceAnimal($anima['espece']);
+            $animal->setTypeAlimentation($anima['alimentation_animal']);
+            $animal->setPaysOrigine($anima['pays_origine']);
+            $animal->setDescriptionAnimal($anima['description_animal']);
+            $animal->setImageUrl($anima['image_url']);
+            $animal->setIdHabitat($anima['id_habitat']);
             $animalList[] = $animal;
         }
         return $animalList;
@@ -250,4 +260,5 @@ class Animal
 }
 
 $animal = new Animal();
-print_r($animal->getAnimaux());
+$animal->getAnimal(1);
+echo $animal;
