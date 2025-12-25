@@ -267,7 +267,7 @@
              </div>
          </div>
      </main>
-     <?php
+     <?php 
 
         if (isset($_GET['message']) && $_GET['message'] == "userNotFound") :
         ?>

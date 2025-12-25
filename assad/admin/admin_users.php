@@ -201,7 +201,7 @@ function get_status_indicator_color($status)
                     </div>
                     <!-- <div class="relative w-full md:w-auto">
                          <span
-                             class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
+                              class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
                          <input
                              class="pl-8 pr-3 py-1.5 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark text-sm w-full md:w-64 focus:ring-primary/20 focus:border-primary"
                              placeholder="Rechercher par nom ou email..." type="text" />

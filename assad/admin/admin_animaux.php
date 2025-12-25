@@ -446,7 +446,7 @@ if (
             </div>
         </div>
     <?php endif; ?>
-    <!-- model add animal -->
+    <!-- model add animal --> 
 
     <div id="modalAnimal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/50 backdrop-blur-sm flex  items-center justify-center p-4">
         <div class="bg-surface-light dark:bg-surface-dark w-full max-w-lg rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700">

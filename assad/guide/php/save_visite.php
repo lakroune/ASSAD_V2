@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $visite->setIdGuide($guide->getIdUtilisateur()) &&
             $visite->modifierVisite()
         ) {
-            // Modification
+            // ------::x::--
             $etapes = isset($_POST['etapes']) ? $_POST['etapes'] : [];
             $eat = new Etape();
             $eat->supprimerEtapesViste((int)$_POST['id_visite']);
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
     }
-    //  CASE 2: ADD (Ajouter)
+    //  ajouter
     else {
         if (
             $visite->setDateheureVisite($_POST['dateheure_viste']) &&
