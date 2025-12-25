@@ -69,7 +69,7 @@ class Guide extends Utilisateur
             $Visite->setCapaciteMaxVisite($nombreMaxParticipants) &&
             $Visite->setPrixVisite($prix) &&
             $Visite->setStatutVisite($status) &&
-            $Visite->ajouter_visite()
+            $Visite->ajouterVisite()
         )
             return true;
         return false;
@@ -100,6 +100,6 @@ class Guide extends Utilisateur
     }
 }
 
-$guide = new Guide();
-$guide->setIdUtilisateur(1);
-echo $guide->modifierVisite(1, "titre", "desczzzzzzzzz", "2024-12-12 10:00:00", "francais", "02:00:00", 20, 50.0, 1) ? "Visite ajoutée avec succès" : "Echec de l'ajout de la visite";
+// $guide = new Guide();
+// $guide->setIdUtilisateur(1);
+// echo $guide->modifierVisite(1, "titre", "desczzzzzzzzz", "2024-12-12 10:00:00", "francais", "02:00:00", 20, 50.0, 1) ? "Visite ajoutée avec succès" : "Echec de l'ajout de la visite";

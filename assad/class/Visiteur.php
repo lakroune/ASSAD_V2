@@ -40,6 +40,7 @@ class Visiteur extends Utilisateur
         if ($stmt->execute()) {
             $visiteur = $stmt->fetch(PDO::FETCH_ASSOC);
             if (
+                !empty($visiteur) &&
                 $this->setIdUtilisateur($visiteur['id_utilisateur']) &&
                 $this->setNomUtilisateur($visiteur['nom_utilisateur']) &&
                 $this->setEmail($visiteur['email']) &&

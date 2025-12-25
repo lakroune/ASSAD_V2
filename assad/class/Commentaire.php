@@ -42,11 +42,17 @@ class Commentaire
     {
         if (strlen($contenu_commentaire) > 0 && strlen($contenu_commentaire) <= 500) {
             $this->contenu_commentaire = $contenu_commentaire;
+            return true;
         }
+        return false;
     }
     public function setDateCommentaire(string $date_commentaire)
     {
-        $this->date_commentaire = new DateTime($date_commentaire);
+       if(strtotime($date_commentaire) !== false) {
+            $this->date_commentaire = new DateTime($date_commentaire);
+            return true;
+        }
+        return false;
     }
     public function setNote(int $note)
     {
@@ -54,13 +60,13 @@ class Commentaire
             $this->note = $note;
             return true;
         }
-        return false;   
+        return false;
     }
     public function setIdVisiteur(int $id_visiteur)
     {
         if ($id_visiteur > 0) {
             $this->id_visiteur = $id_visiteur;
-              return true;
+            return true;
         }
         return false;
     }
@@ -68,7 +74,7 @@ class Commentaire
     {
         if ($id_visite > 0) {
             $this->id_visite = $id_visite;
-              return true;
+            return true;
         }
         return false;
     }
@@ -76,18 +82,18 @@ class Commentaire
     {
         if ($id_commentaire > 0) {
             $this->id_commentaire = $id_commentaire;
-              return true;
+            return true;
         }
         return false;
     }
     public function __toString()
     {
         return "Commentaire ID: " . $this->id_commentaire . "\n" .
-               "Contenu: " . $this->contenu_commentaire . "\n" .
-               "Date: " . $this->date_commentaire->format('Y-m-d H:i:s') . "\n" .
-               "Note: " . $this->note . "\n" .
-               "Visiteur ID: " . $this->id_visiteur . "\n" .
-               "Visite ID: " . $this->id_visite . "\n";
+            "Contenu: " . $this->contenu_commentaire . "\n" .
+            "Date: " . $this->date_commentaire->format('Y-m-d H:i:s') . "\n" .
+            "Note: " . $this->note . "\n" .
+            "Visiteur ID: " . $this->id_visiteur . "\n" .
+            "Visite ID: " . $this->id_visite . "\n";
     }
     // public function getCommentaire(): array
     // {
@@ -142,7 +148,7 @@ class Commentaire
         }
     }
 
-    public function getCommentaire(): array|bool
+    public function getCommentaire(int $idCommentaire)
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM commentaires WHERE id_commentaire = :id_commentaire";
@@ -151,18 +157,27 @@ class Commentaire
         } catch (Exception $e) {
             return false;
         }
-        $stmt->bindParam(':id_commentaire', $this->id_commentaire);
+        $stmt->bindParam(':id_commentaire', $idCommentaire);
         if ($stmt->execute()) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result ? $result : false;
+            if (
+                !empty($result)  &&
+                $this->setIdCommentaire($result['id_commentaire']) &&
+                $this->setContenuCommentaire($result['texte']) &&
+                $this->setDateCommentaire($result['date_commentaire']) &&
+                $this->setNote($result['note']) &&
+                $this->setIdVisiteur($result['id_utilisateur']) &&
+                $this->setIdVisite($result['id_visite'])
+            )
+                return $this;
         } else {
             return false;
         }
     }
-
 }
 
-// $comm= new Commentaire();
+
+$comm = new Commentaire();
 // $comm->setIdCommentaire(1);
 // $comm->setContenuCommentaire("Très belle visite !");
 // $comm->setDateCommentaire("2024-06-15 10:30:00");
@@ -172,3 +187,6 @@ class Commentaire
 // // echo $comm;
 // // print_r($comm->getCommentaire());
 // echo $comm->ajouter_commentaire();
+
+$comm->getCommentaire(1);
+echo $comm;
