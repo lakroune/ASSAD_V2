@@ -48,7 +48,7 @@ class Commentaire
     }
     public function setDateCommentaire(string $date_commentaire)
     {
-       if(strtotime($date_commentaire) !== false) {
+        if (strtotime($date_commentaire) !== false) {
             $this->date_commentaire = new DateTime($date_commentaire);
             return true;
         }
@@ -174,10 +174,40 @@ class Commentaire
             return false;
         }
     }
+    static function getAllCommentaires()
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM commentaires  ";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        if ($stmt->execute()) {
+            $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $allCommantaire = [];
+            // if (
+            //     !empty($result)
+            // ) {
+                $commentaire = new Commentaire();
+
+                foreach ($resultats as $result) {
+                    $commentaire->setIdCommentaire($result['id_commentaire']);
+                    $commentaire->setContenuCommentaire($result['texte']);
+                    $commentaire->setDateCommentaire($result['date_commentaire']);
+                    $commentaire->setNote($result['note']);
+                    $commentaire->setIdVisiteur($result['id_utilisateur']);
+                    $commentaire->setIdVisite($result['id_visite']);
+                    $allCommantaire[] = $commentaire;
+                }
+        // }
+            return $allCommantaire;
+        } else {
+            return false;
+        }
+    }
 }
 
 
-// $comm = new Commentaire();
- 
-// $comm->getCommentaire(1);
-// echo $comm;
+$comm = Commentaire::getAllCommentaires();
+print_r($comm);

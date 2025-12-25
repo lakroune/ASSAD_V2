@@ -259,6 +259,3 @@ class Animal
     }
 }
 
-$animal = new Animal();
-$animal->getAnimal(1);
-echo $animal;
