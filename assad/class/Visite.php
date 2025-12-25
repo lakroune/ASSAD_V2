@@ -103,7 +103,7 @@ class Visite
     }
     public function setDureeVisite(string $duree__visite)
     {
-       if(strtotime($duree__visite) !== false) {
+        if (strtotime($duree__visite) !== false) {
             $this->duree__visite = new DateTime($duree__visite);
             return true;
         }
@@ -149,7 +149,7 @@ class Visite
     }
 
 
-    public   function ajouter_visite()
+    public   function ajouterVisite()
     {
         $conn = (new Connexion())->connect();
         $sql = "INSERT INTO visitesguidees ( titre_visite, description_visite, dateheure_viste, langue__visite, duree__visite, capacite_max__visite, prix__visite, statut__visite, id_guide) VALUES ( :titre_visite, :description_visite, :dateheure_viste, :langue__visite, :duree__visite, :capacite_max__visite, :prix__visite, :statut__visite, :id_guide)";
@@ -175,7 +175,7 @@ class Visite
         }
     }
 
-    public function supprimer_visite(int $id_visite): bool
+    public function supprimerVisite(int $id_visite): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "DELETE FROM visitesguidees WHERE id_visite = :id_visite";
@@ -192,7 +192,7 @@ class Visite
         }
     }
 
-    public function  modifier_visite(): bool
+    public function  modifierVisite(): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE visitesguidees SET titre_visite = :titre_visite, description_visite = :description_visite, dateheure_viste = :dateheure_viste, langue__visite = :langue__visite, duree__visite = :duree__visite, capacite_max__visite = :capacite_max__visite, prix__visite = :prix__visite, statut__visite = :statut__visite, id_guide = :id_guide WHERE id_visite = :id_visite";
