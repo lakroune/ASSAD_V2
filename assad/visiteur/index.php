@@ -2,7 +2,7 @@
 session_start();
 
  
-include "../db_connect.php";
+require_once '../Class/Connexion.php';
 
   if (
         isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur']) &&

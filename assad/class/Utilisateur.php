@@ -118,10 +118,10 @@ class Utilisateur
             $hashedPassword = $user['motpasse_hash'];
             if ($user["Approuver_utilisateur"]) {
                 if (password_verify($this->mot_passe, $hashedPassword)) {
-                    // $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
-                    // $_SESSION['nom_utilisateur'] = $user['nom_utilisateur'];
-                    // $_SESSION['role_utilisateur'] = $user['role'];
-                    // $_SESSION['logged_in'] = TRUE;
+                    $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
+                    $_SESSION['nom_utilisateur'] = $user['nom_utilisateur'];
+                    $_SESSION['role_utilisateur'] = $user['role'];
+                    $_SESSION['logged_in'] = TRUE;
                     return $user["role"];
                 } else {
                     return "passwordInvalid";
@@ -133,6 +133,13 @@ class Utilisateur
             return "userNotFound";
         }
     }
+    public function deconnecter(): void
+    {
+        session_unset();
+        session_destroy();
+    }
+
+    
 }
 
 // $user = new Utilisateur();
