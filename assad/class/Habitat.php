@@ -1,4 +1,6 @@
 <?php
+require_once 'Connexion.php';
+
 class Habitat
 {
     private int $id_habitat;

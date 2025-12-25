@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Connexion.php';
 require_once 'Utilisateur.php';
 
 

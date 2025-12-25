@@ -143,13 +143,13 @@ class Commentaire
     }
 }
 
-$comm= new Commentaire();
-$comm->setIdCommentaire(1);
-$comm->setContenuCommentaire("Très belle visite !");
-$comm->setDateCommentaire("2024-06-15 10:30:00");
-$comm->setNote(5);  
-$comm->setIdVisiteur(2);
-$comm->setIdVisite(1);
-// echo $comm;
-// print_r($comm->getCommentaire());
-echo $comm->ajouter_commentaire();
+// $comm= new Commentaire();
+// $comm->setIdCommentaire(1);
+// $comm->setContenuCommentaire("Très belle visite !");
+// $comm->setDateCommentaire("2024-06-15 10:30:00");
+// $comm->setNote(5);  
+// $comm->setIdVisiteur(2);
+// $comm->setIdVisite(1);
+// // echo $comm;
+// // print_r($comm->getCommentaire());
+// echo $comm->ajouter_commentaire();

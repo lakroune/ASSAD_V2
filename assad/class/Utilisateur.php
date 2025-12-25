@@ -61,7 +61,7 @@ class Utilisateur
     }
     public function setNomUtilisateur($nom_utilisateur): bool
     {
-        $regex = '/^[a-zA-Z]{5,50}$/';
+        $regex = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
         if (preg_match($regex, $nom_utilisateur)) {
             $this->nom_utilisateur = $nom_utilisateur;
             return true;
@@ -80,7 +80,7 @@ class Utilisateur
 
     public function setPaysUtilisateur($pays_utilisateur): bool
     {
-        $regex = '/^[a-zA-Z]{2,50}$/';
+        $regex =  $regex = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
         if (preg_match($regex, $pays_utilisateur)) {
             $this->pays_utilisateur = $pays_utilisateur;
             return true;
@@ -109,7 +109,7 @@ class Utilisateur
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
-            return "erreur sur sql";
+            return "erreurSQL";
         }
         $stmt->bindParam(':email', $this->email);
         $stmt->execute();
@@ -124,13 +124,13 @@ class Utilisateur
                     // $_SESSION['logged_in'] = TRUE;
                     return $user["role"];
                 } else {
-                    return "mot pass invalid";
+                    return "passwordInvalid";
                 }
             } else {
-                return "les utilisateur non approuve";
+                return "notApproved";
             }
         } else {
-            return "email n'exist pas ";
+            return "userNotFound";
         }
     }
 }
