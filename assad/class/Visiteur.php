@@ -60,6 +60,22 @@ class Visiteur extends Utilisateur
         $reservation->setNombrePersonnes($nombreParticipants);
         return $reservation->reserver();
     }
+    // function pour laisser commentaire
+    public function laisserCommentaire(int $idVisite, string $contenu, int $note): bool
+    {
+        $commentaire = new Commentaire();
+        $dateNow = new DateTime();
+        if (
+            $commentaire->setIdVisiteur($this->getIdUtilisateur()) &&
+            $commentaire->setIdVisite($idVisite) &&
+            $commentaire->setContenuCommentaire($contenu) &&
+            $commentaire->setDateCommentaire($dateNow->format('Y-m-d H:i:s')) &&
+            $commentaire->setNote($note) && $commentaire->ajouterCommentaire()
+        )
+            return true;
+        else
+            return false;
+    }
 }
 $visiteur = new Visiteur();
 print_r($visiteur->getVisteur(14));

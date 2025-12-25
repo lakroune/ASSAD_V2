@@ -127,7 +127,7 @@ class Commentaire
     //         $this->setIdVisite($data['id_visite']);
     //     }
     // }
-    public function ajouter_commentaire(): bool
+    public function ajouterCommentaire(): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "INSERT INTO commentaires (texte, date_commentaire, note, id_utilisateur, id_visite) VALUES (:contenu_commentaire, :date_commentaire, :note, :id_visiteur, :id_visite)";
@@ -177,16 +177,7 @@ class Commentaire
 }
 
 
-$comm = new Commentaire();
-// $comm->setIdCommentaire(1);
-// $comm->setContenuCommentaire("Très belle visite !");
-// $comm->setDateCommentaire("2024-06-15 10:30:00");
-// $comm->setNote(5);  
-// $comm->setIdVisiteur(2);
-// $comm->setIdVisite(1);
-// // echo $comm;
-// // print_r($comm->getCommentaire());
-// echo $comm->ajouter_commentaire();
-
-$comm->getCommentaire(1);
-echo $comm;
+// $comm = new Commentaire();
+ 
+// $comm->getCommentaire(1);
+// echo $comm;
