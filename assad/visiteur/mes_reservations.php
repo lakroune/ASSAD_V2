@@ -11,7 +11,7 @@
 
     ) {
         $visiteur = new Visiteur();
-        $visiteur->getVisteur($_SESSION["id_utilisateur"]);
+        $visiteur->getVisiteur($_SESSION["id_utilisateur"]);
         $array_reservations = Reservation::getAllResrvation();
     } else {
         header("Location: ../connexion.php?error=access_denied");
@@ -151,19 +151,27 @@
                                      <tr class="<?= $reservation->getIdReservation() ? 'bg-white hover:bg-orange-50/50' : 'bg-gray-50/50' ?> transition-colors">
                                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#1b140d]">
                                              <a href="reservation.php" class="hover:text-primary transition-colors">
-                                                 <?= ($reservation->getIdVisite()) ?>
+                                                 <?php
+                                                    $visite = new Visite();
+                                                    $visite->getVisite($reservation->getIdVisite());
+                                                    echo $visite->getTitreVisite();
+
+                                                    $user = new Utilisateur();
+                                                    $user->getUtilisateur($visite->getIdGuide());
+
+                                                    ?>
                                              </a>
-                                             <p class="text-xs text-gray-400">#<?= ($reservation->getIdReservation()) ?></p>
+                                             <p class="text-xs text-gray-400">#<?= ($visite->getIdVisite()) ?></p>
                                          </td>
                                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                             <?= $reservation->getDateReservation()->format('g-m-Y ') ?> à <?= $reservation->getDateReservation()->format('H:i') ?>
+                                             <?= $reservation->getDateReservation()->format('g-m-Y') ?> à <?= $reservation->getDateReservation()->format('H:i') ?>
                                          </td>
                                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                             <?= ($reservation->getIdVisite()) // id guide
+                                             <?= ($user->getNomUtilisateur()) // id guide
                                                 ?>
                                          </td>
                                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                             <?= ($reservation->getIdReservation()) ?> personne(s)
+                                             <?= ($reservation->getNombrePersonnes()) ?> personne(s)
                                          </td>
 
 

@@ -4,6 +4,7 @@
     require_once '../Class/Visiteur.php';
     require_once '../Class/Visite.php';
     require_once '../Class/Guide.php';
+    require_once '../Class/Etape.php';
 
 
     if (
@@ -16,15 +17,18 @@
             echo $e->getMessage();
         }
 
-        // $tour->getVisite($_GET['id']);
+        $etapes = Etape::getEtapesByViste($idVisitePas);
+        $reservations = Reservation::getResrvationByVisite($idVisitePas);
+        if (!$reservations) {
+            $reservations = false;
+        }
+        if ($etapes) {
+            $etapes = false;
+        }
     } else {
         header("Location: ../connexion.php?error=access_denied");
         exit();
     }
-
-
-
-
 
 
 
@@ -203,7 +207,13 @@
                                  </li>
                                  <li class="flex justify-between items-center pb-1">
                                      <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Guide Assigné :</span>
-                                     <span class="font-semibold"><?=1// $tour['nom_utilisateur'] ?></span>
+                                     <span class="font-semibold">
+                                         <?php
+                                            $user = new Utilisateur();
+                                            $user->getUtilisateur($tour->getIdGuide());
+                                            echo  $user->getNomUtilisateur();
+                                            ?>
+                                     </span>
                                  </li>
                              </ul>
                          </div>
@@ -226,15 +236,22 @@
                              </h3>
                              <div class="grid grid-cols-3 gap-4 text-center border-t border-border-light dark:border-border-dark/50 pt-3">
                                  <div class="p-2 border-r border-border-light dark:border-border-dark/50">
-                                     <p class="text-3xl font-extrabold text-text-main-light dark:text-text-main-dark"><?= $tour['capacite_max__visite'] ?></p>
+                                     <p class="text-3xl font-extrabold text-text-main-light dark:text-text-main-dark"><?= $tour->getCapaciteMaxVisite() ?></p>
                                      <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Places Total</p>
                                  </div>
                                  <div class="p-2 border-r border-border-light dark:border-border-dark/50">
-                                     <p class="text-3xl font-extrabold text-blue-600"><?= $nb_participants ?></p>
+                                     <p class="text-3xl font-extrabold text-blue-600">
+                                         <?php
+                                            $nb_participants = 0;
+                                            if ($reservations)
+                                                foreach ($reservations as $reservation)
+                                                    $nb_participants += $reservation->getNombrePersonnes();
+                                            echo $nb_participants;
+                                            ?></p>
                                      <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Réservations Confirmées</p>
                                  </div>
                                  <div class="p-2">
-                                     <p class="text-3xl font-extrabold   dark:text-text-main-dark   text-green-600"><?= $tour['capacite_max__visite'] - $nb_participants ?></p>
+                                     <p class="text-3xl font-extrabold   dark:text-text-main-dark   text-green-600"><?= $tour->getCapaciteMaxVisite() - $nb_participants ?></p>
                                      <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Places Restantes</p>
                                  </div>
                              </div>
@@ -263,10 +280,12 @@
                                      </tr>
                                  </thead>
                                  <tbody class="divide-y divide-border-light dark:divide-border-dark">
-                                     <?php foreach ($array_etapes as $etape) : ?>
+                                     <?php
+                                        if ($etapes)
+                                            foreach ($etapes as $etape) : ?>
                                          <tr class="hover:bg-background-light dark:hover:bg-white/5 transition-colors">
                                              <td class="px-6 py-4 whitespace-nowrap">
-                                                 <div class="text-sm font-medium text-text-main-light dark:text-text-main-dark"><?= ($etape['titre_etape']) ?></div>
+                                                 <div class="text-sm font-medium text-text-main-light dark:text-text-main-dark"><?= ($etape->getTitreEtape()) ?></div>
                                                  <div class="text-xs text-text-sec-light dark:text-text-sec-dark truncate"><?= ($etape['description_etape']) ?></div>
                                              </td>
                                              <td class="px-6 py-4 whitespace-nowrap text-center">
@@ -293,10 +312,7 @@
                              <?php endif; ?>
 
                              <div class="p-4 border-t border-border-light dark:border-border-dark/50 text-right">
-                                 <a href="reservations.php?tour_id=<?= $tour_id ?>" class="text-sm text-primary font-semibold hover:underline">
-                                     Gérer toutes les réservations
-                                     <span class="material-symbols-outlined text-[16px] align-middle ml-1">arrow_forward</span>
-                                 </a>
+                                 
                              </div>
                          </div>
                      </div>

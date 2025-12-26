@@ -48,7 +48,7 @@ class Habitat
     }
     public function setZoneZoo(string $zone_zoo)
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        $regix = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
         if (preg_match($regix, $zone_zoo)) {
             $this->zone_zoo = $zone_zoo;
             return true;
@@ -57,7 +57,7 @@ class Habitat
     }
     public function setTypeClimat(string $type_climat)
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        $regix = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
         if (preg_match($regix, $type_climat)) {
             $this->type_climat = $type_climat;
             return true;

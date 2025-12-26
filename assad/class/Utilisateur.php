@@ -55,8 +55,8 @@ class Utilisateur
     }
     public function setNomUtilisateur($nom_utilisateur): bool
     {
-        $regex = "/^[a-zA-ZÀ-ÿ\s'-]{5,50}$/";
-        if (preg_match($regex, $nom_utilisateur)) {
+    
+        if (strlen($nom_utilisateur)) {
             $this->nom_utilisateur = $nom_utilisateur;
             return true;
         }
@@ -84,8 +84,8 @@ class Utilisateur
 
     public function setMotPasse($mot_passe): bool
     {
-        $regex = '/^[A-Za-z@&1-9!?]{5,20}$/'; //__8
-        if (preg_match($regex, $mot_passe)) {
+
+        if (strlen($mot_passe) >= 8) {
             $this->mot_passe = $mot_passe;
             return true;
         }

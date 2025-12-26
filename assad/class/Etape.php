@@ -105,5 +105,33 @@ class Etape
             return false;
         }
     }
+    public static function getEtapesByViste(int $id_visite): array|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM etapesvisite WHERE id_visite = :id_visite ORDER BY ordre_etape ASC";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_visite', $id_visite, PDO::PARAM_INT);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $etapes = [];
+            foreach ($rows as $row) {
+                $etape = new Etape();
+                if (
+                    $etape->setTitreEtape($row['titre_etape']) &&
+                    $etape->setDescriptionEtape($row['description_etape']) &&
+                    $etape->setOrdreEtape((int)$row['ordre_etape']) &&
+                    $etape->setIdVisite((int)$row['id_visite']) &&
+                    $etape->idEtape = (int)$row['id_etape']
+                ) {
+                    $etapes[] = $etape;
+                }
+            }
+            return $etapes;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
 ?>
