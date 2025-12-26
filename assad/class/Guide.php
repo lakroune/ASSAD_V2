@@ -22,7 +22,9 @@ class Guide extends Utilisateur
     {
         if ($approuver == 0 || $approuver == 1) {
             $this->is_Approuver = $approuver;
+            return true;
         }
+        return false;
     }
     public function __toString()
     {
@@ -48,7 +50,7 @@ class Guide extends Utilisateur
                 $this->setNomUtilisateur($visiteur['nom_utilisateur']) &&
                 $this->setEmail($visiteur['email']) &&
                 $this->setPaysUtilisateur($visiteur['pays_utilisateur']) &&
-                $this->setIsApprouver($visiteur['statut_utilisateur'])
+                $this->setIsApprouver($visiteur['Approuver_utilisateur'])
             )
                 return $this;
         } else {
@@ -98,8 +100,38 @@ class Guide extends Utilisateur
             return true;
         return false;
     }
+    public static function getAllGuides()
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM utilisateurs ";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if (!$results) {
+                return [];
+            }
+
+            $guidesList = [];
+
+            foreach ($results as $row) {
+                $guide = new self();
+                if (
+                    $guide->setIdUtilisateur($row['id_utilisateur']) &&
+                    $guide->setNomUtilisateur($row['nom_utilisateur']) &&
+                    $guide->setEmail($row['email']) &&
+                    $guide->setPaysUtilisateur($row['pays_utilisateur']) &&
+                    $guide->setIsApprouver($row['Approuver_utilisateur'])
+                )
+                    $guidesList[] = $guide;
+            }
+
+            return $guidesList;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
 
-// $guide = new Guide();
-// $guide->setIdUtilisateur(1);
-// echo $guide->modifierVisite(1, "titre", "desczzzzzzzzz", "2024-12-12 10:00:00", "francais", "02:00:00", 20, 50.0, 1) ? "Visite ajoutée avec succès" : "Echec de l'ajout de la visite";
+ 

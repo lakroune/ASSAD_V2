@@ -1,5 +1,5 @@
  <?php
-    session_start();
+
 
     require_once '../Class/Visiteur.php';
     require_once '../Class/Reservation.php';
@@ -10,66 +10,12 @@
         Visiteur::isConnected("visiteur")
     ) {
 
-
- 
-
-
-        $sql = " select * from  utilisateurs where role='guide' ";
-        $resultat = $conn->query($sql);
-
-        $array_guides = array();
-        while ($ligne =  $resultat->fetch_assoc())
-            array_push($array_guides, $ligne);
-
-        $sql = "SELECT * FROM visitesguidees  WHERE 1=1";
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-
-
-            // filter par date_filter
-            if (!empty($_POST['date_filter'])) {
-                $sql .= " AND dateheure_viste <= " . $_POST['date_filter'];
-            }
-
-            // Filtre par typr guide_filter
-            if (!empty($_POST['guide_filter'])) {
-                $sql .= " AND id_guide = '" . $_POST['guide_filter'] . "'";
-            }
-        }
-
-        try {
-            $resultat = $conn->query($sql);
-            $array_visites = array();
-            while ($ligne =  $resultat->fetch_assoc())
-                array_push($array_visites, $ligne);
-        } catch (Exception $e) {
-
-            error_log(date('Y-m-d H:i:s') . " - Erreur Recherche visite : " . $e->getMessage() . PHP_EOL, 3, "../error.log");
-            $array_visites = array();
-            while ($ligne =  $resultat->fetch_assoc())
-                array_push($array_visites, $ligne);
-        }
+        $array_guides = Guide::getAllGuides();
+        $array_visites = Visite::getAllVisites();
     } else {
         header("Location: ../connexion.php?error=access_denied");
         exit();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     ?>
@@ -188,8 +134,8 @@
                          <select name="guide_filter" class="px-4 py-2 border border-gray-200 rounded-lg bg-white text-sm focus:ring-primary w-full">
                              <option value="">Tous les Guides</option>
                              <?php foreach ($array_guides as $guide): ?>
-                                 <option value="<?= $guide["id_utilisateur"] ?>" <?= (isset($_POST['guide_filter']) && $_POST['guide_filter'] == $guide["id_utilisateur"]) ? 'selected' : '' ?>>
-                                     <?= ($guide["nom_utilisateur"]) ?>
+                                 <option value="<?= $guide->getNomUtilisateur() ?>" <?= (isset($_POST['guide_filter']) && $_POST['guide_filter'] == $guide->getIdUtilisateur()) ? 'selected' : '' ?>>
+                                     <?= ($guide->getNomUtilisateur()) ?>
                                  </option>
                              <?php endforeach; ?>
                          </select>
@@ -201,16 +147,16 @@
                      </div>
                  </form>
                  <div class="space-y-6">
-                     <?php foreach ($array_visites as $visit) :
+                     <?php foreach ($array_visites as $visite) :
 
-                            $date_visite = strtotime($visit['dateheure_viste']);
+                            $date_visite =$visite->getDateheureVisite()->format('H:i');
                             $maintenant = time();
                             $is_full = 11 <= 0;
                         ?>
                          <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-white dark:bg-zinc-800 border border-[#f3ede7] dark:border-zinc-700 shadow-md hover:shadow-lg transition-shadow duration-300 <?= $is_full ? 'opacity-75' : '' ?>">
 
                              <div class="h-48 sm:h-auto sm:w-48 rounded-xl bg-cover bg-center shrink-0 relative bg-gray-200"
-                                 style="background-image: url('../assets/img/habitats/<?= $visit['id_habitat'] ?? 'default' ?>.jpg');">
+                                 style="background-image: url(' ');">
 
                                  <?php if ($date_visite <= $maintenant && $date_visite > ($maintenant - 3600)) : ?>
                                      <div class="m-2 absolute top-0 left-0 inline-flex px-2 py-1 bg-green-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-lg items-center gap-1">
@@ -232,31 +178,31 @@
                              <div class="flex flex-col justify-between flex-1 gap-4">
                                  <div>
                                      <h4 class="text-xl font-bold mb-1 hover:text-primary transition-colors cursor-pointer text-[#1b140d] dark:text-white">
-                                         <?= ($visit['titre_visite']) ?>
+                                         <?= ($visite->getTitreVisite()) ?>
                                      </h4>
                                      <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
-                                         <?= ($visit['description_visite']) ?>.
+                                         <?= ($visite->getDescriptionVisite()) ?>.
 
                                      </p>
 
                                      <div class="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-500">
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">calendar_month</span>
-                                             <span><?= date('d M Y, H:i', $date_visite) ?></span>
+                                             <span><?=   $visite->getDateheureVisite()->format('H:i'); ?></span>
                                          </div>
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">group</span>
-                                             <span><?= $is_full ? 'Complet' : $visit["capacite_max__visite"] . ' places dispo.' ?></span>
+                                             <span><?=  $is_full  ? 'Complet' : $visite->getCapaciteMaxVisite() . ' places dispo.' ?></span>
                                          </div>
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">payments</span>
-                                             <span class="font-bold text-green-600"><?= ($visit['prix__visite']) ?>€</span>
+                                             <span class="font-bold text-green-600"><?= ($visite->getPrixVisite()) ?>€</span>
                                          </div>
                                      </div>
                                  </div>
 
                                  <div class="flex flex-wrap gap-3 mt-auto pt-2 border-t border-gray-100 dark:border-zinc-700">
-                                     <a href="visite_details.php?id=<?= $visit['id_visite'] ?>" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">
+                                     <a href="visite_details.php?id=<?= $visit->getIdVisite() ?>" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">
                                          <span class="material-symbols-outlined text-[18px]">visibility</span>
                                          Détails
                                      </a>
@@ -264,7 +210,7 @@
                                      <?php if (!$is_full) : ?>
 
                                          <form action="php/traiter_reservation.php" method="POST" class="reservation-form">
-                                             <input type="hidden" name="id_visite" value="<?= $visit['id_visite'] ?>">
+                                             <input type="hidden" name="id_visite" value="<?= $visit->getIdVisite() ?>">
                                              <input type="hidden" name="id_utilisateur" value="<?= $_SESSION['id_utilisateur'] ?>">
 
                                              <div class="flex items-center gap-2">

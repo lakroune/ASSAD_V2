@@ -30,7 +30,7 @@ class Visite
     {
         return $this->description_visite;
     }
-    public function getDateheureViste(): DateTime
+    public function getDateheureVisite(): DateTime
     {
         return $this->dateheure_viste;
     }
@@ -42,7 +42,7 @@ class Visite
     {
         return $this->duree__visite;
     }
-    public function getCapaciteMaxVisite(): string
+    public function getCapaciteMaxVisite(): int
     {
         return $this->capacite_max__visite;
     }
@@ -217,35 +217,41 @@ class Visite
             return false;
         }
     }
-}
 
-// $vis = new Visite();
-// if (!$vis->setIdVisite(44)) {
-//     echo "ID visite invalide.\n";
-// }
-// if (!$vis->setTitreVisite("Visite des lions")) {
-//     echo "Titre visite invalide.\n";
-// }
-// if (!$vis->setDescriptionVisite("Une visite passionnante pour découvrir les lions et leur habitat.")) {
-//     echo "Description visite invalide.\n";
-// }
-// $vis->setDateheureVisite("2024-12-15 14:00:00");
-// if (!$vis->setLangueVisite("anglis")) {
-//     echo "Langue visite invalide.\n";
-// }
-// $vis->setDureeVisite("02:00:00");
-// if (!$vis->setCapaciteMaxVisite(20)) {
-//     echo "Capacite max visite invalide.\n";
-// }
-// if (!$vis->setPrixVisite(15.50)) {
-//     echo "Prix visite invalide.\n";
-// }
-// if (!$vis->setStatutVisite(1)) {
-//     echo "Statut visite invalide.\n";
-// }
-// if (!$vis->setIdGuide(1)) {
-//     echo "ID guide invalide.\n";
-// }
-// echo $vis->ajouter_visite() ;
-// echo $vis->supprimer_visite(43);
-// echo $vis->modifier_visite();
+
+    public static function getAllVisites(): array|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM visitesguidees";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $visitesList = [];
+
+            foreach ($results as $row) {
+                $visite = new self();
+                if (
+                    $visite->setIdVisite((int)$row["id_visite"]) &&
+                    $visite->setTitreVisite($row["titre_visite"]) &&
+                    $visite->setDescriptionVisite($row["description_visite"]) &&
+                    $visite->setDateheureVisite($row["dateheure_viste"]) &&
+                    $visite->setLangueVisite($row["langue__visite"]) &&
+                    $visite->setDureeVisite($row["duree__visite"]) &&
+                    $visite->setCapaciteMaxVisite((int)$row["capacite_max__visite"]) &&
+                    $visite->setPrixVisite((float)$row["prix__visite"]) &&
+                    $visite->setStatutVisite((int)$row["statut__visite"]) &&
+                    $visite->setIdGuide((int)$row["id_guide"])
+                )
+
+                    $visitesList[] = $visite;
+            }
+
+            return $visitesList;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+}

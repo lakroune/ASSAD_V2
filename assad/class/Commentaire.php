@@ -186,21 +186,20 @@ class Commentaire
         if ($stmt->execute()) {
             $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $allCommantaire = [];
-            // if (
-            //     !empty($result)
-            // ) {
-                $commentaire = new Commentaire();
 
-                foreach ($resultats as $result) {
-                    $commentaire->setIdCommentaire($result['id_commentaire']);
-                    $commentaire->setContenuCommentaire($result['texte']);
-                    $commentaire->setDateCommentaire($result['date_commentaire']);
-                    $commentaire->setNote($result['note']);
-                    $commentaire->setIdVisiteur($result['id_utilisateur']);
-                    $commentaire->setIdVisite($result['id_visite']);
+            $commentaire = new Commentaire();
+            foreach ($resultats as $result) {
+                if (
+                    $commentaire->setIdCommentaire($result['id_commentaire']) &&
+                    $commentaire->setContenuCommentaire($result['texte']) &&
+                    $commentaire->setDateCommentaire($result['date_commentaire']) &&
+                    $commentaire->setNote($result['note']) &&
+                    $commentaire->setIdVisiteur($result['id_utilisateur']) &&
+                    $commentaire->setIdVisite($result['id_visite'])
+                )
                     $allCommantaire[] = $commentaire;
-                }
-        // }
+            }
+            // }
             return $allCommantaire;
         } else {
             return false;
@@ -209,5 +208,4 @@ class Commentaire
 }
 
 
-$comm = Commentaire::getAllCommentaires();
-print_r($comm);
+ 

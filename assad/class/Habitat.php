@@ -134,21 +134,32 @@ class Habitat
             return false;
         }
     }
-    public function getHabitat(): array|bool
+    public function getHabitat(int $id_habitat): bool|Habitat
     {
         $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM habitats WHERE id_habitat = :id_habitat";
+        $sql = "SELECT * FROM habitats WHERE id_habitat = :id";
+
         try {
             $stmt = $conn->prepare($sql);
-        } catch (Exception $e) {
+            $stmt->bindParam(':id', $id_habitat, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                 
+                if (
+                    $this->setIdHabitat((int)$result['id_habitat']) &&
+                    $this->setNomHabitat($result['nom_habitat']) &&
+                    $this->setDescriptionHabitat($result['description_habitat']) &&
+                    $this->setZoneZoo($result['zone_zoo'])
+                ) {
+                    return $this;
+                }
+            }
+
             return false;
-        }
-        $stmt->bindParam(':id_habitat', $this->id_habitat);
-        $stmt->execute();
-        $habitat = $stmt->fetch(pdo::FETCH_ASSOC);
-        if ($habitat) {
-            return $habitat;
-        } else {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -181,3 +192,5 @@ class Habitat
         return $allHabitats;
     }
 }
+
+ 

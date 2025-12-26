@@ -52,6 +52,35 @@ class Visiteur extends Utilisateur
             return false;
         }
     }
+    public static function getAllVisiteurs(): array|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM utilisateurs WHERE role = 'visiteur'";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $visiteursList = [];
+
+            foreach ($results as $row) {
+                $visiteur = new self();
+                if (
+                    $visiteur->setIdUtilisateur((int)$row['id_utilisateur']) &&
+                    $visiteur->setNomUtilisateur($row['nom_utilisateur']) &&
+                    $visiteur->setEmail($row['email']) &&
+                    $visiteur->setPaysUtilisateur($row['pays_utilisateur']) &&
+                    $visiteur->setStatutUtilisateur((int)$row['statut_utilisateur'])
+                )
+                    $visiteursList[] = $visiteur;
+            }
+
+            return $visiteursList;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
     public function reserverVisite(int $idVisite, int $nombreParticipants): bool
     {
         $reservation = new Reservation();
@@ -77,5 +106,4 @@ class Visiteur extends Utilisateur
             return false;
     }
 }
-$visiteur = new Visiteur();
-print_r($visiteur->getVisteur(14));
+ 

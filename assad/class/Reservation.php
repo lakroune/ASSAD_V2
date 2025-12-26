@@ -144,13 +144,13 @@ class Reservation
             foreach ($resultats as $resultat):
                 $reservation = new Reservation();
                 if (
-                    $reservation->setIdReservation((int)$resultat["id_reservation"]) &&
-                    $reservation->setNombrePersonnes((int)$resultat["nb_personnes"]) &&
-                    $reservation->setIdVisiteur((int)$resultat["id_utilisateur"]) &&
-                    $reservation->setIdVisite((int)$resultat["id_visite"]) &&
+                    $reservation->setIdReservation($resultat["id_reservations"]) &&
+                    $reservation->setNombrePersonnes($resultat["nb_personnes"]) &&
+                    $reservation->setIdVisiteur($resultat["id_utilisateur"]) &&
+                    $reservation->setIdVisite($resultat["id_visite"]) &&
                     $reservation->setDateReservation($resultat["date_reservation"])
                 )
-                    $reservation[] = $reservation;
+                    $allRervation[] = $reservation;
             endforeach;
             return $allRervation;
         } else {

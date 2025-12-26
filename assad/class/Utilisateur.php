@@ -139,20 +139,70 @@ class Utilisateur
         session_destroy();
     }
 
-    public static function isConnected(string $role="visiteur"): bool
+    public static function isConnected(string $role = "visiteur"): bool
     {
         return isset($_SESSION['logged_in']) && isset($_SESSION['role_utilisateur']) && $_SESSION['logged_in'] === TRUE &&  $_SESSION['role_utilisateur'] === $role;
     }
+    public static function getAllUtilisateurs(): array|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM utilisateurs";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if (!$results) {
+                return [];
+            }
+
+            $utilisateursList = [];
+            $user = new self();
+            foreach ($results as $row)
+
+                if (
+                    $user->setIdUtilisateur((int)$row['id_utilisateur']) &&
+                    $user->setNomUtilisateur($row['nom_utilisateur']) &&
+                    $user->setEmail($row['email']) &&
+                    $user->setPaysUtilisateur($row['pays_utilisateur']) &&
+                    $user->setRoleUtilisateur($row['role'])
+                )
+                    $utilisateursList[] = $user;
+
+
+            return $utilisateursList;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public  function getUtilisateur(int $id_utilisateur): bool|Utilisateur
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = :id";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $id_utilisateur, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user) {
+                if (
+                    $this->setIdUtilisateur($user['id_utilisateur']) &&
+                    $this->setNomUtilisateur($user['nom_utilisateur']) &&
+                    $this->setEmail($user['email']) &&
+                    $this->setPaysUtilisateur($user['pays_utilisateur']) &&
+                    $this->setRoleUtilisateur($user['role'])
+                )
+                    return $this;
+            }
+
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
-
-// $user = new Utilisateur();
-
-// $user->setEmail("admin@admin.com");
-// $user->setMotPasse("admin");
-// $user->setIdUtilisateur(1);
-// $user->setNomUtilisateur("administrateur");
-// $user->setPaysUtilisateur("Maroc");
-
-
-
-// echo  $user;
+ 
