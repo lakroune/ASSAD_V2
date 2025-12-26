@@ -17,7 +17,7 @@ class Admin extends Utilisateur
     {
         return parent::__toString();
     }
-    public function approuver_guide($id_utilisateur): bool
+    public function approuverGuide($id_utilisateur): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE utilisateurs SET Approuver_utilisateur = 1 WHERE role ='guide' and id_utilisateur = :id_utilisateur";
@@ -34,10 +34,10 @@ class Admin extends Utilisateur
         }
     }
 
-    public function acitiver_utilisateur(int $id_utilisateur): bool
+    public function acitiverUtilisateur(int $id_utilisateur): bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "UPDATE utilisateurs SET statut_utilisateur = 1 WHERE (role ='guide' or role ='visiteur') and id_utilisateur = :id_utilisateur";
+        $sql = "UPDATE utilisateurs SET statut_utilisateur = 1 WHERE  role ='visiteur' and id_utilisateur = :id_utilisateur";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
@@ -51,10 +51,10 @@ class Admin extends Utilisateur
         }
     }
 
-    public function desactiver_utilisateur(int $id_utilisateur): bool
+    public function desactiverUtilisateur(int $id_utilisateur): bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "UPDATE utilisateurs SET statut_utilisateur = 0 WHERE (role ='guide' or role ='visiteur') and id_utilisateur = :id_utilisateur";
+        $sql = "UPDATE utilisateurs SET statut_utilisateur = 0 WHERE role ='visiteur' and id_utilisateur = :id_utilisateur";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
@@ -115,5 +115,4 @@ class Admin extends Utilisateur
         }
         return $users;
     }
-
 }
