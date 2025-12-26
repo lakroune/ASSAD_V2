@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $animal->setPaysOrigine($pays) &&
         $animal->setDescriptionAnimal($description) &&
         $animal->setIdHabitat($id_habitat) &&
-        $animal->ajouter_animal()
+        $animal->ajouterAnimal()
     ) {
         header("location: ../admin_animaux.php?message=success");
         exit();

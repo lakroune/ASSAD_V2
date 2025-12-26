@@ -1,31 +1,20 @@
 <?php
-session_start();
-include "../../db_connect.php";
+require_once '../../Class/Admin.php';
+require_once '../../Class/Animal.php';
 
-
-if (!isset($_SESSION['role_utilisateur']) || $_SESSION['role_utilisateur'] !== "admin") {
-    header("location: ../../connexion.php?message=error_server");
+if (!Admin::isConnected("admin")) {
+    header("location: ../../connexion.php?message=access_denied");
     exit();
 }
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_animal'])) {
-    $id = intval($_POST['id_animal']);
-
-    $stmt = $conn->prepare("DELETE FROM animaux WHERE id_animal = ?");
-    $stmt->bind_param("i", $id);
-
-    if ($stmt->execute()) {
-        if ($stmt->affected_rows > 0) {
-            header("location: ../admin_animaux.php?message=error_server");
-        } else {
-            header("location: ../admin_animaux.php?message=error_server");
-        }
+    $animal = new Animal();
+    if (!empty($_POST['id_animal']) &&  $animal->supprimerAnimal($_POST['id_animal'])) {
+        header("location: ../admin_animaux.php?message=success_delete");
     } else {
-        header("location: ../admin_animaux.php?message=error_server");
+        header("location: ../admin_animaux.php?message=error_delete");
+        exit();
     }
-
-    $stmt->close();
-    $conn->close();
 } else {
     header("location: ../admin_animaux.php?message=error_server");
+    exit();
 }

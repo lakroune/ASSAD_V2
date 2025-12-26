@@ -127,7 +127,7 @@ class Animal
     }
 
 
-    public function ajouter_animal(): bool
+    public function ajouterAnimal(): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "INSERT INTO animaux (nom_animal, espece , alimentation_animal, image_url ,pays_origine, description_animal, id_habitat) VALUES ( :nom_animal, :espece_animal, :type_alimentation, :image_url, :pays_origine, :description_animal,  :id_habitat)";
@@ -150,7 +150,7 @@ class Animal
         }
     }
 
-    public function supprimer_animal(int $id_animal): bool
+    public function supprimerAnimal(int $id_animal): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "DELETE FROM animaux WHERE id_animal = :id_animal";
@@ -166,7 +166,7 @@ class Animal
             return false;
         }
     }
-    public function modifier_animal(): bool
+    public function modifierAnimal(): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE animaux SET nom_animal = :nom_animal, espece = :espece_animal, alimentation_animal = :type_alimentation, pays_origine = :pays_origine, description_animal = :description_animal, image_url = :image_url, id_habitat = :id_habitat WHERE id_animal = :id_animal";
