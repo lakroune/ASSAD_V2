@@ -201,4 +201,49 @@ class Reservation
             return false;
         }
     }
+
+    public  function getResrvationByGuide(int $idGuide) //
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM reservations r INNER JOIN visitesguidees v on r.id_visite = v.id_visite WHERE v.id_guide = :id_guide";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_guide', $idGuide);
+        $stmt->execute();
+        $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $allRervation = [];
+        if ($resultats) {
+
+            foreach ($resultats as $resultat):
+                $reservation = new Reservation();
+                if (
+                    $reservation->setIdReservation($resultat["id_reservations"]) &&
+                    $reservation->setNombrePersonnes($resultat["nb_personnes"]) &&
+                    $reservation->setIdVisiteur($resultat["id_utilisateur"]) &&
+                    $reservation->setIdVisite($resultat["id_visite"]) &&
+                    $reservation->setDateReservation($resultat["date_reservation"])
+                )
+                    $allRervation[] = $reservation;
+            endforeach;
+            return $allRervation;
+        } else {
+            return false;
+        }
+    }
+    public static function conuterReservationsByVisite($idVisite)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT COUNT(*) FROM reservations WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_visite', $idVisite);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
 }

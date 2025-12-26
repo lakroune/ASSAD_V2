@@ -46,7 +46,7 @@ class Guide extends Utilisateur
         if ($stmt->execute()) {
             $visiteur = $stmt->fetch(PDO::FETCH_ASSOC);
             if (
-                $this->setIdUtilisateur( $visiteur['id_utilisateur']) &&
+                $this->setIdUtilisateur($visiteur['id_utilisateur']) &&
                 $this->setNomUtilisateur($visiteur['nom_utilisateur']) &&
                 $this->setEmail($visiteur['email']) &&
                 $this->setRoleUtilisateur($visiteur['role']) &&
@@ -145,5 +145,29 @@ class Guide extends Utilisateur
         } catch (Exception $e) {
             return false;
         }
+    }
+    public function getNoteGuide(): float
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT AVG(note) FROM commentaires WHERE id_guide = :id_guide";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':id_guide', $this->getIdUtilisateur());
+            $stmt->execute();
+            $results = $stmt->fetchColumn();
+            return $results;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function getNbParticipants(): int
+    {
+        $conn = (new Connexion())->connect();
+        $visites = Visite::getProchaineVisiteByGuide($this->getIdUtilisateur());
+        $nbParticipants = 0;
+        foreach ($visites as $visite) {
+            $nbParticipants += $visite->getNbParticipants();
+        }
+        return $nbParticipants;
     }
 }

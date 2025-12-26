@@ -75,7 +75,64 @@ class Etape
             ", idVisite=" . $this->idVisite;
     }
 
+    public function ajouterEtape(): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "INSERT INTO etapesvisite (titre_etape, description_etape, ordre_etape, id_visite) VALUES (:titre_etape, :description_etape, :ordre_etape, :id_visite)";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':titre_etape', $this->titreEtape);
+            $stmt->bindParam(':description_etape', $this->descriptionEtape);
+            $stmt->bindParam(':ordre_etape', $this->ordreEtape);
+            $stmt->bindParam(':id_visite', $this->idVisite);
+            return $stmt->execute();
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function AjouterEtapes(array $etapes): bool
+    {
+        if ($etapes)
+            foreach ($etapes as $etape)
+                $etp = new Etape();
 
+        if (
+            $etp->setTitreEtape($etape['titre']) &&
+            $etp->setDescriptionEtape($etape['desc']) &&
+            $etp->setOrdreEtape($etape['ordre_etape'])
+            && $etp->setIdVisite($etape['id_visite'])
+            && $etp->ajouterEtape()
+        )
+            return true;
+        return false;
+    }
+
+    public function supprimerEtape(): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "DELETE FROM etapesvisite WHERE id_etape = :id";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $this->idEtape, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function supprimerEtapesViste(int $id_visite): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "DELETE FROM etapesvisite WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_visite', $id_visite, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
     public function getEtape(int $id_etape): bool|Etape
     {
         $conn = (new Connexion())->connect();

@@ -1,31 +1,19 @@
 <?php
-include "../db_connect.php";
-session_start();
+require_once '../Class/Guide.php';
+require_once '../Class/Visite.php';
+require_once '../Class/Etape.php';
+require_once '../Class/Reservation.php';
 
-
+$guide = new Guide();
+$guide->getGuide($_SESSION["id_utilisateur"]);
 if (
-    isset($_SESSION['role_utilisateur'], $_SESSION['logged_in']) &&
-    $_SESSION['role_utilisateur'] === "guide" &&
-    $_SESSION['logged_in'] === TRUE
+    ! $guide->isConnected("guide")
 ) {
-    $id_utilisateur = ($_SESSION['id_utilisateur']);
-    $nom_utilisateur = ($_SESSION['nom_utilisateur']);
-    $role_utilisateur = ($_SESSION['id_utilisateur']);
-
-
-
-
-    $sql = " select * from  utilisateurs u inner join  reservations r on  r.id_utilisateur = u.id_utilisateur inner join  visitesguidees v on v.id_visite=r.id_visite and id_guide= $id_utilisateur";
-    $resultat = $conn->query($sql);
-    $array_participants = array();
-    while ($ligne =  $resultat->fetch_assoc())
-        array_push($array_participants, $ligne);
+    header("Location: ../../connexion.php?error=access_denied");
 } else {
-
-    header("Location: ../connexion.php?error=access_denied");
-    exit();
+    $reservation = new Reservation();
+    $reservations = $reservation->getResrvationByGuide($guide->getIdUtilisateur());
 }
-
 
 ?>
 
@@ -173,7 +161,7 @@ if (
                             <?php if (empty($array_participants)): ?>
                                 <tr>
                                     <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-sm text-text-sec-light dark:text-text-sec-dark">
-                                        Aucune réservation  .
+                                        Aucune réservation .
                                     </td>
                                 </tr>
                             <?php else: ?>

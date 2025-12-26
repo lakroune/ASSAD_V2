@@ -205,7 +205,54 @@ class Commentaire
             return false;
         }
     }
+
+    public function getCommentairesByVisite(int $idVisite)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM commentaires WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_visite', $idVisite);
+        if ($stmt->execute()) {
+            $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $allCommantaire = [];
+
+            $commentaire = new Commentaire();
+            foreach ($resultats as $result) {
+                if (
+                    $commentaire->setIdCommentaire($result['id_commentaire']) &&
+                    $commentaire->setContenuCommentaire($result['texte']) &&
+                    $commentaire->setDateCommentaire($result['date_commentaire']) &&
+                    $commentaire->setNote($result['note']) &&
+                    $commentaire->setIdVisiteur($result['id_utilisateur']) &&
+                    $commentaire->setIdVisite($result['id_visite'])
+                )
+                    $allCommantaire[] = $commentaire;
+            }
+            // }
+            return $allCommantaire;
+        } else {
+            return false;
+        }
+    }
+    public function counterCommentaireByVisite(int $idVisite)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM commentaires WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_visite', $idVisite);
+        if ($stmt->execute()) {
+            $result = $stmt->rowCount();
+            return $result;
+        } else {
+            return false;
+        }
+    }
 }
-
-
- 

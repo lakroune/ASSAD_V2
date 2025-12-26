@@ -1,88 +1,87 @@
 <?php
-include "../../db_connect.php";
-session_start();
+require_once '../../Class/Connexion.php';
+require_once '../../Class/Guide.php';
+require_once '../../Class/Visite.php';
+require_once '../../Class/Etape.php';
 
-if (!isset($_SESSION['id_utilisateur'])) {
-    header("Location: ../../connexion.php");
+
+if (!Guide::isConnected("guide")) {
+    header("Location: ../../connexion.php?error=access_denied");
     exit();
 }
 
+$guide = new Guide();
+$id_guide = $_SESSION["id_utilisateur"];
+$guide->getGuide($id_guide);
 
-$id_guide = $_SESSION['id_utilisateur'];
-$sql_status = "select statut_utilisateur FROM utilisateurs WHERE id_utilisateur = ?";
-$stmtStatus = $conn->prepare($sql_status);
-$stmtStatus->bind_param("i", $id_guide);
-$stmtStatus->execute();
-$resultat = $stmtStatus->get_result();
-$statut_utilisateur = 0;
-if ($resultat->num_rows > 0)
-    $statut_utilisateur = $resultat->fetch_assoc()["statut_utilisateur"];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $visite = new Visite();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $statut_utilisateur) {
-    $id_visite = !empty($_POST['id_visite']) ? $_POST['id_visite'] : null;
-    $titre = $_POST['titre_visite'];
-    $description = $_POST['description_visite'];
-    $dateheure = $_POST['dateheure_viste'];
-    $langue = $_POST['langue__visite'];
-    $prix = intval($_POST['prix__visite']);
-    $capacite = intval($_POST['capacite_max__visite']);
-    $etapes = isset($_POST['etapes']) ? $_POST['etapes'] : [];
+    // CASE 1: UPDATE (Modifier)  
+    if (isset($_POST['id_visite']) && !empty($_POST['id_visite'])) {
 
-
-
-    try {
-        if ($id_visite) {
-            $sql = "UPDATE visitesguidees SET 
-                    titre_visite = ?, 
-                    description_visite = ?, 
-                    dateheure_viste = ?, 
-                    langue__visite = ?, 
-                    prix__visite = ?, 
-                    capacite_max__visite = ? 
-                    WHERE id_visite = ? AND id_guide = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssssiiii", $titre, $description, $dateheure, $langue, $prix, $capacite, $id_visite, $id_guide);
-            $stmt->execute();
-        } else {
-
-            $sql = "INSERT INTO visitesguidees (titre_visite, description_visite, dateheure_viste, langue__visite, prix__visite, capacite_max__visite, id_guide) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssssiii", $titre, $description, $dateheure, $langue, $prix, $capacite, $id_guide);
-            $stmt->execute();
-            $id_visite = $conn->insert_id;
+        if (
+            $visite->setIdVisite((int)$_POST["id_visite"]) &&
+            $visite->setDateheureVisite($_POST['dateheure_viste']) &&
+            $visite->setDureeVisite($_POST['duree__visite']) &&
+            $visite->setCapaciteMaxVisite((int)$_POST['capacite_max__visite']) &&
+            $visite->setPrixVisite((float)$_POST['prix__visite'])  &&
+            $visite->setDescriptionVisite($_POST['description_visite']) &&
+            $visite->setLangueVisite($_POST['langue__visite']) &&
+            $visite->setTitreVisite($_POST['titre_visite']) &&
+            $visite->setStatutVisite(0) &&
+            $visite->setIdGuide($guide->getIdUtilisateur()) &&
+            $visite->modifierVisite()
+        ) {
+            // Modification des étapes (Etapes)
+            $etapes = isset($_POST['etapes']) ? $_POST['etapes'] : [];
+            $eat = new Etape();
+            $eat->supprimerEtapesViste((int)$_POST['id_visite']);
+            foreach ($etapes as $etapeData) {
+                $etap = new Etape();
+                $etap->setTitreEtape($etapeData['titre']);
+                $etap->setDescriptionEtape($etapeData['desc']);
+                $etap->setOrdreEtape((int)$etapeData['ordre_etape']);
+                $etap->setIdVisite((int)$_POST['id_visite']);
+                $etap->ajouterEtape();
+            }
+            header("Location: ../mes_visites.php?success=visite_modifiee");
+            exit();
         }
+    }
+    //  CASE 2: ADD (Ajouter)
+    else {
+        if (
+            $visite->setDateheureVisite($_POST['dateheure_viste']) &&
+            $visite->setDureeVisite($_POST['duree__visite']) &&
+            $visite->setCapaciteMaxVisite((int)$_POST['capacite_max__visite']) &&
+            $visite->setPrixVisite((float)$_POST['prix_visite'])  &&
+            $visite->setDescriptionVisite($_POST['description_visite']) &&
+            $visite->setLangueVisite($_POST['langue__visite']) &&
+            $visite->setTitreVisite($_POST['titre_visite']) &&
+            $visite->setStatutVisite(1) &&
+            $visite->setIdGuide($id_guide)
+        ) {
+            $lastVisiteId = $visite->ajouterVisite();
 
-        $sqlDelete = "DELETE FROM etapesvisite WHERE id_visite = ?";
-        $stmtDel = $conn->prepare($sqlDelete);
-        $stmtDel->bind_param("i", $id_visite);
-        $stmtDel->execute();
-
-
-        if (!empty($etapes)) {
-            $sqlEtape = "INSERT INTO etapesvisite (titre_etape, description_etape, ordre_etape, id_visite) VALUES (?, ?, ?, ?)";
-            $stmtEtape = $conn->prepare($sqlEtape);
-
-            foreach ($etapes as $etape) {
-                if (!empty($etape['titre'])) {
-                    $t_etape = $etape['titre'];
-                    $d_etape = $etape['desc'];
-                    $o_etape = intval($etape['ordre']);
-                    $stmtEtape->bind_param("ssii", $t_etape, $d_etape, $o_etape, $id_visite);
-                    $stmtEtape->execute();
+            if ($lastVisiteId) {
+                $etapes = isset($_POST['etapes']) ? $_POST['etapes'] : [];
+                foreach ($etapes as $etapeData) {
+                    $etap = new Etape();
+                    $etap->setTitreEtape($etapeData['titre']);
+                    $etap->setDescriptionEtape($etapeData['desc']);
+                    $etap->setOrdreEtape((int)$etapeData['ordre_etape']);
+                    $etap->setIdVisite((int)$lastVisiteId);
+                    $etap->ajouterEtape();
                 }
+                header("Location: ../mes_visites.php?success=visite_ajoute");
+                exit();
             }
         }
-
-
-
-
-
-        header("Location: ../mes_visites.php?status=success");
-    } catch (Exception $e) {
-
-        $conn->rollback();
-        header("Location: ../mes_visites.php?status=Erreur");
     }
-} else
-    header("Location: ../mes_visites.php?status=Suspendu");
+
+     
+} else {
+    header("Location: ../mes_visites.php?error=invalid_request");
+    exit();
+}

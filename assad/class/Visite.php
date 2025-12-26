@@ -169,7 +169,8 @@ class Visite
         $stmt->bindParam(':id_guide', $this->id_guide);
         try {
             $stmt->execute();
-            return true;
+            //return id_visite en db
+            return $conn->lastInsertId();
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -286,12 +287,120 @@ class Visite
             return false;
         }
     }
+    // get visite sur format array assoc
+    public function visiteToAssc()
+
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM visitesguidees WHERE id_visite = :id";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $this->id_visite, PDO::PARAM_INT);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $row;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
     public static function counterVisites(): int
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT COUNT(*) as count FROM visitesguidees";
         try {
             $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int)$row['count'];
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
+    public static function getProchaineVisiteByGuide(int $id_guide)
+    {
+        $conn = (new Connexion())->connect();
+        //get the next visit  near the current time
+        $sql = "SELECT * FROM visitesguidees WHERE id_guide = :id_guide AND dateheure_viste > NOW() ORDER BY dateheure_viste ASC LIMIT 1";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_guide', $id_guide, PDO::PARAM_INT);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row) {
+                $visite = new self();
+                if (
+                    $visite->setIdVisite($row["id_visite"]) &&
+                    $visite->setTitreVisite($row["titre_visite"]) &&
+                    $visite->setDescriptionVisite($row["description_visite"]) &&
+                    $visite->setDateheureVisite($row["dateheure_viste"]) &&
+                    $visite->setLangueVisite($row["langue__visite"]) &&
+                    $visite->setDureeVisite($row["duree__visite"]) &&
+                    $visite->setCapaciteMaxVisite($row["capacite_max__visite"]) &&
+                    $visite->setPrixVisite((float)$row["prix__visite"]) &&
+                    $visite->setStatutVisite($row["statut__visite"]) &&
+                    $visite->setIdGuide($row["id_guide"])
+                ) {
+                    return $visite;
+                }
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function getVisitesByGuide(int $id_guide): bool|array
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM visitesguidees WHERE id_guide = :id_guide";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_guide', $id_guide, PDO::PARAM_INT);
+            $stmt->execute();
+            $visites = [];
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $visite = new self();
+                if (
+                    $visite->setIdVisite($row["id_visite"]) &&
+                    $visite->setTitreVisite($row["titre_visite"]) &&
+                    $visite->setDescriptionVisite($row["description_visite"]) &&
+                    $visite->setDateheureVisite($row["dateheure_viste"]) &&
+                    $visite->setLangueVisite($row["langue__visite"]) &&
+                    $visite->setDureeVisite($row["duree__visite"]) &&
+                    $visite->setCapaciteMaxVisite($row["capacite_max__visite"]) &&
+                    $visite->setPrixVisite((float)$row["prix__visite"]) &&
+                    $visite->setStatutVisite($row["statut__visite"]) &&
+                    $visite->setIdGuide($row["id_guide"])
+                ) {
+                    $visites[] = $visite;
+                }
+            }
+            return $visites;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public static function counterVisitesbyGuide(int $id_guide): int
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT COUNT(*) as count FROM visitesguidees WHERE id_guide = :id_guide";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_guide', $id_guide, PDO::PARAM_INT);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int)$row['count'];
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
+    public function getNbParticipants(): int
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT COUNT(*) as count FROM reservations WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':id_visite', $this->getIdVisite(), PDO::PARAM_INT);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             return (int)$row['count'];

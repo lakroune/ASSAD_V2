@@ -1,40 +1,29 @@
  <?php
 
     $image = "https://lh3.googleusercontent.com/aida-public/AB6AXuBB3mzttMFekKaHiUMQgz9CbcCvR-LHMfkNamiYLEoaa6mr4VX3RGazcvrLyN6USTeeR3THkb5RzRgunm2nxYGRlj0JP37XKsb0oTpMuUfgiqYzKIQpDFu5Cwamtq0rGjsH93RIdsA6guKSg4KakhrlAV6mKU_SZGX00TM6y3-uGVugQHONmrBvFsVLmZ73htnyBEHRcaZXZ-cwzOoPb7aiKe-dIsmCV4By1n5q6PJKo8CSmh3GTGb2hDjnxSb8_vhCsJz-sArwzoL6";
-    session_start();
-    include "../db_connect.php";
-    if (
-        isset($_SESSION['role_utilisateur'], $_SESSION['logged_in']) &&
-        $_SESSION['role_utilisateur'] === "guide" &&
-        $_SESSION['logged_in'] === TRUE
-    ) {
-        $id_utilisateur = ($_SESSION['id_utilisateur']);
-        $nom_utilisateur = ($_SESSION['nom_utilisateur']);
-        $role_utilisateur = ($_SESSION['id_utilisateur']);
 
+    require_once '../Class/Guide.php';
+    require_once '../Class/Visite.php';
+    require_once '../Class/Etape.php';
+
+    $guide = new Guide();
+    $guide->getGuide($_SESSION["id_utilisateur"]);
+    if (
+        ! $guide->isConnected("guide")
+    ) {
+        header("Location: ../../connexion.php?error=access_denied");
+    }
+
+
+
+    if (isset($_GET['id']) && !empty($_GET['id'])) {
 
         $tour_id = $_GET['id'];
-
-        $sql = " select * from  visitesguidees  inner join  utilisateurs  on id_utilisateur =  id_guide and id_visite = $tour_id";
-        $resultat = $conn->query($sql);
-
-        $tour = array();
-        if ($resultat->num_rows == 1) {
-            $tour = $resultat->fetch_assoc();
-            $sql = " select * from  visitesguidees v inner join  etapesvisite e on v.id_visite= e.id_visite   and v.id_visite = $tour_id";
-            $resultat = $conn->query($sql);
-            $array_etapes = array();
-            while ($ligne =  $resultat->fetch_assoc())
-                array_push($array_etapes, $ligne);
-
-            $sql = " select sum(r.nb_personnes) as nb_participants from  visitesguidees v inner join  reservations r   on r.id_visite= v.id_visite
-                    inner join  utilisateurs u   on u.id_utilisateur= v.id_guide where  v.id_visite = $tour_id  ";
-            $resultat = $conn->query($sql);
-            $nb_participants = $resultat->fetch_assoc()["nb_participants"];
-        }
+        $tour = (new Visite())->getVisite($tour_id);
+        $array_etapes = Etape::getEtapesByViste($tour_id);
+        $nb_participants = $tour->getNbParticipants();
     } else {
-        header("Location: ../connexion.php?error=access_denied");
-        exit();
+        header("Location: mes_visites.php");
     }
 
 
@@ -142,12 +131,11 @@
                  </nav>
              </div>
              <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
-                 <div class="bg-primary/20 rounded-full h-10 w-10 flex items-center justify-center border-2 border-primary text-primary font-bold">
-                     <?= substr($nom_utilisateur, 0, 1) ?>
-                 </div>
-                 <div class="flex flex-col overflow-hidden">
-                     <p class="text-sm font-bold truncate"><?= $nom_utilisateur ?></p>
-                     <p class="text-text-sec-light dark:text-text-sec-dark text-xs truncate capitalize"><?= $role_utilisateur ?></p>
+                 <div class="flex items-center gap-3">
+
+                     <div class="flex flex-col">
+                         <a href="../php/seconnecter.php" class="text-xs text-text-secondary-light dark:text-text-secondary-dark">se deconnecter</a>
+                     </div>
                  </div>
              </div>
          </aside>
@@ -171,7 +159,7 @@
 
                      <div class="flex flex-wrap justify-between items-start gap-4 pb-4 border-b border-border-light dark:border-border-dark">
                          <div class="flex flex-col gap-1">
-                             <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight"><?= ($tour['titre_visite']) ?></h2>
+                             <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight"><?= ($tour->getTitreVisite()) ?></h2>
                              <p class="text-text-sec-light dark:text-text-sec-dark text-lg">Détails de Visite #<?= $tour_id ?></p>
                          </div>
 
@@ -185,7 +173,7 @@
                              <div class="h-60 rounded-xl bg-cover bg-center relative shadow-lg border border-border-light dark:border-border-dark" style='background-image: url("<?= $image ?>");'>
                                  <div class="m-3 absolute top-0 left-0 inline-flex px-3 py-1 bg-blue-600/90 backdrop-blur-sm text-white text-sm font-bold rounded-lg items-center gap-1">
                                      <span class="material-symbols-outlined text-[14px] leading-none">schedule</span>
-                                     <?= $tour['statut__visite'] ?>
+                                     <?= $tour->getStatutVisite() ?>
                                  </div>
                              </div>
 
@@ -198,21 +186,21 @@
                                      <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
                                          <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Date & Heure :</span>
                                          <div>
-                                             <span class="font-semibold"><?= (new DateTime($tour['dateheure_viste']))->format('d-m-Y') ?> </span>
-                                             <p class="font-semibold"><?= " à " . (new DateTime($tour['dateheure_viste']))->format('H:i ')  ?></p>
+                                             <span class="font-semibold"><?= $tour->getDateheureVisite()->format('d/m/Y') ?> </span>
+                                             <p class="font-semibold"><?= " à " . $tour->getDateheureVisite()->format('H:i')  ?></p>
                                          </div>
                                      </li>
                                      <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
                                          <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Durée Estimée :</span>
-                                         <span class="font-semibold"><?= $tour['duree__visite'] ?></span>
+                                         <span class="font-semibold"><?= $tour->getDureeVisite()->format('H:i') ?></span>
                                      </li>
                                      <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
                                          <span class="text-text-sec-light dark:text-text-sec-dark font-medium">langue :</span>
-                                         <span class="font-semibold text-primary"><?= $tour['langue__visite'] ?></span>
+                                         <span class="font-semibold text-primary"><?= $tour->getLangueVisite() ?></span>
                                      </li>
                                      <li class="flex justify-between items-center pb-1">
                                          <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Guide Assigné :</span>
-                                         <span class="font-semibold"><?= $tour['nom_utilisateur'] ?></span>
+                                         <span class="font-semibold"><?= $guide->getNomUtilisateur() ?></span>
                                      </li>
                                  </ul>
                              </div>
@@ -222,7 +210,7 @@
                                      <span class="material-symbols-outlined text-primary">description</span>
                                      Description
                                  </h3>
-                                 <p class="text-sm text-text-main-light/90 dark:text-text-main-dark/90"><?= (($tour['description_visite'])) ?></p>
+                                 <p class="text-sm text-text-main-light/90 dark:text-text-main-dark/90"><?= (($tour->getDescriptionVisite())) ?></p>
                              </div>
                          </div>
 
@@ -235,7 +223,7 @@
                                  </h3>
                                  <div class="grid grid-cols-3 gap-4 text-center border-t border-border-light dark:border-border-dark/50 pt-3">
                                      <div class="p-2 border-r border-border-light dark:border-border-dark/50">
-                                         <p class="text-3xl font-extrabold text-text-main-light dark:text-text-main-dark"><?= $tour['capacite_max__visite'] ?></p>
+                                         <p class="text-3xl font-extrabold text-text-main-light dark:text-text-main-dark"><?= $tour->getCapaciteMaxVisite() ?></p>
                                          <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Places Total</p>
                                      </div>
                                      <div class="p-2 border-r border-border-light dark:border-border-dark/50">
@@ -243,7 +231,7 @@
                                          <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Réservations Confirmées</p>
                                      </div>
                                      <div class="p-2">
-                                         <p class="text-3xl font-extrabold   dark:text-text-main-dark   text-green-600"><?= $tour['capacite_max__visite'] - $nb_participants ?></p>
+                                         <p class="text-3xl font-extrabold   dark:text-text-main-dark   text-green-600"><?= $tour->getCapaciteMaxVisite()- $nb_participants ?></p>
                                          <p class="text-sm text-text-sec-light dark:text-text-sec-dark">Places Restantes</p>
                                      </div>
                                  </div>
@@ -265,28 +253,27 @@
                                              <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-text-sec-light dark:text-text-sec-dark uppercase tracking-wider">
                                                  Description d'Etape
                                              </th>
-
                                              <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-text-sec-light dark:text-text-sec-dark uppercase tracking-wider">
                                                  order
                                              </th>
                                          </tr>
                                      </thead>
                                      <tbody class="divide-y divide-border-light dark:divide-border-dark">
-                                         <?php foreach ($array_etapes as $etape) : ?>
+                                         <?php if ($array_etapes) foreach ($array_etapes as $etape) : ?>
                                              <tr class="hover:bg-background-light dark:hover:bg-white/5 transition-colors">
                                                  <td class="px-6 py-4 whitespace-nowrap">
-                                                     <div class="text-sm font-medium text-text-main-light dark:text-text-main-dark"><?= ($etape['titre_etape']) ?></div>
-                                                     <div class="text-xs text-text-sec-light dark:text-text-sec-dark truncate"><?= ($etape['description_etape']) ?></div>
+                                                     <div class="text-sm font-medium text-text-main-light dark:text-text-main-dark"><?= ($etape->getTitreEtape()) ?></div>
+                                                     <div class="text-xs text-text-sec-light dark:text-text-sec-dark truncate"><?= ($etape->getDescriptionEtape()) ?></div>
                                                  </td>
                                                  <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                     <span class="text-sm font-bold"><?= ($etape['description_etape']) ?></span>
+                                                     <span class="text-sm font-bold"><?= ($etape->getDescriptionEtape()) ?></span>
                                                  </td>
 
                                                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                      <div class="flex justify-end gap-2">
 
                                                          <button title="Envoyer un rappel" class="text-blue-600 hover:text-blue-700 transition-colors p-1 rounded-full">
-                                                             <span class="text-3xl font-extrabold text-blue-600"> <?= $etape['ordre_etape'] ?></span>
+                                                             <span class="text-3xl font-extrabold text-blue-600"> <?= $etape->getOrdreEtape()+1 ?></span>
                                                          </button>
                                                      </div>
                                                  </td>
