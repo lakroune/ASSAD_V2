@@ -16,9 +16,14 @@
         header("Location: ../connexion.php?error=access_denied");
         exit();
     }
+    $image = "https://lh3.googleusercontent.com/aida-public/AB6AXuBB3mzttMFekKaHiUMQgz9CbcCvR-LHMfkNamiYLEoaa6mr4VX3RGazcvrLyN6USTeeR3THkb5RzRgunm2nxYGRlj0JP37XKsb0oTpMuUfgiqYzKIQpDFu5Cwamtq0rGjsH93RIdsA6guKSg4KakhrlAV6mKU_SZGX00TM6y3-uGVugQHONmrBvFsVLmZ73htnyBEHRcaZXZ-cwzOoPb7aiKe-dIsmCV4By1n5q6PJKo8CSmh3GTGb2hDjnxSb8_vhCsJz-sArwzoL6";
 
 
     ?>
+
+
+
+
 
 
 
@@ -127,14 +132,14 @@
                  <form method="POST" action="" class="flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-white rounded-xl shadow-lg border border-[#f3ede7] mb-8">
                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
                          <div class="relative">
-                             <input type="date" name="date_filter" value="<?= $_POST['date_filter'] ?? date('Y-m-d') ?>"
+                             <input type="date" disabled name="date_filter" value="<?= $_POST['date_filter'] ?? date('Y-m-d') ?>"
                                  class="px-4 py-2 border border-gray-200 rounded-lg bg-white text-sm focus:ring-primary w-full" />
                          </div>
 
                          <select name="guide_filter" class="px-4 py-2 border border-gray-200 rounded-lg bg-white text-sm focus:ring-primary w-full">
                              <option value="">Tous les Guides</option>
                              <?php foreach ($array_guides as $guide): ?>
-                                 <option value="<?= $guide->getNomUtilisateur() ?>" <?= (isset($_POST['guide_filter']) && $_POST['guide_filter'] == $guide->getIdUtilisateur()) ? 'selected' : '' ?>>
+                                 <option value="<?= $guide->getIdUtilisateur() ?>" <?= (isset($_POST['guide_filter']) && $_POST['guide_filter'] == $guide->getIdUtilisateur()) ? 'selected' : '' ?>>
                                      <?= ($guide->getNomUtilisateur()) ?>
                                  </option>
                              <?php endforeach; ?>
@@ -149,14 +154,14 @@
                  <div class="space-y-6">
                      <?php foreach ($array_visites as $visite) :
 
-                            $date_visite =$visite->getDateheureVisite()->format('H:i');
+                            $date_visite = $visite->getDateheureVisite()->format('H:i');
                             $maintenant = time();
-                            $is_full = 11 <= 0;
+                            $is_full = $visite->getCapaciteMaxVisite() <= 11;
                         ?>
-                         <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-white dark:bg-zinc-800 border border-[#f3ede7] dark:border-zinc-700 shadow-md hover:shadow-lg transition-shadow duration-300 <?= $is_full ? 'opacity-75' : '' ?>">
+                         <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-white dark:bg-zinc-800 border border-[#f3ede7] dark:border-zinc-700 shadow-md hover:shadow-lg transition-shadow duration-300 <?= $is_full ? 'opacity-50' : 'ee' ?>">
 
                              <div class="h-48 sm:h-auto sm:w-48 rounded-xl bg-cover bg-center shrink-0 relative bg-gray-200"
-                                 style="background-image: url(' ');">
+                                 style="background-image: url('<?= $image ?>');">
 
                                  <?php if ($date_visite <= $maintenant && $date_visite > ($maintenant - 3600)) : ?>
                                      <div class="m-2 absolute top-0 left-0 inline-flex px-2 py-1 bg-green-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-lg items-center gap-1">
@@ -188,11 +193,11 @@
                                      <div class="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-500">
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">calendar_month</span>
-                                             <span><?=   $visite->getDateheureVisite()->format('H:i'); ?></span>
+                                             <span><?= $is_full  ? 'Complet' : $visite->getCapaciteMaxVisite() . ' places dispo.' ?></span>
                                          </div>
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">group</span>
-                                             <span><?=  $is_full  ? 'Complet' : $visite->getCapaciteMaxVisite() . ' places dispo.' ?></span>
+                                             <span><?= $is_full ? 'Complet' :  $visite->getCapaciteMaxVisite() - 22  . ' places dispo.' ?></span>
                                          </div>
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">payments</span>
@@ -202,22 +207,22 @@
                                  </div>
 
                                  <div class="flex flex-wrap gap-3 mt-auto pt-2 border-t border-gray-100 dark:border-zinc-700">
-                                     <a href="visite_details.php?id=<?= $visit->getIdVisite() ?>" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">
+                                     <a href="visite_details.php?id=<?= $visite->getIdVisite() ?>" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">
                                          <span class="material-symbols-outlined text-[18px]">visibility</span>
                                          Détails
                                      </a>
 
-                                     <?php if (!$is_full) : ?>
+                                     <?php if (!$is_full && ($date_visite > $maintenant)) : ?>
 
                                          <form action="php/traiter_reservation.php" method="POST" class="reservation-form">
-                                             <input type="hidden" name="id_visite" value="<?= $visit->getIdVisite() ?>">
+                                             <input type="hidden" name="id_visite" value="<?= $visite->getIdVisite() ?>">
                                              <input type="hidden" name="id_utilisateur" value="<?= $_SESSION['id_utilisateur'] ?>">
 
                                              <div class="flex items-center gap-2">
                                                  <input type="number" name="nb_personnes" min="1" max="10" value="1"
                                                      class="w-16 px-2 py-2 border border-gray-200 rounded-lg text-sm" required>
 
-                                                 <button type="submit" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary text-primary text-sm font-semibold hover:bg-primary/10 transition-colors">
+                                                 <button <?php if ($is_full) echo "disabled" ?> type="submit" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary text-primary text-sm font-semibold hover:bg-primary/10 transition-colors">
                                                      <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
                                                      Réserver
                                                  </button>

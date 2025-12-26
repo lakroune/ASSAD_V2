@@ -234,22 +234,54 @@ class Visite
             foreach ($results as $row) {
                 $visite = new self();
                 if (
-                    $visite->setIdVisite((int)$row["id_visite"]) &&
+                    $visite->setIdVisite($row["id_visite"]) &&
                     $visite->setTitreVisite($row["titre_visite"]) &&
                     $visite->setDescriptionVisite($row["description_visite"]) &&
                     $visite->setDateheureVisite($row["dateheure_viste"]) &&
                     $visite->setLangueVisite($row["langue__visite"]) &&
                     $visite->setDureeVisite($row["duree__visite"]) &&
-                    $visite->setCapaciteMaxVisite((int)$row["capacite_max__visite"]) &&
+                    $visite->setCapaciteMaxVisite($row["capacite_max__visite"]) &&
                     $visite->setPrixVisite((float)$row["prix__visite"]) &&
-                    $visite->setStatutVisite((int)$row["statut__visite"]) &&
-                    $visite->setIdGuide((int)$row["id_guide"])
+                    $visite->setStatutVisite($row["statut__visite"]) &&
+                    $visite->setIdGuide($row["id_guide"])
                 )
 
                     $visitesList[] = $visite;
             }
 
             return $visitesList;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function getVisite(int $id_visite): bool|self
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM visitesguidees WHERE id_visite = :id";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $id_visite, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row) {
+                if (
+                    $this->setIdVisite($row["id_visite"]) &&
+                    $this->setTitreVisite($row["titre_visite"]) &&
+                    $this->setDescriptionVisite($row["description_visite"]) &&
+                    $this->setDateheureVisite($row["dateheure_viste"]) &&
+                    $this->setLangueVisite($row["langue__visite"]) &&
+                    $this->setDureeVisite($row["duree__visite"]) &&
+                    $this->setCapaciteMaxVisite($row["capacite_max__visite"]) &&
+                    $this->setPrixVisite((float)$row["prix__visite"]) &&
+                    $this->setStatutVisite($row["statut__visite"]) &&
+                    $this->setIdGuide($row["id_guide"])
+                ) {
+                    return $this;
+                }
+            }
+            return false;
         } catch (Exception $e) {
             return false;
         }

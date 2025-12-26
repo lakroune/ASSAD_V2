@@ -1,39 +1,22 @@
  <?php
 
-    $image = "https://lh3.googleusercontent.com/aida-public/AB6AXuBB3mzttMFekKaHiUMQgz9CbcCvR-LHMfkNamiYLEoaa6mr4VX3RGazcvrLyN6USTeeR3THkb5RzRgunm2nxYGRlj0JP37XKsb0oTpMuUfgiqYzKIQpDFu5Cwamtq0rGjsH93RIdsA6guKSg4KakhrlAV6mKU_SZGX00TM6y3-uGVugQHONmrBvFsVLmZ73htnyBEHRcaZXZ-cwzOoPb7aiKe-dIsmCV4By1n5q6PJKo8CSmh3GTGb2hDjnxSb8_vhCsJz-sArwzoL6";
 
-    session_start();
+    require_once '../Class/Visiteur.php';
+    require_once '../Class/Visite.php';
+    require_once '../Class/Guide.php';
 
-    include "../db_connect.php";
+
     if (
-        isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur']) &&
-        $_SESSION['role_utilisateur'] === "visiteur" &&
-        $_SESSION['logged_in'] === TRUE
+        Visiteur::isConnected("visiteur")
     ) {
-
-
-        $id_utilisateur = ($_SESSION['id_utilisateur']);
-        $nom_utilisateur = ($_SESSION['nom_utilisateur']);
-        $role_utilisateur = ($_SESSION['role_utilisateur']);
-        $tour_id = $_GET['id'];
-
-        $sql = " select * from  visitesguidees  inner join  utilisateurs  on id_utilisateur =  id_guide and id_visite = $tour_id";
-        $resultat = $conn->query($sql);
-
-        $tour = array();
-        if ($resultat->num_rows == 1) {
-            $tour = $resultat->fetch_assoc();
-            $sql = " select * from  visitesguidees v inner join  etapesvisite e on v.id_visite= e.id_visite   and v.id_visite = $tour_id";
-            $resultat = $conn->query($sql);
-            $array_etapes = array();
-            while ($ligne =  $resultat->fetch_assoc())
-                array_push($array_etapes, $ligne);
-
-            $sql = " select sum(r.nb_personnes) as nb_participants from  visitesguidees v inner join  reservations r   on r.id_visite= v.id_visite
-                    inner join  utilisateurs u   on u.id_utilisateur= v.id_guide where  v.id_visite = $tour_id  ";
-            $resultat = $conn->query($sql);
-            $nb_participants = $resultat->fetch_assoc()["nb_participants"];
+        $idVisitePas = $_GET['id'];
+        try {
+            $tour = (new Visite())->getVisite($idVisitePas);
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
+
+        // $tour->getVisite($_GET['id']);
     } else {
         header("Location: ../connexion.php?error=access_denied");
         exit();
@@ -56,7 +39,7 @@
  <head>
      <meta charset="utf-8" />
      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-     <title>Détails : <?= ($tour['title']) ?> - ASSAD</title>
+     <title> Détails : <?= ($tour->getTitreVisite()) ?> - ASSAD</title>
      <link href="https://fonts.googleapis.com" rel="preconnect" />
      <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -157,8 +140,8 @@
 
                  <div class="flex flex-wrap justify-between items-start gap-4 pb-4 border-b border-border-light dark:border-border-dark">
                      <div class="flex flex-col gap-1">
-                         <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight"><?= ($tour['titre_visite']) ?></h2>
-                         <p class="text-text-sec-light dark:text-text-sec-dark text-lg">Détails de Visite #<?= $tour_id ?></p>
+                         <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight"><?= ($tour->getTitreVisite()) ?></h2>
+                         <p class="text-text-sec-light dark:text-text-sec-dark text-lg">Détails de Visite #<?= $tour->getIdVisite() ?></p>
                      </div>
 
 
@@ -168,15 +151,17 @@
 
                      <div class="lg:col-span-1 flex flex-col gap-6">
                          <?php
-                            $date_visite = strtotime($visit['dateheure_viste']?? time());
+                            $image = "https://lh3.googleusercontent.com/aida-public/AB6AXuBB3mzttMFekKaHiUMQgz9CbcCvR-LHMfkNamiYLEoaa6mr4VX3RGazcvrLyN6USTeeR3THkb5RzRgunm2nxYGRlj0JP37XKsb0oTpMuUfgiqYzKIQpDFu5Cwamtq0rGjsH93RIdsA6guKSg4KakhrlAV6mKU_SZGX00TM6y3-uGVugQHONmrBvFsVLmZ73htnyBEHRcaZXZ-cwzOoPb7aiKe-dIsmCV4By1n5q6PJKo8CSmh3GTGb2hDjnxSb8_vhCsJz-sArwzoL6";
+
+                            $date_visite = $tour->getDateheureVisite()->format('H:i');
                             $maintenant = time();
-                            $is_full = 11 <= 0;
+                            $is_full = $tour->getCapaciteMaxVisite() <= 11;
                             ?>
                          <div class="h-60 rounded-xl bg-cover bg-center relative shadow-lg border border-border-light dark:border-border-dark" style='background-image: url("<?= $image ?>");'>
                              <div class="m-3 absolute top-0 left-0 inline-flex px-3 py-1  backdrop-blur-sm text-white text-sm font-bold rounded-lg items-center gap-1">
                                  <span class="material-symbols-outlined text-[14px] leading-none">schedule</span>
                                  <div class="h-48 sm:h-auto sm:w-48 rounded-xl bg-cover bg-center shrink-0 relative bg-gray-200"
-                                     style="background-image: url('../assets/img/habitats/<?= $visit['id_habitat'] ?? 'default' ?>.jpg');">
+                                     style="background-image: url('<?= $image ?>');">
 
                                      <?php if ($date_visite <= $maintenant && $date_visite > ($maintenant - 3600)) : ?>
                                          <div class="m-2 absolute top-0 left-0 inline-flex px-2 py-1 bg-green-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-lg items-center gap-1">
@@ -206,19 +191,19 @@
                              <ul class="space-y-3 text-sm">
                                  <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
                                      <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Date & Heure :</span>
-                                     <span class="font-semibold"><?= (new DateTime($tour['dateheure_viste']))->format('d M Y') ?> à <?= (new DateTime($tour['dateheure_viste']))->format('h:m ')  ?></span>
+                                     <span class="font-semibold"><?= ($tour->getDateheureVisite())->format('d M Y') ?> à <?= ($tour->getDateheureVisite())->format('h:m ')  ?></span>
                                  </li>
                                  <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
                                      <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Durée Estimée :</span>
-                                     <span class="font-semibold"><?= $tour['duree__visite'] ?></span>
+                                     <span class="font-semibold"><?= $tour->getDureeVisite()->format('H:i')  ?></span>
                                  </li>
                                  <li class="flex justify-between items-center pb-1 border-b border-border-light dark:border-border-dark/50">
                                      <span class="text-text-sec-light dark:text-text-sec-dark font-medium">langue :</span>
-                                     <span class="font-semibold text-primary"><?= $tour['langue__visite'] ?></span>
+                                     <span class="font-semibold text-primary"><?= $tour->getLangueVisite() ?></span>
                                  </li>
                                  <li class="flex justify-between items-center pb-1">
                                      <span class="text-text-sec-light dark:text-text-sec-dark font-medium">Guide Assigné :</span>
-                                     <span class="font-semibold"><?= $tour['nom_utilisateur'] ?></span>
+                                     <span class="font-semibold"><?=1// $tour['nom_utilisateur'] ?></span>
                                  </li>
                              </ul>
                          </div>
@@ -228,7 +213,7 @@
                                  <span class="material-symbols-outlined text-primary">description</span>
                                  Description
                              </h3>
-                             <p class="text-sm text-text-main-light/90 dark:text-text-main-dark/90"><?= (($tour['description_visite'])) ?></p>
+                             <p class="text-sm text-text-main-light/90 dark:text-text-main-dark/90"><?= (($tour->getDescriptionVisite())) ?></p>
                          </div>
                      </div>
 
