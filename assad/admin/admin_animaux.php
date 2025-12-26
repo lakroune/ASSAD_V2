@@ -400,8 +400,8 @@ if (
                             <label class="block text-sm font-medium mb-1">Alimentation</label>
                             <select name="alimentation_animal" class="w-full rounded-lg border-gray-300 dark:bg-background-dark dark:border-gray-700 text-sm">
                                 <option value="Carnivore" <?= $info_animal->getTypeAlimentation() == 'Carnivore' ? 'selected' : '' ?>>Carnivore</option>
-                                <option value="herbivore" <?= $info_animal->getTypeAlimentation() == 'herbivore' ? 'selected' : '' ?>>Herbivore</option>
-                                <option value="omnivore" <?= $info_animal->getTypeAlimentation() == 'omnivore' ? 'selected' : '' ?>>Omnivore</option>
+                                <option value="Herbivore" <?= $info_animal->getTypeAlimentation() == 'herbivore' ? 'selected' : '' ?>>Herbivore</option>
+                                <option value="Omnivore" <?= $info_animal->getTypeAlimentation() == 'omnivore' ? 'selected' : '' ?>>Omnivore</option>
                             </select>
                         </div>
                     </div>
@@ -473,8 +473,8 @@ if (
                     <label class="block text-xs font-bold uppercase text-text-secondary-light mb-1">Alimentation</label>
                     <select name="alimentation_animal" class="w-full rounded-lg border-gray-200 dark:bg-background-dark dark:border-gray-700 text-sm">
                         <option value="Carnivore">Carnivore</option>
-                        <option value="herbivore">Herbivore</option>
-                        <option value="omnivore">Omnivore</option>
+                        <option value="Herbivore">Herbivore</option>
+                        <option value="Omnivore">Omnivore</option>
                     </select>
                 </div>
 

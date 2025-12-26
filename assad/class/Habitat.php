@@ -147,10 +147,11 @@ class Habitat
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($result) {
-                 
+
                 if (
                     $this->setIdHabitat((int)$result['id_habitat']) &&
                     $this->setNomHabitat($result['nom_habitat']) &&
+                    $this->setTypeClimat($result['type_climat']) &&
                     $this->setDescriptionHabitat($result['description_habitat']) &&
                     $this->setZoneZoo($result['zone_zoo'])
                 ) {
@@ -191,8 +192,21 @@ class Habitat
 
         return $allHabitats;
     }
-  
-   
+    public  function habitatPulsFrequent()
+    {
+        try {
+            $conn = (new Connexion())->connect();
+            $sql = "SELECT h.id_habitat , COUNT(*) as count from  animaux a inner JOIN habitats h
+        on a.id_habitat= h.id_habitat   GROUP BY h.id_habitat  ORDER BY  count  desc LIMIT 1";
+            $stmt = $conn->query($sql);
+            if ($stmt->rowCount() > 0) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $id_habitat = $row['id_habitat'];
+                return $this->getHabitat($id_habitat);
+            } else
+                return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
-
- 

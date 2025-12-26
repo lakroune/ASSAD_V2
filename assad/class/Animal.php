@@ -166,7 +166,7 @@ class Animal
             return false;
         }
     }
-    public function modifierAnimal( int $id_animal): bool
+    public function modifierAnimal(int $id_animal): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE animaux SET nom_animal = :nom_animal, espece = :espece_animal, alimentation_animal = :type_alimentation, pays_origine = :pays_origine, description_animal = :description_animal, image_url = :image_url, id_habitat = :id_habitat WHERE id_animal = :id_animal";
@@ -262,9 +262,33 @@ class Animal
         return $count;
     }
 
-    // public function chercherAnimaux($nomAnimal): array
-    // {
-    //     $conn = (new Connexion())->connect();
-    //     $sql = "  select * from  animaux a inner join  habitats h on a.id_habitat =h.id_habitat where nom_animal like  :nom_animal";
-    // }
+    public function chercherAnimaux($nomAnimal)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "  select * from animaux where nom_animal like  :nom_animal";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $nomAnimal = '%' . $nomAnimal . '%';
+        $stmt->bindParam(':nom_animal', $nomAnimal);
+        $stmt->execute();
+        $animal = $stmt->fetch(pdo::FETCH_ASSOC);
+        if (
+            !empty($animal) &&
+            $this->setIdAnimal($animal['id_animal']) &&
+            $this->setNomAnimal($animal['nom_animal']) &&
+            $this->setEspeceAnimal($animal['espece']) &&
+            $this->setTypeAlimentation($animal['alimentation_animal']) &&
+            $this->setPaysOrigine($animal['pays_origine']) &&
+            $this->setDescriptionAnimal($animal['description_animal']) &&
+            $this->setImageUrl($animal['image_url']) &&
+            $this->setIdHabitat($animal['id_habitat'])
+        ) {
+            return $this;
+        } else {
+            return false;
+        }
+    }
 }

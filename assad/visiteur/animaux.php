@@ -17,6 +17,25 @@ if (
     $array_habitats = Habitat::getAllHabitats();
 
 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['alimentation_animal']) && !empty($_POST['alimentation_animal'])) {
+        $array_animaux = array_filter($array_animaux, function ($animal) {
+            return $animal->gettypeAlimentation() == $_POST['alimentation_animal'];
+        });
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_habitat']) &&  !empty($_POST['id_habitat'])) {
+        $array_animaux = array_filter($array_animaux, function ($animal) {
+            return $animal->getIdHabitat() == $_POST['id_habitat'];
+        });
+    }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) && !empty($_POST['search'])) {
+        $array_animaux = array_filter($array_animaux, function ($animal) {
+            return $animal->getNomAnimal() == $_POST['search'];
+        });
+    }
+
+
+
 
     // $sql = "SELECT a.*, h.nom_habitat 
     //     FROM animaux a 
@@ -206,10 +225,10 @@ if (
                         <select name="id_habitat"
                             class="px-4 py-2 bg-white border border-[#e5e5e5] hover:border-primary/50 hover:bg-primary/5 text-[#1b140d] rounded-lg text-sm font-medium whitespace-nowrap transition-all focus:ring-primary focus:border-primary w-full sm:w-1/2">
                             <option value="">Filtrer par Habitat</option>
-                            <?php foreach ($array_habitats as $habitat) : 
+                            <?php foreach ($array_habitats as $habitat) :
                             ?>
-                            <option value="<?= $habitat->getIdHabitat() ?>"><?= ($habitat->getNomHabitat()) ?></option>
-                            <?php endforeach; 
+                                <option value="<?= $habitat->getIdHabitat() ?>"><?= ($habitat->getNomHabitat()) ?></option>
+                            <?php endforeach;
                             ?>
                         </select>
                         <select name="alimentation_animal"
@@ -291,7 +310,11 @@ if (
                                 </div>
                                 <div class="flex flex-wrap gap-2 mt-2">
                                     <span class="inline-flex items-center px-2 py-1 rounded bg-[#f8f7f6] text-xs font-medium text-gray-600">
-                                        <?= ($animal->getIdHabitat()) ?>
+                                        <?php
+                                        $habitat = new Habitat();
+                                        $habitat->getHabitat($animal->getIdHabitat());
+
+                                        echo $habitat->getNomHabitat(); ?>
                                     </span>
                                     <?php if ($badge_class): ?>
                                         <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium <?= $badge_class ?>">

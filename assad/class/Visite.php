@@ -69,8 +69,9 @@ class Visite
     }
     public function setTitreVisite(string $titre_visite): bool
     {
-        $regix = "/^[a-zA-Z\s'-]{2,100}$/";
-        if (preg_match($regix, $titre_visite)) {
+        // $regix = "/^[a-zA-Z\s'-0-9-]{2,100}$/";
+        // if (preg_match($regix, $titre_visite)) {
+        if (strlen($titre_visite) > 0) {
             $this->titre_visite = $titre_visite;
             return true;
         }
@@ -94,8 +95,9 @@ class Visite
     }
     public function setLangueVisite(string $langue__visite): bool
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
-        if (preg_match($regix, $langue__visite)) {
+        // $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        // if (preg_match($regix, $langue__visite)) {
+        if (strlen($langue__visite) > 0) {
             $this->langue__visite = $langue__visite;
             return true;
         }
@@ -406,6 +408,49 @@ class Visite
             return (int)$row['count'];
         } catch (Exception $e) {
             return 0;
+        }
+    }
+    public function activateVisite(): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "UPDATE visitesguidees SET statut__visite = 1 WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':id_visite', $this->getIdVisite(), PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function deactivateVisite(): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "UPDATE visitesguidees SET statut__visite = 0 WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':id_visite', $this->getIdVisite(), PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function visitePlusReserve()
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT v.id_visite , COUNT(*) as nbParticipants FROM visitesguidees v INNER JOIN reservations r ON v.id_visite = r.id_visite GROUP BY v.id_visite HAVING COUNT(*) >= 1 ORDER BY nbParticipants DESC LIMIT 1";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $id_visite = $row['id_visite'];
+                return $this->getVisite($id_visite);
+            } else
+                return false;
+        } catch (Exception $e) {
+            return false;
         }
     }
 }

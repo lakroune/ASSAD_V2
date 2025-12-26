@@ -105,38 +105,42 @@
      </style>
  </head>
 
- <body class="bg-background-light dark:bg-background-dark text-[#1b140d] font-display min-h-screen flex flex-col">
-     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#f3ede7]">
-         <div class="max-w-[1200px] mx-auto px-4 md:px-10 py-3">
-             <div class="flex items-center justify-between whitespace-nowrap">
-                 <div class="flex items-center gap-4">
-                     <div class="text-primary">
-                         <span class="material-symbols-outlined text-4xl">pets</span>
+ <body class="flex h-screen w-full overflow-hidden">
+      <aside class="hidden lg:flex flex-col w-72 border-r border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark p-6 h-full justify-between">
+             <div class="flex flex-col gap-8">
+                 <div class="flex items-center gap-3 px-2">
+                     <div class="bg-primary/20 p-2 rounded-lg">
+                         <span class="material-symbols-outlined text-primary text-3xl">pets</span>
                      </div>
-                     <h2 class="text-[#1b140d] text-lg font-bold leading-tight tracking-[-0.015em]">Zoo Virtuel ASSAD
-                     </h2>
-                 </div>
-                 <div class="hidden lg:flex flex-1 justify-end gap-8">
-                     <div class="flex items-center gap-9">
-                         <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
-                             href="index.php">Accueil</a>
-                         <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
-                             href="animaux.php">Animaux</a>
-                         <a class="text-primary text-sm font-bold hover:text-primary transition-colors"
-                             href="reservation.php">Réservation</a>
-                         <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
-                             href="./mes_reservations.php">Mes Reservations</a>
-                         <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
-                             href="./../php/sedeconnecter.php"> Se Deconnecter</a>
+                     <div>
+                         <h1 class="text-xl font-bold tracking-tight">ASSAD</h1>
+                         <p class="text-text-sec-light dark:text-text-sec-dark text-xs uppercase tracking-wider font-semibold">Guide Space</p>
                      </div>
-
                  </div>
-                 <button class="lg:hidden text-[#1b140d]">
-                     <span class="material-symbols-outlined">menu</span>
-                 </button>
+                 <nav class="flex flex-col gap-2">
+                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="index.php">
+                         <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">dashboard</span>
+                         <span>Tableau de bord</span>
+                     </a>
+                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold" href="#">
+                         <span class="material-symbols-outlined">map</span>
+                         <span>Mes Visites</span>
+                     </a>
+                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-border-light dark:hover:bg-surface-dark transition-colors font-medium" href="reservations.php">
+                         <span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark">groups</span>
+                         <span>Réservations</span>
+                     </a>
+                 </nav>
              </div>
-         </div>
-     </header>
+             <div class="border-t border-gray-200 dark:border-gray-800 pt-4 px-2">
+                 <div class="flex items-center gap-3">
+
+                     <div class="flex flex-col">
+                         <a href="../php/seconnecter.php" class="text-xs text-text-secondary-light dark:text-text-secondary-dark">se deconnecter</a>
+                     </div>
+                 </div>
+             </div>
+         </aside>
      <div class="flex h-screen w-full overflow-hidden">
 
          <main class="flex-1 flex flex-col h-fulloverflow-y-auto pr-4 custom-scrollbar overflow-x-hidden">
@@ -146,7 +150,7 @@
              </div>
 
              <div class="p-6 md:p-10 max-w-7xl mx-auto w-full flex flex-col gap-8">
-                 <a href="./reservation.php" class="text-sm text-text-sec-light dark:text-text-sec-dark hover:text-primary transition-colors flex items-center gap-1">
+                 <a href="./mes_visites.php" class="text-sm text-text-sec-light dark:text-text-sec-dark hover:text-primary transition-colors flex items-center gap-1">
                      <span class="material-symbols-outlined text-[18px]">arrow_back</span>
                      Retour à les Visites
                  </a>

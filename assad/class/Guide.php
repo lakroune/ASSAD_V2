@@ -170,4 +170,5 @@ class Guide extends Utilisateur
         }
         return $nbParticipants;
     }
+     
 }

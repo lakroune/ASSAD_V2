@@ -1,40 +1,30 @@
 <?php
 
-$animal_id = isset($_GET['id']) ? ($_GET['id']) : null;
-
-if ($animal_id) {
-
-    session_start();
-    include "../db_connect.php";
-
-    if (
-        isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur']) &&
-        $_SESSION['role_utilisateur'] === "visiteur" &&
-        $_SESSION['logged_in'] === TRUE
-    ) {
 
 
+require_once '../Class/Visiteur.php';
+require_once '../Class/Animal.php';
+require_once '../Class/Habitat.php';
 
 
-        $id_utilisateur = ($_SESSION['id_utilisateur']);
+if (
+    Visiteur::isConnected("visiteur")
+) {
 
+    $animal = new Animal();
 
-
-        $sql = " SELECT * FROM animaux a INNER JOIN habitats h on a.id_habitat= h.id_habitat and a.id_animal= $animal_id";
-        $resultat = $conn->query($sql);
-
-        $animal = $resultat->fetch_assoc();
-    } else {
-        header("Location: ../connexion.php?error=access_denied");
-        exit();
-    }
-
-    if (!$animal) {
-        $error = "Animal non trouvé.";
+    if (isset($_GET['id'])) {
+        $id_animal = intval($_GET['id']);
+        $animal = $animal->getAnimal($id_animal);
+        $habitat= new Habitat();
+        $habitat->getHabitat($animal->getIdHabitat());
     }
 } else {
-    $error = "ID d'animal manquant.";
+    header("Location: ../connexion.php?error=access_denied");
+    exit();
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -129,17 +119,17 @@ if ($animal_id) {
                     <div class="lg:col-span-2 flex flex-col gap-6">
 
                         <div class="h-[450px] rounded-xl overflow-hidden relative shadow-2xl shadow-primary/20">
-                            <img alt="<?= $animal['nom_animal'] ?>"
+                            <img alt="<?= $animal->getNomAnimal() ?>"
                                 class="w-full h-full object-cover"
-                                src="<?= ($animal['image_url']) ?>" />
+                                src="<?= ($animal->getImageUrl()) ?>" />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             <div class="absolute bottom-6 left-6 text-white">
                                 <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-white text-sm font-bold shadow-lg mb-2">
                                     <span class="material-symbols-outlined text-[18px]">stars</span>
-                                    <?= ($animal['alimentation_animal']) ?>
+                                    <?= ($animal->gettypeAlimentation()) ?>
                                 </span>
-                                <h1 class="text-5xl font-black tracking-tight drop-shadow-lg"><?= ($animal['nom_animal']) ?></h1>
-                                <p class="text-xl text-white/90 italic font-medium mt-1 drop-shadow-md"><?= ($animal['espece']) ?></p>
+                                <h1 class="text-5xl font-black tracking-tight drop-shadow-lg"><?= ($animal->getNomAnimal()) ?></h1>
+                                <p class="text-xl text-white/90 italic font-medium mt-1 drop-shadow-md"><?= ($animal->getEspeceAnimal()) ?></p>
                             </div>
                         </div>
 
@@ -151,33 +141,33 @@ if ($animal_id) {
 
 
                         <div class="bg-white p-6 rounded-xl shadow-lg border border-[#f3ede7]">
-                            <h2 class="text-2xl font-bold text-primary mb-4 border-b border-gray-100 pb-2">À Propos de <?= ($animal['nom_animal']) ?></h2>
+                            <h2 class="text-2xl font-bold text-primary mb-4 border-b border-gray-100 pb-2">À Propos de <?= ($animal->getNomAnimal()) ?></h2>
 
                             <div class="flex flex-wrap gap-4 mt-2 pt-2  border-gray-100">
                                 <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-50 text-orange-600 text-sm font-bold">
                                     <span class="material-symbols-outlined text-lg">public</span>
-                                    <?= ($animal['pays_origine']) ?>
+                                    <?= ($animal->getPaysOrigine()) ?>
                                 </span>
                                 <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-red-600 text-sm font-bold">
                                     <span class="material-symbols-outlined text-lg">eco</span>
-                                    <?= ($animal['nom_habitat']) ?>
+                                    <?= ($animal->getIdHabitat()) ?>
                                 </span>
                             </div>
-                            <p class="text-gray-700 leading-relaxed border-b  m-2 p-2"><?= ($animal['description_animal']) ?></p>
+                            <p class="text-gray-700 leading-relaxed border-b  m-2 p-2"><?= ($animal->getDescriptionAnimal()) ?></p>
 
 
 
                             <p class="text-gray-700 leading-relaxed"> </p>
 
                             <ul class="space-y-3 text-sm text-gray-700">
-                                <li class="flex justify-between items-center"><span class="font-medium">Nom :</span> <span class="italic"><?= ($animal['nom_animal']) ?></span></li>
-                                <li class="flex justify-between items-start"><span class="font-medium"> Régime :</span> <span class="w-1/2 text-right"><?= ($animal['alimentation_animal']) ?></span></li>
-                                <li class="flex justify-between items-start"><span class="font-medium"> Habitat :</span> <span class="w-1/2 text-right"><?= ($animal['nom_habitat']) ?></span></li>
-                                <li class="flex justify-between items-start"><span class="font-medium"> Type de climat :</span> <span class="w-1/2 text-right"><?= ($animal['type_climat']) ?></span></li>
-                                <li class="flex justify-between items-start"><span class="font-medium"> zone :</span> <span class="w-1/2 text-right"><?= ($animal['zone_zoo']) ?></span></li>
+                                <li class="flex justify-between items-center"><span class="font-medium">Nom :</span> <span class="italic"><?= ($animal->getNomAnimal()) ?></span></li>
+                                <li class="flex justify-between items-start"><span class="font-medium"> Régime :</span> <span class="w-1/2 text-right"><?= ($animal->getTypeAlimentation()) ?></span></li>
+                                <li class="flex justify-between items-start"><span class="font-medium"> Habitat :</span> <span class="w-1/2 text-right"><?= ($habitat->getNomHabitat()) ?></span></li>
+                                <li class="flex justify-between items-start"><span class="font-medium"> Type de climat :</span> <span class="w-1/2 text-right"><?= ($habitat->getTypeClimat()) ?></span></li>
+                                <li class="flex justify-between items-start"><span class="font-medium"> zone :</span> <span class="w-1/2 text-right"><?= ($habitat->getZoneZoo()) ?></span></li>
                                 <li class="flex justify-between items-start"><span class="font-medium"> Description d'habitat :</span> <span class="w-1/2 text-right"> </span></li>
                             </ul>
-                            <p class="text-gray-700 leading-relaxed"><?= ($animal['description_habitat']) ?></p>
+                            <p class="text-gray-700 leading-relaxed"><?= ($habitat->getDescriptionHabitat()) ?></p>
                         </div>
 
 

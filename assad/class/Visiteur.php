@@ -85,10 +85,15 @@ class Visiteur extends Utilisateur
     public function reserverVisite(int $idVisite, int $nombreParticipants): bool
     {
         $reservation = new Reservation();
-        $reservation->setIdVisiteur($this->getIdUtilisateur());
-        $reservation->setIdVisite($idVisite);
-        $reservation->setNombrePersonnes($nombreParticipants);
-        return $reservation->reserver();
+        if (
+            $this->getStatusVisiteur() &&
+            $reservation->setIdVisiteur($this->getIdUtilisateur()) &&
+            $reservation->setIdVisite($idVisite)    &&
+            $reservation->setNombrePersonnes($nombreParticipants)
+        )
+            return $reservation->reserver();
+        else
+            return false;
     }
     // function pour laisser commentaire
     public function laisserCommentaire(int $idVisite, string $contenu, int $note): bool
@@ -96,6 +101,7 @@ class Visiteur extends Utilisateur
         $commentaire = new Commentaire();
         $dateNow = new DateTime();
         if (
+            $this->getStatusVisiteur() &&
             $commentaire->setIdVisiteur($this->getIdUtilisateur()) &&
             $commentaire->setIdVisite($idVisite) &&
             $commentaire->setContenuCommentaire($contenu) &&
@@ -119,5 +125,18 @@ class Visiteur extends Utilisateur
             return false;
         }
     }
+    // Nombre total de visiteurs inscrits (et par pays),
+    // public function getNbVisiteursParPays()
+    // {
+    //     $conn = (new Connexion())->connect();
+    //     $sql = "SELECT pays_utilisateur, COUNT(*) as count FROM utilisateurs WHERE role = 'visiteur' GROUP BY pays_utilisateur";
+    //     try {
+    //         $stmt = $conn->prepare($sql);
+    //         $stmt->execute();
+    //         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //         return $results;
+    //     } catch (Exception $e) {
+    //         return false;
+    //     }
+    // }
 }
-

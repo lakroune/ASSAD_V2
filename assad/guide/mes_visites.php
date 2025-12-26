@@ -17,6 +17,7 @@
         $visites = $visite->getVisitesByGuide($guide->getIdUtilisateur());
     }
 
+    $image = "https://lh3.googleusercontent.com/aida-public/AB6AXuBB3mzttMFekKaHiUMQgz9CbcCvR-LHMfkNamiYLEoaa6mr4VX3RGazcvrLyN6USTeeR3THkb5RzRgunm2nxYGRlj0JP37XKsb0oTpMuUfgiqYzKIQpDFu5Cwamtq0rGjsH93RIdsA6guKSg4KakhrlAV6mKU_SZGX00TM6y3-uGVugQHONmrBvFsVLmZ73htnyBEHRcaZXZ-cwzOoPb7aiKe-dIsmCV4By1n5q6PJKo8CSmh3GTGb2hDjnxSb8_vhCsJz-sArwzoL6";
 
     ?>
  <!DOCTYPE html>
@@ -122,8 +123,8 @@
 
                      <?php foreach ($visites as $visite) : ?>
                          <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-md">
-                             <div class="h-32 sm:w-32 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                                 <span class="material-symbols-outlined text-primary text-4xl">image</span>
+                             <div class="h-32 sm:w-32 rounded-xl bg-primary/10 flex items-center justify-center shrink-0" style="background-image: url('<?= $image ?>');">
+
                              </div>
 
                              <div class="flex flex-col justify-between flex-1 gap-2">
@@ -131,11 +132,11 @@
                                      <div class="flex justify-between">
                                          <h4 class="text-xl font-bold text-primary"><?= ($visite->getTitreVisite()) ?></h4>
                                          <?php
-                                            if ($visite->getStatutVisite() == 0)
+                                            if ($visite->getStatutVisite() == 1)
 
-                                                echo '<span class="text-xs font-bold px-2 py-1 bg-green-100 text-green-700 rounded-lg">Actif</span>';
+                                                echo '<span class="text-xs font-bold px-2 py-1 bg-green-100 text-green-700 rounded-lg">Disponible</span>';
                                             else
-                                                echo '<span class="text-xs font-bold px-2 py-1 bg-green-100 text-green-700 rounded-lg">pas disponible</span>';
+                                                echo '<span class="text-xs font-bold px-2 py-1 bg-green-100 text-green-700 rounded-lg">Indisponible</span>';
 
                                             ?>
 
@@ -163,12 +164,24 @@
                                          <span class="material-symbols-outlined text-[18px]">visibility</span>
                                          Détails
                                      </a>
-                                     <button onclick='editTour(<?= json_encode( $visite->visiteToAssc()) ?>)' class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border-light dark:border-border-dark text-xs font-bold hover:bg-gray-50 dark:hover:bg-background-dark transition-colors">
+                                     <button onclick='editTour(<?= json_encode($visite->visiteToAssc()) ?>)' class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border-light dark:border-border-dark text-xs font-bold hover:bg-gray-50 dark:hover:bg-background-dark transition-colors">
                                          <span class="material-symbols-outlined text-sm">edit</span> Modifier
                                      </button>
+                                     <?php
+                                        if ($visite->getStatutVisite() == 1) : ?>
+                                         <button onclick="confirmDesactivate(<?= $visite->getIdVisite() ?>) ;" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-200 dark:border-red-900/30 text-yellow-600 dark:text-yellow-400 text-sm font-semibold hover:bg-yellow-50 dark:hover:bg-yellow-900/10 transition-colors">
+                                             <span class="material-symbols-outlined text-[18px]">cancel</span>
+                                             Annuler
+                                         </button>
+                                     <?php elseif ($visite->getStatutVisite() == 0) : ?>
+                                         <button onclick="confirmActivate(<?= $visite->getIdVisite() ?>) ;" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-pink-200 dark:border-red-900/30 text-pink-600 dark:text-red-400 text-sm font-semibold hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-colors">
+                                             <span class="material-symbols-outlined text-[18px]">check</span>
+                                             Activer
+                                         </button>
+                                     <?php endif; ?>
                                      <button onclick="confirmDelete(<?= $visite->getIdVisite() ?>) ;" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400 text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
-                                         <span class="material-symbols-outlined text-[18px]">cancel</span>
-                                         Annuler
+                                         <span class="material-symbols-outlined text-[18px]">delete</span>
+                                         supprimer
                                      </button>
                                  </div>
 
@@ -318,6 +331,18 @@
          function confirmDelete(id) {
              if (confirm("Êtes-vous sûr de vouloir supprimer cette visite définitivement ?")) {
                  window.location.href = "php/delete_visite.php?id=" + id;
+             }
+         }
+
+         function confirmDesactivate(id) {
+             if (confirm("Êtes-vous sûr de vouloir annuler cette visite ?")) {
+                 window.location.href = "php/desactivate_visite.php?id=" + id;
+             }
+         }
+
+         function confirmActivate(id) {
+             if (confirm("Êtes-vous sûr de vouloir restaurer cette visite ?")) {
+                 window.location.href = "php/activate_visite.php?id=" + id;
              }
          }
          // Initialisation

@@ -55,13 +55,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $visite->setDateheureVisite($_POST['dateheure_viste']) &&
             $visite->setDureeVisite($_POST['duree__visite']) &&
             $visite->setCapaciteMaxVisite((int)$_POST['capacite_max__visite']) &&
-            $visite->setPrixVisite((float)$_POST['prix_visite'])  &&
+            $visite->setPrixVisite((float)$_POST['prix__visite'])  &&
             $visite->setDescriptionVisite($_POST['description_visite']) &&
             $visite->setLangueVisite($_POST['langue__visite']) &&
             $visite->setTitreVisite($_POST['titre_visite']) &&
             $visite->setStatutVisite(1) &&
             $visite->setIdGuide($id_guide)
         ) {
+            echo "idd";
             $lastVisiteId = $visite->ajouterVisite();
 
             if ($lastVisiteId) {
@@ -73,14 +74,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $etap->setOrdreEtape((int)$etapeData['ordre_etape']);
                     $etap->setIdVisite((int)$lastVisiteId);
                     $etap->ajouterEtape();
+                    echo  "x";
                 }
                 header("Location: ../mes_visites.php?success=visite_ajoute");
                 exit();
+            } else {
+                echo "dd";
             }
         }
+        else echo "rr";
     }
-
-     
 } else {
     header("Location: ../mes_visites.php?error=invalid_request");
     exit();

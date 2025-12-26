@@ -61,11 +61,10 @@ function get_is_approuver_guide($status)
 
 function get_status_indicator_color($status)
 {
-    return match ($status) {
-        '1' => '<span class="w-2 h-2 rounded-full bg-green-500 inline-block mr-1" title="Actif"></span>',
-        '0' => '<span class="w-2 h-2 rounded-full bg-red-500 inline-block mr-1" title="Suspendu"></span>',
-        default => '',
-    };
+    if ($status == 1) {
+        return  '<span class="w-2 h-2 rounded-full bg-green-500 inline-block mr-1" title="Actif"></span>';
+    } else
+        return  '<span class="w-2 h-2 rounded-full bg-red-500 inline-block mr-1" title="Suspendu"></span>';
 }
 
 ?>
@@ -251,6 +250,7 @@ function get_status_indicator_color($status)
                                             <?php
                                             $visiteur = new Visiteur();
                                             $guide = new Guide();
+
                                             if ($user->getRoleUtilisateur() == 'visiteur') {
                                                 $visiteur->getVisiteur($user->getIdUtilisateur());
                                                 echo get_status_indicator_color($visiteur->getStatusVisiteur());
@@ -263,10 +263,10 @@ function get_status_indicator_color($status)
                                             <span class="text-xs text-gray-500 capitalize">
                                                 <?php
                                                 if ($user->getRoleUtilisateur() == 'visiteur')
-                                                    get_status_indicator_visiteur(($visiteur->getStatusVisiteur()));
+                                                    echo      get_status_indicator_visiteur(($visiteur->getStatusVisiteur()));
                                                 elseif ($user->getRoleUtilisateur() == 'guide')
                                                     // int tosring  
-                                                    get_is_approuver_guide(($guide->getIsApprouver()));
+                                                    echo    get_is_approuver_guide(($guide->getIsApprouver()));
 
                                                 ?></span>
                                             </span>
