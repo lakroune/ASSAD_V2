@@ -166,7 +166,7 @@ class Animal
             return false;
         }
     }
-    public function modifierAnimal(): bool
+    public function modifierAnimal( int $id_animal): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE animaux SET nom_animal = :nom_animal, espece = :espece_animal, alimentation_animal = :type_alimentation, pays_origine = :pays_origine, description_animal = :description_animal, image_url = :image_url, id_habitat = :id_habitat WHERE id_animal = :id_animal";
@@ -176,13 +176,13 @@ class Animal
             return false;
         }
         $stmt->bindParam(':id_animal', $id_animal);
-        $stmt->bindParam(':nom_animal', $nom_animal);
-        $stmt->bindParam(":espece_animal", $espece_animal);
-        $stmt->bindParam(":type_alimentation", $type_alimentation);
-        $stmt->bindParam(":pays_origine", $pays_origine);
-        $stmt->bindParam(":description_animal", $description_animal);
-        $stmt->bindParam(":image_url", $image_url);
-        $stmt->bindParam(":id_habitat", $id_habitat);
+        $stmt->bindParam(':nom_animal', $this->nom_animal);
+        $stmt->bindParam(":espece_animal", $this->espece_animal);
+        $stmt->bindParam(":type_alimentation", $this->type_alimentation);
+        $stmt->bindParam(":pays_origine", $this->pays_origine);
+        $stmt->bindParam(":description_animal", $this->description_animal);
+        $stmt->bindParam(":image_url", $this->image_url);
+        $stmt->bindParam(":id_habitat", $this->id_habitat, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             return true;
