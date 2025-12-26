@@ -3,31 +3,31 @@ require_once 'Utilisateur.php';
 require_once 'Reservation.php';
 class Visiteur extends Utilisateur
 {
-    private string $statut_utilisateur;
+    private string $statusVisiteur;
     public function __construct()
     {
         return parent::__construct();
     }
 
 
-    public function getStatutUtilisateur()
+    public function getStatusVisiteur()
     {
-        return $this->statut_utilisateur;
+        return $this->statusVisiteur;
     }
-    public function setStatutUtilisateur(int $statut_utilisateur)
+    public function setStatusVisiteur(int $statut_utilisateur)
     {
         if ($statut_utilisateur == 0 || $statut_utilisateur == 1) {
-            $this->statut_utilisateur = $statut_utilisateur;
+            $this->statusVisiteur = $statut_utilisateur;
         }
     }
 
 
     public function __toString()
     {
-        return parent::__toString()  . " statut :" . $this->getStatutUtilisateur();
+        return parent::__toString()  . " statut :" . $this->getStatusVisiteur();
     }
     //recuperer les info de visiteur
-    public function  getVisteur(int $id_visiteur)
+    public function  getVisiteur(int $id_visiteur)
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = :id_visiteur AND role='visiteur'";
@@ -44,8 +44,9 @@ class Visiteur extends Utilisateur
                 $this->setIdUtilisateur($visiteur['id_utilisateur']) &&
                 $this->setNomUtilisateur($visiteur['nom_utilisateur']) &&
                 $this->setEmail($visiteur['email']) &&
+                $this->setRoleUtilisateur($visiteur['role']) &&
                 $this->setPaysUtilisateur($visiteur['pays_utilisateur']) &&
-                $this->setStatutUtilisateur($visiteur['statut_utilisateur'])
+                $this->setStatusVisiteur($visiteur['statut_utilisateur'])
             )
                 return $this;
         } else {
@@ -71,7 +72,7 @@ class Visiteur extends Utilisateur
                     $visiteur->setNomUtilisateur($row['nom_utilisateur']) &&
                     $visiteur->setEmail($row['email']) &&
                     $visiteur->setPaysUtilisateur($row['pays_utilisateur']) &&
-                    $visiteur->setStatutUtilisateur((int)$row['statut_utilisateur'])
+                    $visiteur->setStatusVisiteur((int)$row['statut_utilisateur'])
                 )
                     $visiteursList[] = $visiteur;
             }

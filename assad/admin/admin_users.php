@@ -15,37 +15,34 @@ if (!Admin::isConnected("admin")) {
 
 $array_utilisateurs = Utilisateur::getAllUtilisateurs();
 
+if ($_SERVER['REQUEST_METHOD'] === "POST" and isset($_POST['id_affiche']) and !empty($_POST['id_affiche'])) {
 
+    $info_utilisateur = new Utilisateur();
+    $info_utilisateur->getUtilisateur($_POST['id_affiche']);
+}
 
 
 
 function get_role_badge($role)
 {
-    return match ($role) {
-        'admin' => '<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">Admin</span>',
-        'guide' => '<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Guide</span>',
-        'visiteur' => '<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300">Visiteur</span>',
-        default => '<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300">Inconnu</span>',
-    };
+    if ($role == "guide") return '<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Guide</span>';
+    elseif ($role == "visiteur") return '<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300">Visiteur</span>';
+    else return  '<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700/40 dark:text-gray-300">Inconnu</span>';
 }
 
 //for visiteur
 function get_status_indicator_visiteur($status)
 {
-    return match ($status) {
-        '1' => '<span class="    text-green-500 inline-block mr-1" title="Actif">Actif</span>',
-        '0' => '<span class="  text-red-500 inline-block mr-1" title="Suspendu">Suspendu</span>',
-        default => '',
-    };
+    if ($status == 1) return   '<span class="    text-green-500 inline-block mr-1" title="Actif">Actif</span>';
+    elseif ($status == 0) return   '<span class="  text-red-500 inline-block mr-1" title="Suspendu">Suspendu</span>';
+    else return '';
 }
 //for guide
 function get_is_approuver_guide($status)
 {
-    return match ($status) {
-        '1' => '<span class="    text-green-500 inline-block mr-1" title="Approuver">Approuver</span>',
-        '0' => '<span class="  text-red-500 inline-block mr-1" title="non approuver">non approuver</span>',
-        default => '',
-    };
+    if ($status == 1) return   '<span class="    text-green-500 inline-block mr-1" title="Approuver">Approuver</span>';
+    elseif ($status == 0) return   '<span class="  text-red-500 inline-block mr-1" title="non approuver">non approuver</span>';
+    else return '';
 }
 
 function get_status_indicator_color($status)
@@ -180,8 +177,8 @@ function get_status_indicator_color($status)
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
                     <div class="flex flex-wrap gap-3">
                         <button class="px-4 py-2 text-sm font-bold rounded-lg bg-primary text-white shadow-sm">Tous (<?= count($array_utilisateurs) ?>)</button>
-                        <button class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Guides (<?= count(array_filter($array_utilisateurs, fn($u) => $u->getRoleUtilisateur() === 'guide')) ?>)</button>
-                        <button class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Visiteurs (<?= count(array_filter($array_utilisateurs, fn($u) => $u->getRoleUtilisateur() === 'visiteur')) ?>)</button>
+                        <button class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Guides (<?php echo count(array_filter($array_utilisateurs, fn($u) => $u->getRoleUtilisateur() == 'guide')) ?>)</button>
+                        <button class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Visiteurs (<?= count(array_filter($array_utilisateurs, fn($u) => $u->getRoleUtilisateur() == 'visiteur')) ?>)</button>
                         <!-- <button class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Actif (<?php //$visiteur= new Visiteur();   echo count(array_filter($array_utilisateurs, fn($u) => ($visiteur->getVisteur($u->getIdUtilisateur()))->getStatusVisiteur() === '1')) 
                                                                                                                                                                                                                                                 ?>)</button> -->
                         <!-- <button class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Suspendu (<?php // count(array_filter($array_utilisateurs, fn($u) => $u['statut_utilisateur'] === '0')) 
@@ -241,7 +238,7 @@ function get_status_indicator_color($status)
                                             $visiteur = new Visiteur();
                                             $guide = new Guide();
                                             if ($user->getRoleUtilisateur() == 'visiteur') {
-                                                $visiteur->getVisteur($user->getIdUtilisateur());
+                                                $visiteur->getVisiteur($user->getIdUtilisateur());
                                                 echo get_status_indicator_color($visiteur->getStatusVisiteur());
                                             } else 
                                             if ($user->getRoleUtilisateur() == 'guide') {
@@ -253,7 +250,8 @@ function get_status_indicator_color($status)
                                                 <?php
                                                 if ($user->getRoleUtilisateur() == 'visiteur')
                                                     get_status_indicator_visiteur(($visiteur->getStatusVisiteur()));
-                                                if ($user->getRoleUtilisateur() == 'guide')
+                                                elseif ($user->getRoleUtilisateur() == 'guide')
+                                                    // int tosring  
                                                     get_is_approuver_guide(($guide->getIsApprouver()));
 
                                                 ?></span>
@@ -274,7 +272,7 @@ function get_status_indicator_color($status)
                                                         <span class="material-symbols-outlined text-lg">visibility</span>
                                                     </button>
                                                 </form>
-                                                <?php if ($visiteur && $visiteur->getStatusVisiteur() === '0'): ?>
+                                                <?php if ($visiteur && $user->getRoleUtilisateur() == 'visiteur' && $visiteur->getStatusVisiteur() == 1): ?>
                                                     <form action="" method="POST" class="lock">
                                                         <input type="hidden" name="id_suspendu" value="<?= $user->getIdUtilisateur() ?>">
                                                         <button type="button"
@@ -283,7 +281,7 @@ function get_status_indicator_color($status)
                                                             <span class="material-symbols-outlined text-lg">lock</span>
                                                         </button>
                                                     </form>
-                                                <?php elseif ($visiteur && $visiteur->getStatusVisiteur() === '1'): ?>
+                                                <?php elseif ($visiteur && $user->getRoleUtilisateur() == 'visiteur' && $visiteur->getStatusVisiteur() == 0): ?>
                                                     <form action="" method="POST" class="lock_open">
                                                         <input type="hidden" name="id_activer" value="<?= $user->getIdUtilisateur() ?>">
                                                         <button type="button"
@@ -294,7 +292,7 @@ function get_status_indicator_color($status)
                                                     </form>
                                                 <?php endif; ?>
 
-                                                <?php if ($guide && $guide->getRoleUtilisateur() === 'guide' && $guide->getIsApprouver() == 0): ?>
+                                                <?php if ($guide && $user->getRoleUtilisateur() === 'guide' && $guide->getIsApprouver() == 0): ?>
                                                     <form action="" method="POST" class="Approuver">
                                                         <input type="hidden" name="id_Approuver_utilisateur" value="<?= $user->getIdUtilisateur() ?>">
                                                         <button type="button"
@@ -344,16 +342,16 @@ function get_status_indicator_color($status)
                 <div class="p-6">
                     <div class="flex items-center gap-4 mb-8">
                         <div class="h-20 w-20 rounded-full bg-gradient-to-tr from-primary to-orange-300 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                            <?= strtoupper(substr($info_utilisateur['nom_utilisateur'], 0, 1)) ?>
+                            <?= strtoupper(substr($info_utilisateur->getNomUtilisateur(), 0, 1)) ?>
                         </div>
                         <div>
                             <h4 class="text-2xl font-black text-text-light dark:text-text-dark leading-tight">
-                                <?= ($info_utilisateur['nom_utilisateur']) ?>
+                                <?= ($info_utilisateur->getNomUtilisateur()) ?>
                             </h4>
                             <div class="flex gap-2 mt-1">
-                                <?= get_role_badge($info_utilisateur['role']) ?>
+                                <?= get_role_badge($info_utilisateur->getRoleUtilisateur()) ?>
                                 <span class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full flex items-center gap-1">
-                                    ID: #<?= $info_utilisateur['id_utilisateur'] ?>
+                                    ID: #<?= $info_utilisateur->getIdUtilisateur() ?>
                                 </span>
                             </div>
                         </div>
@@ -365,7 +363,7 @@ function get_status_indicator_color($status)
                             <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-bold uppercase tracking-wider">Email</p>
                             <p class="flex items-center gap-2 font-medium truncate">
                                 <span class="material-symbols-outlined text-sm">mail</span>
-                                <?= ($info_utilisateur['email']) ?>
+                                <?= ($info_utilisateur->getEmail()) ?>
                             </p>
                         </div>
 
@@ -373,22 +371,63 @@ function get_status_indicator_color($status)
                             <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-bold uppercase tracking-wider">Localisation</p>
                             <p class="flex items-center gap-2 font-medium">
                                 <span class="material-symbols-outlined text-sm">location_on</span>
-                                <?= ($info_utilisateur['pays_utilisateur'] ?? 'Non défini') ?>
+                                <?= ($info_utilisateur->getPaysUtilisateur() ?? 'Non défini') ?>
                             </p>
                         </div>
 
                         <div>
                             <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-bold uppercase tracking-wider">État du compte</p>
                             <div class="mt-1">
-                                <?= get_status_indicator_color($info_utilisateur['statut_utilisateur']) ?>
-                                <span class="font-bold"><?= $info_utilisateur['statut_utilisateur'] == 1 ? 'Actif' : 'Suspendu' ?></span>
+                                <?php
+                                if ($info_utilisateur->getRoleUtilisateur() == "visiteur") {
+                                    $visitor = new Visiteur();
+                                    $visitor->getVisiteur($info_utilisateur->getIdUtilisateur());
+                                    get_status_indicator_color($visitor->getStatusVisiteur());
+                                } else
+                                    get_status_indicator_color(1);
+
+                                ?>
+                                <span class="font-bold">
+                                    <?php
+                                    if ($info_utilisateur->getRoleUtilisateur() == "visiteur") {
+                                        $visitor = new Visiteur();
+                                        $visitor->getVisiteur($info_utilisateur->getIdUtilisateur());
+                                        if ($visitor->getStatusVisiteur() == 1)
+                                            echo "Actif";
+                                        else
+                                            echo "Suspendu";
+                                    }
+                                    ?>
+
                             </div>
                         </div>
 
                         <div>
                             <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-bold uppercase tracking-wider">Approbation</p>
-                            <p class="mt-1 font-bold <?= $info_utilisateur['Approuver_utilisateur'] == 1 ? 'text-green-500' : 'text-orange-500' ?>">
-                                <?= $info_utilisateur['Approuver_utilisateur'] == 1 ? '✓ Approuvé' : '⌛ En attente' ?>
+                            <p class="mt-1 font-bold <?php
+                                                        if ($info_utilisateur->getRoleUtilisateur() == "guide") {
+                                                            $guide1 = new Guide();
+                                                            $guide1->getGuide($info_utilisateur->getIdUtilisateur());
+                                                            if ($guide1->getIsApprouver() == 1)
+                                                                echo "text-green-500";
+                                                            else
+                                                                echo "text-orange-500";
+                                                        } else  echo "text-green-500";
+
+
+
+                                                        ?>  flex items-center gap-2">
+                                <?php
+                                if ($info_utilisateur->getRoleUtilisateur() == "guide") {
+                                    $guide1 = new Guide();
+                                    $guide1->getGuide($info_utilisateur->getIdUtilisateur());
+                                    if ($guide1->getIsApprouver() == 1)
+                                        echo "✓ Approuvé' ";
+                                    else
+                                        echo "⌛ En attente";
+                                } else  echo "✓ Approuvé' ";
+                                ?>
+
                             </p>
                         </div>
                     </div>

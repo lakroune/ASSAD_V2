@@ -33,7 +33,7 @@ class Guide extends Utilisateur
 
 
     //recuperer les info de guide
-    public function  getVisteur(int $id_guide)
+    public function  getGuide(int $id_guide)
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = :id_guide AND role='guide'";
@@ -46,9 +46,10 @@ class Guide extends Utilisateur
         if ($stmt->execute()) {
             $visiteur = $stmt->fetch(PDO::FETCH_ASSOC);
             if (
-                $this->setIdUtilisateur($visiteur['id_utilisateur']) &&
+                $this->setIdUtilisateur( $visiteur['id_utilisateur']) &&
                 $this->setNomUtilisateur($visiteur['nom_utilisateur']) &&
                 $this->setEmail($visiteur['email']) &&
+                $this->setRoleUtilisateur($visiteur['role']) &&
                 $this->setPaysUtilisateur($visiteur['pays_utilisateur']) &&
                 $this->setIsApprouver($visiteur['Approuver_utilisateur'])
             )

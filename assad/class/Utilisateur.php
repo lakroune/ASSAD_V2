@@ -39,13 +39,7 @@ class Utilisateur
     }
     public function setRoleUtilisateur(string $role)
     {
-        if ($role == "visiteur") {
-            $this->role = $role;
-            return true;
-        } elseif ($role == "guide") {
-            $this->role = $role;
-            return true;
-        } elseif ($role == "admin") {
+        if ($role == "visiteur" or $role == "guide" or $role == "admin") {
             $this->role = $role;
             return true;
         }
@@ -139,27 +133,24 @@ class Utilisateur
         session_destroy();
     }
 
-    public static function isConnected(string $role ): bool
+    public static function isConnected(string $role): bool
     {
         return isset($_SESSION['logged_in']) && isset($_SESSION['role_utilisateur']) && $_SESSION['logged_in'] === TRUE &&  $_SESSION['role_utilisateur'] === $role;
     }
     public static function getAllUtilisateurs(): array|bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM utilisateurs";
+        $sql = "SELECT * FROM utilisateurs where role != 'admin'";
 
         try {
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if (!$results) {
-                return [];
-            }
-
             $utilisateursList = [];
-            $user = new self();
-            foreach ($results as $row)
+
+            foreach ($results as $row):
+                $user = new self();
 
                 if (
                     $user->setIdUtilisateur((int)$row['id_utilisateur']) &&
@@ -169,7 +160,7 @@ class Utilisateur
                     $user->setRoleUtilisateur($row['role'])
                 )
                     $utilisateursList[] = $user;
-
+            endforeach;
 
             return $utilisateursList;
         } catch (Exception $e) {
@@ -205,4 +196,3 @@ class Utilisateur
         }
     }
 }
- 
