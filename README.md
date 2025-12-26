@@ -38,12 +38,6 @@ Le projet s'appuie sur les tables suivantes :
 - `visitesguidees` & `etapesvisite` : Structure des parcours virtuels.
 - `reservations` & `commentaires` : Gestion de l'interaction utilisateur.
 
-### Exigences de développement
-- **Validation** :  
-- **SQL** :  
-- **Pagination**  
-
----
 
  
  
