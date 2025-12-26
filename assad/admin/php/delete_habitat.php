@@ -1,31 +1,27 @@
 <?php
-session_start();
-include "../../db_connect.php";
 
 
-if (!isset($_SESSION['role_utilisateur']) || $_SESSION['role_utilisateur'] !== "admin") {
-    header("location: ../../connexion.php?message=error_server");
+
+require_once '../../Class/Admin.php';
+require_once '../../Class/Animal.php';
+require_once '../../Class/Habitat.php';
+
+
+if (!Admin::isConnected("admin")) {
+    header("location: ../../connexion.php?message=access_denied");
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_habitat'])) {
-    $id = intval($_POST['id_habitat']);
 
-    $stmt = $conn->prepare("DELETE FROM habitats WHERE id_habitat = ?");
-    $stmt->bind_param("i", $id);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_habitat']) && !empty($_POST['id_habitat'])) {
+    $habitat = new Habitat();
 
-    if ($stmt->execute()) {
-        if ($stmt->affected_rows > 0) {
-            header("location: ../admin_habitats.php?status=delete");
-        } else {
-            header("location: ../admin_habitats.php?message=error_server");
-        }
+    if ($habitat->supprimerHabitat($_POST['id_habitat'])) {
+
+        header("location: ../admin_habitats.php?message=success");
     } else {
-        header("location: ../admin_habitats.php?message=error_server");
+        header("location: ../admin_habitats.php?message=error");
     }
-
-    $stmt->close();
-    $conn->close();
 } else {
     header("location: ../admin_habitats.php?message=error_server");
 }
