@@ -132,6 +132,17 @@ class Guide extends Utilisateur
             return false;
         }
     }
+    public static function conuterGuides()
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT count(*)  FROM utilisateurs WHERE role = 'guide'";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $results = $stmt->fetchColumn();
+            return $results;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
-
- 

@@ -1,69 +1,63 @@
- <?php
-    session_start();
-    include "../db_connect.php";
-
-    if (
-        isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur'], $_SESSION['nom_utilisateur']) &&
-        $_SESSION['role_utilisateur'] === "admin" &&
-        $_SESSION['logged_in'] === TRUE
-    ) {
-        $id_utilisateur = ($_SESSION['id_utilisateur']);
-        $nom_utilisateur = ($_SESSION['nom_utilisateur']);
-        $role_utilisateur = ($_SESSION['role_utilisateur']);
+<?php
 
 
 
-        $date_now = date('d-m-Y H:i:s');
-        $sql = " SELECT role , COUNT(*) as count FROM utilisateurs GROUP BY role HAVING role != 'admin' ";
+require_once '../Class/Visiteur.php';
+require_once '../Class/Visite.php';
+require_once '../Class/Guide.php';
+require_once '../Class/Animal.php';
+require_once '../Class/Habitat.php';
+require_once '../Class/Reservation.php';
 
-        $resultat = $conn->query($sql);
-        $total_visiteurs = 0;
-        $total_guides = 0;
-        if ($resultat->num_rows > 0)
-            while ($row = $resultat->fetch_assoc()) {
-                if ($row["role"] === "visiteur")
-                    $total_visiteurs = $row["count"];
-                else  if ($row["role"] === "guide")
-                    $total_guides = $row["count"];
-            }
+
+if (
+    Visiteur::isConnected("admin")
+) {
+
+
+
+    $array_animaux = Animal::getAllAnimaux();
+    $array_habitats = Habitat::getAllHabitats();
+
+
+ 
 
 
 
 
 
 
+        // $sql = " SELECT h.nom_habitat , COUNT(*) as count from  animaux a inner JOIN habitats h
+        //  on a.id_habitat= h.id_habitat   GROUP BY h.id_habitat  ORDER BY  h.id_habitat  desc ";
 
-        $sql = " SELECT h.nom_habitat , COUNT(*) as count from  animaux a inner JOIN habitats h
-         on a.id_habitat= h.id_habitat   GROUP BY h.id_habitat  ORDER BY  h.id_habitat  desc ";
-
-        $resultat = $conn->query($sql);
-        $habitat_plus_frequent = "";
-        $total_animaux = 0;
-        if ($resultat->num_rows > 0)
-            while ($row = $resultat->fetch_assoc()) {
-                $habitat_plus_frequent = $row["nom_habitat"];
-                $total_animaux = +$row["count"];
-            }
-
+        // $resultat = $conn->query($sql);
+        // $habitat_plus_frequent = "";
+        // $total_animaux = 0;
+        // if ($resultat->num_rows > 0)
+        //     while ($row = $resultat->fetch_assoc()) {
+        //         $habitat_plus_frequent = $row["nom_habitat"];
+        //         $total_animaux = +$row["count"];
+        //     }
 
 
-        $sql = " SELECT  COUNT(*) as total FROM visitesguidees";
-        $resultat = $conn->query($sql);
-        $total_vistes = 0;
 
-        if ($resultat->num_rows > 0) {
-            $row = $resultat->fetch_assoc();
-            $total_vistes = +$row["total"];
-        }
+        // $sql = " SELECT  COUNT(*) as total FROM visitesguidees";
+        // $resultat = $conn->query($sql);
+        // $total_vistes = 0;
 
-        $sql = " SELECT  COUNT(*) as count FROM reservations ";
-        $resultat = $conn->query($sql);
-        $total_resirvation = 0;
+        // if ($resultat->num_rows > 0) {
+        //     $row = $resultat->fetch_assoc();
+        //     $total_vistes = +$row["total"];
+        // }
 
-        if ($resultat->num_rows > 0) {
-            $row = $resultat->fetch_assoc();
-            $total_resirvation = +$row["count"];
-        }
+        // $sql = " SELECT  COUNT(*) as count FROM reservations ";
+        // $resultat = $conn->query($sql);
+        // $total_resirvation = 0;
+
+        // if ($resultat->num_rows > 0) {
+        //     $row = $resultat->fetch_assoc();
+        //     $total_resirvation = +$row["count"];
+        // }
     } else {
 
         header("Location: ../connexion.php?error=access_denied");
@@ -207,12 +201,12 @@
                          <div>
                              <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium">
                                  Utilisateur Inscrits</p>
-                             <h3 class="text-2xl font-bold text-text-light dark:text-text-dark"><?= $total_visiteurs + $total_guides ?></h3>
+                             <h3 class="text-2xl font-bold text-text-light dark:text-text-dark"><?= Visiteur::conuterVisiteurs() + Guide::conuterGuides() ?></h3>
                              <p class="text-xs  text-gray-400 mt-1"><?php
-                                                                    if (!empty($total_guides))
-                                                                        echo   $total_guides  . "  guides  ";
-                                                                    if (!empty($total_visiteurs))
-                                                                        echo   "<br/>" . $total_visiteurs  . "  visiteurs ";
+                                                                    if (Guide::conuterGuides() > 0)
+                                                                        echo   Guide::conuterGuides()  . "  guides  ";
+                                                                    if (Visiteur::conuterVisiteurs() > 0)
+                                                                        echo   "<br/>" . Visiteur::conuterVisiteurs()  . "  visiteurs ";
 
                                                                     ?></p>
                          </div>
@@ -230,8 +224,8 @@
                          <div class="relative z-10">
                              <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium">Total
                                  Animaux</p>
-                             <h3 class="text-2xl font-bold text-primary"><?= $total_animaux ?></h3>
-                             <p class="text-xs text-primary/80 mt-1 font-medium"><?= "Dont dans " .  $habitat_plus_frequent ?></p>
+                             <h3 class="text-2xl font-bold text-primary"><?= Animal::counterAnimaux() ?></h3>
+                             <p class="text-xs text-primary/80 mt-1 font-medium"><?= "Dont dans " //  $habitat_plus_frequent ?></p>
                          </div>
                      </div>
                      <div
@@ -245,7 +239,7 @@
                          <div>
                              <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium">
                                  Total Réservations </p>
-                             <h3 class="text-lg font-bold text-text-light dark:text-text-dark truncate"> <?= $total_resirvation; ?>
+                             <h3 class="text-lg font-bold text-text-light dark:text-text-dark truncate"> <?= Reservation::conuterReservations(); ?>
                              </h3>
                              <p class="text-xs text-gray-400 mt-1"> </p>
                          </div>
@@ -261,7 +255,7 @@
                          <div>
                              <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium">Total
                                  Visite Guidée</p>
-                             <h3 class="text-lg font-bold text-text-light dark:text-text-dark truncate"><?= $total_vistes ?>
+                             <h3 class="text-lg font-bold text-text-light dark:text-text-dark truncate"><?= Visite::counterVisites(); ?>
                              </h3>
                              <p class="text-xs text-gray-400 mt-1">
 

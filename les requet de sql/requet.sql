@@ -84,7 +84,7 @@ CREATE TABLE reservations (
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur) ON DELETE CASCADE
 );
 
-SELECT * from reservations;
+UPDATE  utilisateurs  set role ="admin" where id_utilisateur = 28;
 
 CREATE TABLE commentaires (
     id_commentaire INT PRIMARY KEY AUTO_INCREMENT,
@@ -367,4 +367,4 @@ WHERE
 
 SELECT COUNT(*) from visitesguidees;
 
-SELECT *  from  utilisateurs;
+SELECT *  from  animaux;

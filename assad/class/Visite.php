@@ -286,4 +286,17 @@ class Visite
             return false;
         }
     }
+    public static function counterVisites(): int
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT COUNT(*) as count FROM visitesguidees";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int)$row['count'];
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
 }

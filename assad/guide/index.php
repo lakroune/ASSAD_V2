@@ -1,18 +1,15 @@
-<?php
-include "../db_connect.php";
-session_start();
+ <?php
 
 
-if (
-    isset($_SESSION['role_utilisateur'], $_SESSION['logged_in']) &&
-    $_SESSION['role_utilisateur'] === "guide" &&
-    $_SESSION['logged_in'] === TRUE
-) {
-    $id_utilisateur = ($_SESSION['id_utilisateur']);
-    $nom_utilisateur = ($_SESSION['nom_utilisateur']);
-    $role_utilisateur = ($_SESSION['id_utilisateur']);
+    require_once '../Class/Visiteur.php';
+    require_once '../Class/Reservation.php';
+    require_once '../Class/Guide.php';
 
 
+    if (
+        Visiteur::isConnected("guide")
+
+    ) {
 
     $date_now = date('d-m-Y H:i:s');
     $sql = " SELECT * FROM visitesguidees where id_guide = $id_utilisateur and dateheure_viste <= ' " . $date_now . "' order by  dateheure_viste desc limit 1";

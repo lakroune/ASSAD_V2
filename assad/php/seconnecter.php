@@ -14,7 +14,7 @@ if (
 
 
     if ($result === "admin") {
-        header("Location: ../admin/dashboard.php");
+        header("Location: ../admin/");
         exit();
     } elseif ($result === "guide") {
         header("Location: ../guide/");

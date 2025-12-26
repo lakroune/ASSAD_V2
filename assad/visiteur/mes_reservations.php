@@ -1,30 +1,22 @@
  <?php
-    session_start();
 
-    include "../db_connect.php";
+
+    require_once '../Class/Visiteur.php';
+    require_once '../Class/Reservation.php';
+    require_once '../Class/Guide.php';
+
 
     if (
-        isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur']) &&
-        $_SESSION['role_utilisateur'] === "visiteur" &&
-        $_SESSION['logged_in'] === TRUE
+        Visiteur::isConnected("visiteur")
+
     ) {
-
-        $id_utilisateur = ($_SESSION['id_utilisateur']);
-        $nom_utilisateur = ($_SESSION['nom_utilisateur']);
-        $role_utilisateur = ($_SESSION['role_utilisateur']);
-
-        $sql = " SELECT * FROM reservations r INNER JOIN visitesguidees v on r.id_visite = v.id_visite  and r.id_utilisateur= $id_utilisateur";
-        $resultat = $conn->query($sql);
-
-        $array_reservations = array();
-        while ($ligne =  $resultat->fetch_assoc())
-            array_push($array_reservations, $ligne);
+        $visiteur = new Visiteur();
+        $visiteur->getVisteur($_SESSION["id_utilisateur"]);
+        $array_reservations = Reservation::getAllResrvation();
     } else {
         header("Location: ../connexion.php?error=access_denied");
         exit();
     }
-
-
 
 
 
@@ -112,7 +104,7 @@
                              href="animaux.php">Animaux</a>
                          <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
                              href="reservation.php">Réservation</a>
-                          <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
+                         <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
                              href="./mes_reservations.php">Mes Reservations</a>
                          <a class="text-[#1b140d] text-sm font-medium hover:text-primary transition-colors"
                              href="./../php/sedeconnecter.php"> Se Deconnecter</a>
@@ -132,7 +124,7 @@
              <div class="w-full mb-10 text-center">
                  <div class="p-8 bg-white rounded-xl shadow-lg border border-[#f3ede7]">
                      <h1 class="text-4xl font-black text-[#1b140d] mb-2">
-                         Vos Réservations, <span class="text-primary"><?= $nom_utilisateur ?></span>
+                         Vos Réservations, <span class="text-primary"><?= $visiteur->getNomUtilisateur() ?></span>
                      </h1>
                      <p class="text-gray-500 text-lg">
                          Gérez vos visites guidées virtuelles passées et à venir.
@@ -152,28 +144,29 @@
                                      <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Date & Heure</th>
                                      <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Guide</th>
                                      <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Invités</th>
-                                         </tr>
+                                 </tr>
                              </thead>
                              <tbody class="divide-y divide-gray-200">
                                  <?php foreach ($array_reservations as $reservation) : ?>
-                                     <tr class="<?= $reservation['statut__visite'] ? 'bg-white hover:bg-orange-50/50' : 'bg-gray-50/50' ?> transition-colors">
+                                     <tr class="<?= $reservation->getIdReservation() ? 'bg-white hover:bg-orange-50/50' : 'bg-gray-50/50' ?> transition-colors">
                                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#1b140d]">
                                              <a href="reservation.php" class="hover:text-primary transition-colors">
-                                                 <?= ($reservation['titre_visite']) ?>
+                                                 <?= ($reservation->getIdVisite()) ?>
                                              </a>
-                                             <p class="text-xs text-gray-400">#<?= ($reservation['id_reservations']) ?></p>
+                                             <p class="text-xs text-gray-400">#<?= ($reservation->getIdReservation()) ?></p>
                                          </td>
                                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                             <?= date('d/m/Y', strtotime($reservation['dateheure_viste'])) ?> à <?= date('H:m', strtotime($reservation['dateheure_viste'])) ?>
+                                             <?= $reservation->getDateReservation()->format('g-m-Y ') ?> à <?= $reservation->getDateReservation()->format('H:i') ?>
                                          </td>
                                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                             <?= ($reservation['id_guide']) ?>
+                                             <?= ($reservation->getIdVisite()) // id guide
+                                                ?>
                                          </td>
                                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                             <?= ($reservation['id_guide']) ?> personne(s)
+                                             <?= ($reservation->getIdReservation()) ?> personne(s)
                                          </td>
-                                         
-                                          
+
+
                                      </tr>
                                  <?php endforeach; ?>
                              </tbody>

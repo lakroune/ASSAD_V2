@@ -31,7 +31,7 @@ class Habitat
     }
     public function setNomHabitat(string $nom_habitat)
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        $regix = "/^[A-Za-z\s'0-9_-]{2,50}$/";
         if (preg_match($regix, $nom_habitat)) {
             $this->nom_habitat = $nom_habitat;
             return true;
@@ -191,6 +191,8 @@ class Habitat
 
         return $allHabitats;
     }
+  
+   
 }
 
  

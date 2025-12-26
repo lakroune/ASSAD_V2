@@ -157,6 +157,16 @@ class Reservation
             return false;
         }
     }
+    public  static function conuterReservations()
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT COUNT(*) FROM reservations ";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
 }
-
- 

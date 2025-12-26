@@ -50,7 +50,7 @@ class Animal
     // setters
     public function setNomAnimal(string $nom_animal): bool
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        $regix = "/^[a-zA-Z\s'0-9_-]{2,50}$/";
         if (preg_match($regix, $nom_animal)) {
             $this->nom_animal = $nom_animal;
             return true;
@@ -60,7 +60,7 @@ class Animal
 
     public function setEspeceAnimal(string $espece_animal): bool
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        $regix = "/^[a-zA-Z\s'_-]{2,50}$/";
         if (preg_match($regix, $espece_animal)) {
             $this->espece_animal = $espece_animal;
             return true;
@@ -70,7 +70,7 @@ class Animal
 
     public function setTypeAlimentation(string $type_alimentation): bool
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        $regix = "/^[a-zA-Z\s'_0-9-]{2,50}$/";
         if (preg_match($regix, $type_alimentation)) {
             $this->type_alimentation = $type_alimentation;
             return true;
@@ -80,7 +80,7 @@ class Animal
 
     public function setPaysOrigine(string $pays_origine): bool
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        $regix = "/^[a-zA-Z\s_0-9'-]{2,50}$/";
         if (preg_match($regix, $pays_origine)) {
             $this->pays_origine = $pays_origine;
             return true;
@@ -90,7 +90,7 @@ class Animal
 
     public function setDescriptionAnimal(string $description_animal): bool
     {
-        if (strlen($description_animal) >= 10 && strlen($description_animal) <= 500) {
+        if (strlen($description_animal) >= 1 && strlen($description_animal) <= 500) {
             $this->description_animal = $description_animal;
             return true;
         }
@@ -125,19 +125,7 @@ class Animal
     {
         return " id_animal :" . $this->id_animal . " nom_animal :" . $this->nom_animal . " espece_animal :" . $this->espece_animal . " type_alimentation :" . $this->type_alimentation . " pays_origine :" . $this->pays_origine . " description_animal :" . $this->description_animal . " image_url :" . $this->image_url . " id_habitat :" . $this->id_habitat;
     }
-    // public function getAnimal(): array
-    // {
-    //     return [
-    //         'id_animal' => $this->id_animal,
-    //         'nom_animal' => $this->nom_animal,
-    //         'espece_animal' => $this->espece_animal,
-    //         'type_alimentation' => $this->type_alimentation,
-    //         'pays_origine' => $this->pays_origine,
-    //         'description_animal' => $this->description_animal,
-    //         'image_url' => $this->image_url,
-    //         'id_habitat' => $this->id_habitat
-    //     ];
-    // }
+
 
     public function ajouter_animal(): bool
     {
@@ -259,4 +247,24 @@ class Animal
         }
         return $animalList;
     }
+
+    static function counterAnimaux(): int
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT COUNT(*) FROM animaux";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return 0;
+        }
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        return $count;
+    }
+
+    // public function chercherAnimaux($nomAnimal): array
+    // {
+    //     $conn = (new Connexion())->connect();
+    //     $sql = "  select * from  animaux a inner join  habitats h on a.id_habitat =h.id_habitat where nom_animal like  :nom_animal";
+    // }
 }

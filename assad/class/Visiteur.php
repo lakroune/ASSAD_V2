@@ -105,5 +105,17 @@ class Visiteur extends Utilisateur
         else
             return false;
     }
+    static function conuterVisiteurs()
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT count(*)  FROM utilisateurs WHERE role = 'visiteur'";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $results = $stmt->fetchColumn();
+            return $results;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
- 
