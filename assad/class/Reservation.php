@@ -40,30 +40,42 @@ class Reservation
     {
         if ($nombre_personnes > 0) {
             $this->nombre_personnes = $nombre_personnes;
+            return true;
         }
+        return false;
     }
     public function setIdVisiteur(int $id_visiteur)
     {
         if ($id_visiteur > 0) {
             $this->id_visiteur = $id_visiteur;
+            return true;
         }
+        return false;
     }
     public function setIdVisite(int $id_visite)
     {
 
         if ($id_visite > 0) {
             $this->id_visite = $id_visite;
+            return true;
         }
+        return false;
     }
-    public function setDateReservation(DateTime $date_reservation)
+    public function setDateReservation(string $date_reservation)
     {
-        $this->date_reservation = $date_reservation;
+        if (strtotime($date_reservation) !== false) {
+            $this->date_reservation = new DateTime($date_reservation);
+            return true;
+        }
+        return false;
     }
     public function setIdReservation(int $id_reservation)
     {
         if ($id_reservation > 0) {
             $this->id_reservation = $id_reservation;
+            return true;
         }
+        return false;
     }
     public function __toString()
     {
@@ -89,7 +101,7 @@ class Reservation
             return false;
         }
     }
-    public function getResrvation() 
+    public function getResrvation($idReservation) //
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM reservations WHERE id_reservations = :id_reservation";
@@ -98,23 +110,53 @@ class Reservation
         } catch (Exception $e) {
             return false;
         }
-        $stmt->bindParam(':id_reservation', $this->id_reservation);
+        $stmt->bindParam(':id_reservation', $idReservation);
         $stmt->execute();
-        $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($reservation) {
-            return $reservation;
+        $resultat = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (
+            $resultat &&
+            $this->setIdReservation((int)$resultat["id_reservation"]) &&
+            $this->setNombrePersonnes((int)$resultat["nb_personnes"]) &&
+            $this->setIdVisiteur((int)$resultat["id_utilisateur"]) &&
+            $this->setIdVisite((int)$resultat["id_visite"]) &&
+            $this->setDateReservation($resultat["date_reservation"])
+        )
+            return $this;
+
+        else {
+            return false;
+        }
+    }
+    public static function getAllResrvation() //
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM reservations ";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->execute();
+        $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $allRervation = [];
+        if ($resultats) {
+
+            foreach ($resultats as $resultat):
+                $reservation = new Reservation();
+                if (
+                    $reservation->setIdReservation((int)$resultat["id_reservation"]) &&
+                    $reservation->setNombrePersonnes((int)$resultat["nb_personnes"]) &&
+                    $reservation->setIdVisiteur((int)$resultat["id_utilisateur"]) &&
+                    $reservation->setIdVisite((int)$resultat["id_visite"]) &&
+                    $reservation->setDateReservation($resultat["date_reservation"])
+                )
+                    $reservation[] = $reservation;
+            endforeach;
+            return $allRervation;
         } else {
             return false;
         }
     }
-    // public function 
 }
 
-// $res = new Reservation();
-// $res->setIdReservation(1);
-// $res->setNombrePersonnes(4);
-// $res->setIdVisiteur(2);
-// $res->setIdVisite(1);
-// $res->setDateReservation(new DateTime('2024-07-01 10:00:00'));
-// // echo $res;
-// print_r($res->reserver());
+ 

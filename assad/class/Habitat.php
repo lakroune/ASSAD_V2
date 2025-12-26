@@ -77,7 +77,7 @@ class Habitat
     {
         return " id_habitat :" . $this->id_habitat . " nom_habitat :" . $this->nom_habitat . " description_habitat :" . $this->description_habitat . " zone_zoo :" . $this->zone_zoo . " type_climat :" . $this->type_climat;
     }
-    public function ajouter_habitat(): bool
+    public function ajouterHabitat(): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "INSERT INTO habitats (nom_habitat, description_habitat, zone_zoo, type_climat) VALUES (:nom_habitat, :description_habitat, :zone_zoo, :type_climat)";
@@ -98,7 +98,7 @@ class Habitat
         }
     }
 
-    public function supprimer_habitat(int $id_habitat): bool
+    public function supprimerHabitat(int $id_habitat): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "DELETE FROM habitats WHERE id_habitat = :id_habitat";
@@ -113,7 +113,7 @@ class Habitat
             return false;
         }
     }
-    public function modifier_habitat(): bool
+    public function modifierHabitat(): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE habitats SET nom_habitat = :nom_habitat, description_habitat = :description_habitat, zone_zoo = :zone_zoo, type_climat = :type_climat WHERE id_habitat = :id_habitat";
@@ -122,7 +122,7 @@ class Habitat
         } catch (Exception $e) {
             return false;
         }
-        $stmt->bindParam(':id_habitat', $this->id_habitat);
+        $stmt->bindValue(':id_habitat', $this->getIdHabitat());
         $stmt->bindParam(':nom_habitat', $this->nom_habitat);
         $stmt->bindParam(':description_habitat', $this->description_habitat);
         $stmt->bindParam(':zone_zoo', $this->zone_zoo);
@@ -165,12 +165,14 @@ class Habitat
 
             foreach ($results as $row) {
                 $h = new Habitat();
-                $h->setIdHabitat($row['id_habitat']);
-                $h->setNomHabitat($row['nom_habitat']);
-                $h->setDescriptionHabitat($row['description_habitat']);
-                $h->setZoneZoo($row['zone_zoo']);
-                $h->setTypeClimat($row['type_climat']);
-                $allHabitats[] = $h;
+                if (
+                    $h->setIdHabitat($row['id_habitat']) &&
+                    $h->setNomHabitat($row['nom_habitat']) &&
+                    $h->setDescriptionHabitat($row['description_habitat']) &&
+                    $h->setZoneZoo($row['zone_zoo']) &&
+                    $h->setTypeClimat($row['type_climat'])
+                )
+                    $allHabitats[] = $h;
             }
         } catch (Exception $e) {
             return $e->getMessage();
@@ -179,6 +181,3 @@ class Habitat
         return $allHabitats;
     }
 }
-
-$h = Habitat::getAllHabitats();
-print_r($h);

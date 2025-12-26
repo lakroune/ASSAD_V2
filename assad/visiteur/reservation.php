@@ -1,19 +1,17 @@
  <?php
     session_start();
 
-    include "../db_connect.php";
+    require_once '../Class/Visiteur.php';
+    require_once '../Class/Reservation.php';
+    require_once '../Class/Guide.php';
+
 
     if (
-        isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur']) &&
-        $_SESSION['role_utilisateur'] === "visiteur" &&
-        $_SESSION['logged_in'] === TRUE
+        Visiteur::isConnected("visiteur")
     ) {
 
 
-        $id_utilisateur = ($_SESSION['id_utilisateur']);
-        $nom_utilisateur = ($_SESSION['nom_utilisateur']);
-        $role_utilisateur = ($_SESSION['role_utilisateur']);
-
+ 
 
 
         $sql = " select * from  utilisateurs where role='guide' ";

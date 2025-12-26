@@ -231,7 +231,7 @@ class Animal
         }
     }
 
-    static function getAnimaux()
+    public static function getAllAnimaux()
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM animaux a INNER JOIN habitats h on a.id_habitat=h.id_habitat ";
@@ -245,17 +245,18 @@ class Animal
         $animalList = [];
         foreach ($animaux as $anima) {
             $animal = new Animal();
-            $animal->setIdAnimal($anima['id_animal']);
-            $animal->setNomAnimal($anima['nom_animal']);
-            $animal->setEspeceAnimal($anima['espece']);
-            $animal->setTypeAlimentation($anima['alimentation_animal']);
-            $animal->setPaysOrigine($anima['pays_origine']);
-            $animal->setDescriptionAnimal($anima['description_animal']);
-            $animal->setImageUrl($anima['image_url']);
-            $animal->setIdHabitat($anima['id_habitat']);
-            $animalList[] = $animal;
+            if (
+                $animal->setIdAnimal($anima['id_animal']) &&
+                $animal->setNomAnimal($anima['nom_animal']) &&
+                $animal->setEspeceAnimal($anima['espece']) &&
+                $animal->setTypeAlimentation($anima['alimentation_animal']) &&
+                $animal->setPaysOrigine($anima['pays_origine']) &&
+                $animal->setDescriptionAnimal($anima['description_animal']) &&
+                $animal->setImageUrl($anima['image_url']) &&
+                $animal->setIdHabitat($anima['id_habitat'])
+            )
+                $animalList[] = $animal;
         }
         return $animalList;
     }
 }
-
