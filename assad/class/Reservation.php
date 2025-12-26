@@ -246,4 +246,27 @@ class Reservation
         $stmt->execute();
         return $stmt->fetchColumn();
     }
+
+    public  function checkVisiteReserved(int $idVisite, int $idVisiteur)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM reservations WHERE id_visite = :id_visite AND id_utilisateur = :id_utilisateur";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_visite', $idVisite);
+        $stmt->bindParam(':id_utilisateur', $idVisiteur);
+        if ($stmt->execute()) {
+            $result = $stmt->rowCount();
+            if ($result > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }

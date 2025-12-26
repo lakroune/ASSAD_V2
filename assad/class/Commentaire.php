@@ -147,6 +147,7 @@ class Commentaire
             return false;
         }
     }
+    
 
     public function getCommentaire(int $idCommentaire)
     {
@@ -183,6 +184,38 @@ class Commentaire
         } catch (Exception $e) {
             return false;
         }
+        if ($stmt->execute()) {
+            $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $allCommantaire = [];
+
+            $commentaire = new Commentaire();
+            foreach ($resultats as $result) {
+                if (
+                    $commentaire->setIdCommentaire($result['id_commentaire']) &&
+                    $commentaire->setContenuCommentaire($result['texte']) &&
+                    $commentaire->setDateCommentaire($result['date_commentaire']) &&
+                    $commentaire->setNote($result['note']) &&
+                    $commentaire->setIdVisiteur($result['id_utilisateur']) &&
+                    $commentaire->setIdVisite($result['id_visite'])
+                )
+                    $allCommantaire[] = $commentaire;
+            }
+            // }
+            return $allCommantaire;
+        } else {
+            return false;
+        }
+    }
+    public function getCommentairesByVisiteur(int $idVisiteur)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM commentaires WHERE id_utilisateur = :id_utilisateur";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_utilisateur', $idVisiteur);
         if ($stmt->execute()) {
             $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $allCommantaire = [];
@@ -251,6 +284,28 @@ class Commentaire
         if ($stmt->execute()) {
             $result = $stmt->rowCount();
             return $result;
+        } else {
+            return false;
+        }
+    }
+    public function checkVisiteCommented(int $idVisite, int $idVisiteur)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM commentaires WHERE id_visite = :id_visite AND id_utilisateur = :id_utilisateur";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_visite', $idVisite);
+        $stmt->bindParam(':id_utilisateur', $idVisiteur);
+        if ($stmt->execute()) {
+            $result = $stmt->rowCount();
+            if ($result > 0) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

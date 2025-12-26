@@ -154,21 +154,21 @@
                  <div class="space-y-6">
                      <?php foreach ($array_visites as $visite) :
 
-                            $date_visite = $visite->getDateheureVisite()->format('H:i');
-                            $maintenant = time();
-                            $is_full = $visite->getCapaciteMaxVisite() <= 11;
+                            $date_visite = $visite->getDateheureVisite()->format('d-m-Y H:i');
+                            $maintenant = (new DateTime())->format('Y-m-d H:i');
+                            $is_full = $visite->getCapaciteMaxVisite() <= $visite->getNbParticipants();
                         ?>
                          <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-white dark:bg-zinc-800 border border-[#f3ede7] dark:border-zinc-700 shadow-md hover:shadow-lg transition-shadow duration-300 <?= $is_full ? 'opacity-50' : 'ee' ?>">
 
                              <div class="h-48 sm:h-auto sm:w-48 rounded-xl bg-cover bg-center shrink-0 relative bg-gray-200"
                                  style="background-image: url('<?= $image ?>');">
 
-                                 <?php if ($date_visite <= $maintenant && $date_visite > ($maintenant - 3600)) : ?>
+                                 <?php if (strtotime($maintenant) >= strtotime($date_visite) && strtotime($maintenant) < (strtotime($date_visite) + strtotime($visite->getDureeVisite()->format('d-m-Y H:i')))) : ?>
                                      <div class="m-2 absolute top-0 left-0 inline-flex px-2 py-1 bg-green-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-lg items-center gap-1">
                                          <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                                          En direct
                                      </div>
-                                 <?php elseif ($date_visite > $maintenant) : ?>
+                                 <?php elseif ( strtotime($date_visite) > strtotime($maintenant)) : ?>
                                      <div class="m-2 absolute top-0 left-0 inline-flex px-2 py-1 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-bold rounded-lg items-center gap-1">
                                          <span class="material-symbols-outlined text-[14px] leading-none">schedule</span>
                                          Programmé
@@ -193,15 +193,23 @@
                                      <div class="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-500">
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">calendar_month</span>
-                                             <span><?= $is_full  ? 'Complet' : $visite->getCapaciteMaxVisite() . ' places dispo.' ?></span>
+                                             <span><?= $is_full  ? 'Complet' : $visite->getDateheureVisite()->format('d/m/Y H:i') . '  ' ?></span>
                                          </div>
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">group</span>
-                                             <span><?= $is_full ? 'Complet' :  $visite->getCapaciteMaxVisite() - 22  . ' places dispo.' ?></span>
+                                             <span><?= $is_full ? 'Complet' :  $visite->getCapaciteMaxVisite() - $visite->getNbParticipants()  . ' places dispo.' ?></span>
+                                         </div>
+                                         <div class="flex items-center gap-1">
+                                             <span class="material-symbols-outlined text-primary text-[18px]">language</span>
+                                             <span><?= ($visite->getLangueVisite()) ?></span>
+                                         </div>
+                                         <div class="flex items-center gap-1">
+                                             <span class="material-symbols-outlined text-primary text-[18px]">timer</span>
+                                             <span><?= ($visite->getDureeVisite()->format('H:i')) ?></span>
                                          </div>
                                          <div class="flex items-center gap-1">
                                              <span class="material-symbols-outlined text-primary text-[18px]">payments</span>
-                                             <span class="font-bold text-green-600"><?= ($visite->getPrixVisite()) ?>€</span>
+                                             <span class="font-bold text-green-600"><?= ($visite->getPrixVisite()) ?>DH</span>
                                          </div>
                                      </div>
                                  </div>

@@ -120,3 +120,4 @@ class Visiteur extends Utilisateur
         }
     }
 }
+
