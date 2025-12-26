@@ -139,7 +139,7 @@ class Utilisateur
         session_destroy();
     }
 
-    public static function isConnected(string $role = "visiteur"): bool
+    public static function isConnected(string $role ): bool
     {
         return isset($_SESSION['logged_in']) && isset($_SESSION['role_utilisateur']) && $_SESSION['logged_in'] === TRUE &&  $_SESSION['role_utilisateur'] === $role;
     }

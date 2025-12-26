@@ -98,7 +98,7 @@ class Animal
     }
     public function setImageUrl(string $image_url): bool
     {
-        $regix = "/^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/";
+        $regix = "/^(https?:\/\/.*)$/";
         if (preg_match($regix, $image_url)) {
             $this->image_url = $image_url;
             return true;
