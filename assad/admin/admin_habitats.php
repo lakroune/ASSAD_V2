@@ -1,58 +1,32 @@
  <?php
-    session_start();
-    include "../db_connect.php";
 
-    if (
-        isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur'], $_SESSION['nom_utilisateur']) &&
-        $_SESSION['role_utilisateur'] === "admin" &&
-        $_SESSION['logged_in'] === TRUE
-    ) {
-        $id_utilisateur = ($_SESSION['id_utilisateur']);
-        $nom_utilisateur = ($_SESSION['nom_utilisateur']);
-        $role_utilisateur = ($_SESSION['role_utilisateur']);
+    require_once '../Class/Admin.php';
+    require_once '../Class/Animal.php';
+    require_once '../Class/Habitat.php';
 
 
-
-        $sql = " SELECT  *  FROM habitats where nom_habitat like  ?";
-        $searchInput = "%";
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['searchInput']))
-            $searchInput =  ($_POST["searchInput"]) . "%";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $searchInput);
-        $stmt->execute();
-        $resultat = $stmt->get_result();
-        $array_habitats = array();
-        while ($ligne =  $resultat->fetch_assoc())
-            array_push($array_habitats, $ligne);
-
-
-
-        $info_habitat = null;
-        $info = false;
-        $edit = false;
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_POST['id_habitat_info']) or isset($_POST['id_habitat_edit']))) {
-            $id_h = null;
-            if (!empty($_POST['id_habitat_info'])) {
-                $info = true;
-                $id_h = $_POST['id_habitat_info'];
-            }
-            if (!empty($_POST['id_habitat_edit'])) {
-                $edit = true;
-                $id_h = $_POST['id_habitat_edit'];
-            }
-
-            $sql_info = "SELECT * FROM habitats WHERE id_habitat = ?";
-            $stmt = $conn->prepare($sql_info);
-            $stmt->bind_param("i", $id_h);
-            $stmt->execute();
-            $res = $stmt->get_result();
-            $info_habitat = $res->fetch_assoc();
-        }
-    } else {
-
-        header("Location: ../connexion.php?error=access_denied");
+    if (!Admin::isConnected("admin")) {
+        header("location: ../../connexion.php?message=access_denied");
         exit();
     }
+
+    $array_habitats = Habitat::getAllHabitats();
+    $info_habitat = new Habitat();
+    $info = false;
+    $edit = false;
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_POST['id_habitat_info']) or isset($_POST['id_habitat_edit']))) {
+
+        if (!empty($_POST['id_habitat_info'])) {
+            $info = true;
+            $info_habitat->getHabitat($_POST['id_habitat_info']);
+        }
+        if (!empty($_POST['id_habitat_edit'])) {
+            $edit = true;
+            $info_habitat->getHabitat($_POST['id_habitat_edit']);
+        }
+    }
+
+
     ?>
 
 
@@ -242,16 +216,17 @@
                                              <div class="flex items-center gap-3">
                                                  <span class="material-symbols-outlined text-2xl text-primary"><?php  ?></span>
                                                  <div class="flex flex-col">
-                                                     <span class="font-bold text-text-light dark:text-text-dark"><?= ($habitat['nom_habitat']) ?></span>
-                                                     <span class="text-xs text-text-secondary-light">ID: <?= ($habitat['id_habitat']) ?></span>
+                                                     <span class="font-bold text-text-light dark:text-text-dark"><?= ($habitat->getNomHabitat()) ?></span>
+                                                     <span class="text-xs text-text-secondary-light">ID: <?= ($habitat->getIdHabitat()) ?></span>
                                                  </div>
                                              </div>
                                          </td>
                                          <td class="px-6 py-3">
-                                             <span class="text-text-light dark:text-text-dark font-medium"><?= ($habitat['type_climat']) ?></span>
+                                             <span class="text-text-light dark:text-text-dark font-medium"><?= "non renseigné" //($habitat->getTypeHabitat()) 
+                                                                                                            ?></span>
                                          </td>
                                          <td class="px-6 py-3 text-start">
-                                             <span class="font-bold text-sm text-primary"><?= ($habitat['zone_zoo']) ?></span>
+                                             <span class="font-bold text-sm text-primary"><?= ($habitat->getZoneZoo()) ?></span>
                                          </td>
 
 
@@ -261,7 +236,7 @@
 
 
                                                  <form class="edit" action="" method="POST">
-                                                     <input type="hidden" value="<?= $habitat['id_habitat'] ?>" name="id_habitat_edit">
+                                                     <input type="hidden" value="<?= $habitat->getIdHabitat() ?>" name="id_habitat_edit">
                                                      <button
                                                          class="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-blue-500"
                                                          title="Éditer les détails">
@@ -269,7 +244,7 @@
                                                      </button>
                                                  </form>
                                                  <form class="info" action="" method="POST">
-                                                     <input type="hidden" value="<?= $habitat['id_habitat'] ?>" name="id_habitat_info">
+                                                     <input type="hidden" value="<?= $habitat->getIdHabitat() ?>" name="id_habitat_info">
                                                      <button
                                                          class="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-primary"
                                                          title="Voir les animaux résidents">
@@ -277,7 +252,7 @@
                                                      </button>
                                                  </form>
                                                  <form class="delete" action="php/delete_habitat.php" method="POST">
-                                                     <input type="hidden" value="<?= $habitat['id_habitat'] ?>" name="id_habitat">
+                                                     <input type="hidden" value="<?= $habitat->getIdHabitat() ?>" name="id_habitat">
                                                      <button
                                                          type="button"
                                                          class="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-red-500 btn-delete"
@@ -315,11 +290,11 @@
                  </div>
 
                  <form action="php/update_habitat.php" method="POST" class="flex flex-col gap-4">
-                     <input type="hidden" name="id_habitat" value="<?= $info_habitat['id_habitat'] ?>">
+                     <input type="hidden" name="id_habitat" value="<?= $info_habitat->getIdHabitat() ?>">
 
                      <div>
                          <label class="block text-sm font-medium mb-1">Nom de l'habitat</label>
-                         <input type="text" name="nom_habitat" value="<?= ($info_habitat['nom_habitat']) ?>" required
+                         <input type="text" name="nom_habitat" value="<?= ($info_habitat->getNomHabitat()) ?>" required
                              class="w-full rounded-lg border-gray-300 dark:bg-background-dark dark:border-gray-700 focus:ring-blue-500 text-sm">
                      </div>
 
@@ -329,21 +304,21 @@
                              <?php
                                 $climats = ["Tropical", "Aride", "Tempéré", "Polaire", "Aquatique", "Savane"];
                                 foreach ($climats as $c): ?>
-                                 <option value="<?= $c ?>" <?= ($info_habitat['type_climat'] == $c) ? 'selected' : '' ?>><?= $c ?></option>
+                                 <option value="<?= $c ?>" <?= ($c === '$info_habitat->getTypeClimat() ') ? 'selected' : '' ?>><?= $c ?></option>
                              <?php endforeach; ?>
                          </select>
                      </div>
 
                      <div>
                          <label class="block text-sm font-medium mb-1">Zone du Zoo</label>
-                         <input type="text" name="zone_zoo" value="<?= ($info_habitat['zone_zoo']) ?>" required
+                         <input type="text" name="zone_zoo" value="<?= ($info_habitat->getZoneZoo()) ?>" required
                              class="w-full rounded-lg border-gray-300 dark:bg-background-dark dark:border-gray-700 focus:ring-blue-500 text-sm">
                      </div>
 
                      <div>
                          <label class="block text-sm font-medium mb-1">Description</label>
                          <textarea name="description_habitat" rows="4" required
-                             class="w-full rounded-lg border-gray-300 dark:bg-background-dark dark:border-gray-700 focus:ring-blue-500 text-sm"><?= ($info_habitat['description_habitat']) ?></textarea>
+                             class="w-full rounded-lg border-gray-300 dark:bg-background-dark dark:border-gray-700 focus:ring-blue-500 text-sm"><?= ($info_habitat->getDescriptionHabitat()) ?></textarea>
                      </div>
 
                      <div class="mt-2 flex gap-3">
@@ -356,8 +331,8 @@
                  </form>
              </div>
          </div>
-     
-         <?php endif; ?>
+
+     <?php endif; ?>
      <div id="modalHabitat" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
          <div class="bg-surface-light dark:bg-surface-dark w-full max-w-md p-6 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800">
              <div class="flex justify-between items-center mb-6">
@@ -420,7 +395,7 @@
                  <div class="flex justify-between items-start mb-6">
                      <div>
                          <p class="text-primary font-bold text-xs uppercase tracking-widest">Détails de l'habitat</p>
-                         <h2 class="text-3xl font-black"><?= ($info_habitat['nom_habitat']) ?></h2>
+                         <h2 class="text-3xl font-black"><?= ($info_habitat->getNomHabitat()) ?></h2>
                      </div>
                      <button onclick="closeInfoModal()" class="bg-gray-100 dark:bg-gray-800 p-2 rounded-full hover:text-red-500 transition-colors">
                          <span class="material-symbols-outlined">close</span>
@@ -429,17 +404,18 @@
                  <div class="grid grid-cols-2 gap-4 mb-6">
                      <div class="p-4 bg-gray-50 dark:bg-background-dark rounded-xl">
                          <p class="text-xs text-text-secondary-light">Climat</p>
-                         <p class="font-bold"><?= ($info_habitat['type_climat']) ?></p>
+                         <p class="font-bold"><?= "nom_climat" //($info_habitat->getTypeClimat()) 
+                                                ?></p>
                      </div>
                      <div class="p-4 bg-gray-50 dark:bg-background-dark rounded-xl">
                          <p class="text-xs text-text-secondary-light">Zone géographique</p>
-                         <p class="font-bold"><?= ($info_habitat['zone_zoo']) ?></p>
+                         <p class="font-bold"><?= ($info_habitat->getZoneZoo()) ?></p>
                      </div>
                  </div>
                  <div class="mb-8">
                      <p class="text-xs text-text-secondary-light mb-2">Description complète</p>
                      <p class="text-sm leading-relaxed italic text-text-secondary-dark">
-                         "<?= nl2br(($info_habitat['description_habitat'])) ?>"
+                         "<?= nl2br(($info_habitat->getDescriptionHabitat())) ?>"
                      </p>
                  </div>
                  <button onclick="closeInfoModal()" class="w-full py-3 bg-primary text-white font-bold rounded-xl">Fermer</button>
